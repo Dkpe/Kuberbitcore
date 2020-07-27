@@ -2005,7 +2005,7 @@ int GetAuxPowStartBlock()
         return 1; // never
 }
 
-int GetOurChainID()
+int GetOurChainID()  // CHAIN ID SET 
 {
     return 0x0001;
 }
