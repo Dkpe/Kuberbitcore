@@ -1073,25 +1073,29 @@ uint256 static GetOrphanRoot(const CBlockHeader* pblock)
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
-    int64 nSubsidy;
-    if (nHeight <= 500) {
-      nSubsidy = 25 * COIN;
-    } else if (nHeight <= 1000) {
-      nSubsidy = 50 * COIN;
-    } else if (nHeight <= 2000) {
-      nSubsidy = 75 * COIN;
-    } else if (nHeight >= 2001) {
-      nSubsidy = 100 * COIN;
+    int64 nSubsidy = 0 * COIN; // Miner Reward Even and Odd 
+
+    if(nHeight == 3)
+    {
+        nSubsidy = 11000 * COIN;
+    }
+    	else if((nHeight > 12) && (nHeight % 2))
+    {
+    	nSubsidy = 125000 * COIN;
+    }
+        else if(nHeight > 12)
+    {
+    	nSubsidy = 62500 * COIN;
     }
 
     // Subsidy is cut in half every 500000 blocks
-    nSubsidy >>= (nHeight / 500000); // Canada eCoin: 500k blocks
+    nSubsidy >>= (nHeight / 250000); // Canada eCoin: 500k blocks
 
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 1 * 24 * 60 * 60; // Canada eCoin: adjust once per day
-static const int64 nTargetSpacing = 30; // Canada eCoin: 30 second blocks
+static const int64 nTargetTimespan = 48 * 60; // Canada eCoin: adjust once every 12 Blocks 
+static const int64 nTargetSpacing = 4 * 60 ; // Canada eCoin: 4 Minute blocks
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
 //
