@@ -2802,11 +2802,11 @@ bool LoadBlockIndex()
 {
     if (fTestNet)
     {
-        pchMessageStart[0] = 0xfc;
-        pchMessageStart[1] = 0xc1;
-        pchMessageStart[2] = 0xb7;
-        pchMessageStart[3] = 0xdc;
-        hashGenesisBlock = uint256("0x49066485a387e7d6b2d8f58b93b515db0476679c7e0314bf1356939911269cbb");
+        pchMessageStart[0] = 0x1a;
+        pchMessageStart[1] = 0x2a;
+        pchMessageStart[2] = 0xba;
+        pchMessageStart[3] = 0xac;
+        hashGenesisBlock = uint256("0x0");
     }
 
     //
@@ -2845,13 +2845,13 @@ bool InitBlockIndex() {
         //      CTxOut(nValue=50.00000000, scriptPubKey=040184710fa689ad5023690c80f3a4)
 
         // Genesis block
-        const char* pszTimestamp = "Joseph Wright Jr. was born on this day 1906";
+        const char* pszTimestamp = "Made in Kuberbit exchange in mind 2020";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
         txNew.vin[0].scriptSig = CScript() << 486604799 << CBigNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
         txNew.vout[0].nValue = 50 * COIN;
-        txNew.vout[0].scriptPubKey = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
+        txNew.vout[0].scriptPubKey = CScript() << ParseHex("ADDHEREPUBKEY") << OP_CHECKSIG;
         CBlock block;
         block.vtx.push_back(txNew);
         block.hashPrevBlock = 0;
@@ -2872,7 +2872,7 @@ bool InitBlockIndex() {
         printf("%s\n", hash.ToString().c_str());
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
-        assert(block.hashMerkleRoot == uint256("0x8e4c0ff7bfebb1169080fac2206d0abc75dc66b717df750e3798bed0823ab82f"));
+        assert(block.hashMerkleRoot == uint256("0x0"));
         block.print();
         assert(hash == hashGenesisBlock);
 
