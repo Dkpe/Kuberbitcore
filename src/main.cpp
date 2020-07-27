@@ -32,7 +32,7 @@ CTxMemPool mempool;
 unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
-uint256 hashGenesisBlock("0x863626dadaef221e2e2f30ff3dacae44cabdae9e0028058072181b3fb675d94a");
+uint256 hashGenesisBlock("0x0"); //make Genesis
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Canada eCoin: starting difficulty is 1 / 2^12
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
