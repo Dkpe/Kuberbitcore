@@ -18,11 +18,11 @@ using namespace std;
 
 map<uint256, CAlert> mapAlerts;
 CCriticalSection cs_mapAlerts;
-// PUBKEY MAIN AND TESTNET 
+
 // As of 08/23/2015 the current holders of alert private keys are: Koad, Leviticus and Hexdump; testnet private key available upon request.
-// Alert public keys last updated in Canada eCoin Core v0.8.6.1
-static const char* pszMainKey = "";
-static const char* pszTestKey = "";
+// Alert public keys last updated in Kuberbitcoin v0.8.6.1
+static const char* pszMainKey = "04e820e1563504324058fc6b7d657bb6bbdbe24653b91bcfb285aea9bee62f314f4860a7917f841c0ea93764efda9b6f87bf289a5b003aaabec78f1a7e8ff88f04";
+static const char* pszTestKey = "0451a6479f04af9dcea09692a01673fc8b61bad763b029451719c8c1e5283b251e5975a04a97bf91641029af35d162c38b6b008eab73b33f1ae43f048b9eda3e3b";
 
 void CUnsignedAlert::SetNull()
 {

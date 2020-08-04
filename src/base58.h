@@ -272,9 +272,9 @@ class CBitcoinAddress : public CBase58Data
 public:
     enum
     {
-        PUBKEY_ADDRESS = 28, // Canada eCoin addresses start with C
+        PUBKEY_ADDRESS = 45, // Kuberbitcoin addresses start with K
         SCRIPT_ADDRESS = 5,
-        PUBKEY_ADDRESS_TEST = 87, // testnet keys start with c
+        PUBKEY_ADDRESS_TEST = 108, // testnet keys start with c
         SCRIPT_ADDRESS_TEST = 196,
     };
 
