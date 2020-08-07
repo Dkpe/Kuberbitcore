@@ -55,7 +55,3 @@ License
 Kuberbitcoin is released under the terms of the MIT license. See `COPYING` for more
 information or see http://opensource.org/licenses/MIT.
 
-Disclaimer
-----------
-
-This is a Canadian project and is in no way affiliated with any government or government agency and resultant eCoins are not legal tender.
