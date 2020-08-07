@@ -47,7 +47,7 @@ Pow Reward :
 
 (1)Odd Low Reward
 
-Halving at block 500,000 from 100 eCoins per block, to 50 eCoins per block.  
+
 
 License
 -------
