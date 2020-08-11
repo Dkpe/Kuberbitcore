@@ -1094,7 +1094,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan =  48 * 60; // Kuberbitcoin: 12 Blcok readjust 
+static const int64 nTargetTimespan =  4 * 60; // Kuberbitcoin: 240 Block readjust 
 static const int64 nTargetSpacing = 4 * 60; // Kuberbitcoin: 240 second blocks
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
