@@ -1094,7 +1094,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     return nSubsidy + nFees;
 }
 
-int64 nTargetTimespan =  48 * 60 ; // Kuberbitcoin: 240 Block readjust to Block 1525 // 4 * 60; // 1 BLOCK after block 1525
+static const int64 nTargetTimespan =  48 * 60 ; // Kuberbitcoin: 240 Block readjust to Block 1525 // 4 * 60; // 1 BLOCK after block 1525
 static const int64 nTargetSpacing = 4 * 60; // Kuberbitcoin: 240 second blocks
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
@@ -1130,11 +1130,7 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
     // Genesis block
     if (pindexLast == NULL)
         return nProofOfWorkLimit;
-    
-    if (pindexLast->nHeight >= 2600)
-        nTargetTimespan = 4 * 60; // 1 BLOCK after block 2600
-    int64 nInterval = nTargetTimespan / nTargetSpacing;
-
+        
     // Only change once per interval
     if ((pindexLast->nHeight+1) % nInterval != 0)
     {
