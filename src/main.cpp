@@ -1130,6 +1130,10 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
     // Genesis block
     if (pindexLast == NULL)
         return nProofOfWorkLimit;
+    
+    if (pindexLast->nHeight >= 1525)
+        nTargetTimespan = 4 * 60; // 1 BLOCK after block 1525
+    int64 nInterval = nTargetTimespan / nTargetSpacing;
 
     // Only change once per interval
     if ((pindexLast->nHeight+1) % nInterval != 0)
