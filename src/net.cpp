@@ -1193,7 +1193,7 @@ void MapPort(bool)
 // The second name should resolve to a list of seed addresses.
 static const char *strMainNetDNSSeed[][2] = {
     {"51.79.52.158", "51.195.45.214"},
-    {"51.195.148.15","ontario.kuberbitcoin.net"}
+    {NULL , NULL}
 };
 
 static const char *strTestNetDNSSeed[][2] = {
