@@ -39,7 +39,14 @@ namespace Checkpoints
         (       500, uint256("e5714f2682d36865a81e9283598b743e494a49a3ac7e64947e875f7824b5fd63"))
         (       1000, uint256("90d9336757b513603e404f2aa1930d22c3ae9b8660b548b98fb83a131cf1de67"))
         (       1200, uint256("8aa2a203e6880bae5d7b8fd3f2cb1edfe09552764a8d2e5e7ba6495a318cdc2a"))
-        (       1500, uint256("a2e97ab23cf967f4cb81457f414c1b5867de1f22af3af33efe539795a00c5b37"))     
+        (       1500, uint256("a2e97ab23cf967f4cb81457f414c1b5867de1f22af3af33efe539795a00c5b37")) 
+        (       2000, uint256("ee44db00ee1c7306ce11f7701641fe9ce7cd20bde3b7b6f2d4626ec554df195e"))     
+        (       2500, uint256("26e56b4743e0f943fc11cbd47b0b4482f2f71f9bab5dfde63139ba4d9c02a82e"))     
+        (       3000, uint256("3edf1ef26d1653b3630175c15c8eac9fc89ae6dfe75b9cdf4a0e925be3e2deef"))     
+        (       3500, uint256("a4a835b9a009a72c1dc8fc174e537f2f2b379a2aa5ccfccb7949e5ffb030a09c"))     
+        (       4000, uint256("4687c1e2b467a10b3836ef0eda9e8f5826704f13f9f1defc0572acb5892e3826"))     
+        (       4500, uint256("7f4b6d34a3fc3cdee514c8a96e57841494d6ff56a2efd2072a71b4913a263a40"))     
+        
     ;
     static const CCheckpointData data = {
         &mapCheckpoints,
