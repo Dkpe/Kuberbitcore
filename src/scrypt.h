@@ -1,3 +1,5 @@
+// Copyright (c) 2013-2014 Kuberbitcoin Developers
+
 #ifndef SCRYPT_H
 #define SCRYPT_H
 #include <stdlib.h>

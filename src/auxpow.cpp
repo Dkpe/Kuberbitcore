@@ -22,7 +22,7 @@ bool CAuxPow::Check(uint256 hashAuxBlock, int nChainID)
     if (nIndex != 0)
         return error("AuxPow is not a generate");
 
-    if (!fTestNet && parentBlockHeader.GetChainID() == nChainID)
+    if (!TestNet() && parentBlockHeader.GetChainID() == nChainID)
         return error("Aux POW parent has our chain ID");
 
     if (vChainMerkleBranch.size() > 30)
@@ -54,24 +54,12 @@ bool CAuxPow::Check(uint256 hashAuxBlock, int nChainID)
     if (pc == script.end())
         return error("Aux POW missing chain merkle root in parent coinbase");
 
-    if (pcHead != script.end())
-    {
-        // Enforce only one chain merkle root by checking that a single instance of the merged
-        // mining header exists just before.
-        if (script.end() != std::search(pcHead + 1, script.end(), UBEGIN(pchMergedMiningHeader), UEND(pchMergedMiningHeader)))
-            return error("Multiple merged mining headers in coinbase");
-        if (pcHead + sizeof(pchMergedMiningHeader) != pc)
-            return error("Merged mining header is not just before chain merkle root");
-    }
-    else
-    {
-        // For backward compatibility.
-        // Enforce only one chain merkle root by checking that it starts early in the coinbase.
-        // 8-12 bytes are enough to encode extraNonce and nBits.
-        if (pc - script.begin() > 20)
-            return error("Aux POW chain merkle root must start in the first 20 bytes of the parent coinbase");
-    }
-
+    // Enforce only one chain merkle root by checking that a single instance of the merged
+    // mining header exists just before.
+    if (script.end() != std::search(pcHead + 1, script.end(), UBEGIN(pchMergedMiningHeader), UEND(pchMergedMiningHeader)))
+        return error("Multiple merged mining headers in coinbase");
+    if (pcHead + sizeof(pchMergedMiningHeader) != pc)
+        return error("Merged mining header is not just before chain merkle root");
 
     // Ensure we are at a deterministic point in the merkle leaves by hashing
     // a nonce and our chain ID and comparing to the index.
@@ -104,13 +92,17 @@ bool CAuxPow::Check(uint256 hashAuxBlock, int nChainID)
     return true;
 }
 
-CScript MakeCoinbaseWithAux(unsigned int nBits, unsigned int nExtraNonce, vector<unsigned char>& vchAux)
+CScript MakeCoinbaseWithAux(unsigned int nHeight, unsigned int nExtraNonce, vector<unsigned char>& vchAux)
 {
     vector<unsigned char> vchAuxWithHeader(UBEGIN(pchMergedMiningHeader), UEND(pchMergedMiningHeader));
     vchAuxWithHeader.insert(vchAuxWithHeader.end(), vchAux.begin(), vchAux.end());
 
+    CScript script = (CScript() << nHeight << CScriptNum(nExtraNonce)) + COINBASE_FLAGS;
+    
     // Push OP_2 just in case we want versioning later
-    return CScript() << nBits << nExtraNonce << OP_2 << vchAuxWithHeader;
+    script = script << OP_2 << vchAuxWithHeader;
+    
+    return script;
 }
 
 
@@ -125,7 +117,8 @@ void IncrementExtraNonceWithAux(CBlock* pblock, CBlockIndex* pindexPrev, unsigne
     }
     ++nExtraNonce;
 
-    pblock->vtx[0].vin[0].scriptSig = MakeCoinbaseWithAux(pblock->nBits, nExtraNonce, vchAux);
+    unsigned int nHeight = pindexPrev->nHeight+1; // Height first in coinbase required for block.version=2
+    pblock->vtx[0].vin[0].scriptSig = MakeCoinbaseWithAux(nHeight, nExtraNonce, vchAux);
     pblock->hashMerkleRoot = pblock->BuildMerkleTree();
 }
 

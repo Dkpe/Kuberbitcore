@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Kuberbitcoin
+Comment=Kuberbitcoin P2P Cryptocurrency
+Comment[fr]=Kuberbitcoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Kuberbitcoin, eşten eşe kriptografik sanal para birimi
+Exec=kuberbitcoin-qt %u
+Terminal=false
+Type=Application
+Icon=kuberbitcoin128
+MimeType=x-scheme-handler/kuberbitcoin;
+Categories=Office;Finance;
