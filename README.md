@@ -1,6 +1,7 @@
 # Kuberbitcoin Core [KBI]
-   ==========================
-kuberbitcoin integration/staging tree
+ ================================
+  
+# Kuberbitcoin integration/staging tree
  ================================
 
 Kuberbitcoin 1.9.4
