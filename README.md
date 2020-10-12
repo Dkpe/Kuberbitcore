@@ -1,14 +1,7 @@
 # Kuberbitcoin Core [KBI]
-==========================
+   ==========================
 kuberbitcoin integration/staging tree
-================================
-
-http://www.kuberbitcoin.info
-
-Copyright (c) 2009-2013 Bitcoin Developers<br />
-Copyright (c) 2011-2013 Litecoin Developers<br />
-Copyright (c) 2019-2020 Kuberbitcoin Developers
-
+ ================================
 
 Kuberbitcoin 1.9.4
 
