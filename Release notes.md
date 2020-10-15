@@ -1,7 +1,7 @@
 # Kuberbitcoin Core 0.9.0
 
-Kuberbitcoin Core 0.9.0 is primarily a bugfix release, bringing Kuberbitcoin Core in
-line with Bitcoin 0.9.3. Kuberbitcoin Core 0.9.0 also adds in support for printing
+Kuberbitcoin Core 1.9.4 is primarily a bugfix release, bringing Kuberbitcoin Core in
+line with Bitcoin 0.9.4. Kuberbitcoin Core 0.9.0 also adds in support for printing
 paper wallets.
 
 Paper wallet support has been developed by AndyMeows (IRC username), and 
@@ -18,7 +18,7 @@ or similar capturing the key from memory or interfering with its generation.
 
 * Translation improvements and corrections
 * Disable Transifex based translation process (not used by Kuberbitcoin Core)
-* Add checkpoints around AuxPoW switchover block (371,337)
+* Add checkpoints around AuxPoW switchover block (1)
 * Disable connections from pre-1.8 Kuberbitcoin Core clients
 * Use HTTPS with kuberbitcoinchain.info
 * Remove unreachable code introduced with AuxPoW support
@@ -27,8 +27,8 @@ or similar capturing the key from memory or interfering with its generation.
 
 ## Bitcoin Core Release Notes
 
-Full release notes for Bitcoin Core 0.9.3 are available from
-https://bitcoin.org/en/release/v0.9.3 , but highlights are included
+Full release notes for Bitcoin Core 0.9.4 are available from
+https://bitcoin.org/en/release/v0.9.4 , but highlights are included
 below:
 
 
