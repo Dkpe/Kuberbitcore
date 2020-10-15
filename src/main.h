@@ -72,9 +72,9 @@ static const int64_t DUST_HARD_LIMIT = 1000;
 static const int COINBASE_MATURITY = 50;
 
 /** Coinbase maturity after block 600000 **/
-static const int COINBASE_MATURITY_NEW = 400; // 			fixme 
+static const int COINBASE_MATURITY_NEW = 400; // 			#fixme 
 /** Block at which COINBASE_MATURITY_NEW comes into effect **/
-static const int COINBASE_MATURITY_SWITCH = 9999999; // 			fixme 
+static const int COINBASE_MATURITY_SWITCH = 9999999; // 			#fixme 
 
 /** Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
