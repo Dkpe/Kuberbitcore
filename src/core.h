@@ -37,7 +37,7 @@ static const int BLOCK_VERSION_CHAIN_END = (1 << 30);
 // KuberbitCoin aux chain ID = 0x0041 (65)
 static const int AUXPOW_CHAIN_ID = 0x0041;
 static const int AUXPOW_START_MAINNET = 1;
-static const int AUXPOW_START_TESTNET = 4;
+static const int AUXPOW_START_TESTNET = 1;
 
 /** No amount larger than this (in satoshi) is valid */
 static const int64_t MAX_MONEY = 50000000000 * COIN; // Kuberbitcoin: maximum of 50000000000 coins
