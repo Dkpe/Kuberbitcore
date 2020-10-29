@@ -1,5 +1,10 @@
+
+
+![alt text](https://i.imgur.com/foSTgt2.png)
+
 # Kuberbitcoin Core [KBI]
  ================================
+
   
 # Kuberbitcoin integration/staging tree
  ================================
@@ -48,6 +53,7 @@ Pow Reward :
 (2)Even High Reward
 
 (1)Odd Low Reward
+ ![alt text](https://i.imgur.com/bftaxlA.png)
 
 
 License
