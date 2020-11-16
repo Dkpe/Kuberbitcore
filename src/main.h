@@ -68,7 +68,7 @@ static const int64_t DUST_SOFT_LIMIT = 100000;
 //static const int64_t DUST_HARD_LIMIT = 1000000;
 static const int64_t DUST_HARD_LIMIT = 1000;
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
-static const int COINBASE_MATURITY = 50;
+static const int COINBASE_MATURITY = 30;
 
 /** Coinbase maturity after block 600000 **/
 static const int COINBASE_MATURITY_NEW = 400; // 			#fixme 
