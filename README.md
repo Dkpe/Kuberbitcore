@@ -1,59 +1,88 @@
-
+COMING SOON 
 
 ![alt text](https://i.imgur.com/foSTgt2.png)
 
-# Kuberbitcoin Core [KBI]
- ================================
+Specifications
 
-  
-# Kuberbitcoin integration/staging tree
- ================================
 
-Kuberbitcoin 1.9.4
+## General
 
-Copyright (c) 2009-2013 Bitcoin Developers
-Copyright (c) 2011-2013 Litecoin Developers
-Copyright (c) 2020 Kuberbitcoin Developers
-What is Kuberbitcoin?
+- Kuberbitcoin
 
-A scrypt-based crypto currency that supports merged mining (as per USC code base).
+- Scrypt & SHA256D
 
-Kuberbitcoin
+- AUXPOW merge mine capability
 
-Ticker :KBI
+- Optimized client
 
-Algo :Scrypt
+- Ticker :KBI
 
-Type :Merged Auxpow Scrypt
+- Algo :Scrypt
 
-Wallet Address Start :K
+- Type :Merged Auxpow Scrypt
 
-Merge Mined
+- Wallet Address Start :K
 
-Aux chain ID = 0x0041 (65) Chain ID after Block 1
+- Merge Mined
 
-Auxpow protocol start :1
+- Aux chain ID = 0x0041 (65) Chain ID after Block 1
 
-Mining Target Span :12 Blocks / 48 Minutes
+- Auxpow protocol start :1
 
-Block Space : 240 Sec4 Minutes
+- DefaultPort :10598
 
-DefaultPort :10598
+- RPCPort :10599
 
-RPCPort :10599
+- Halving Constant :After 250000 Blocks (1250000 Minutes / 2.37 Years )
 
-Halving Constant :After 250000 Blocks (1250000 Minutes / 2.37 Years )
+- Transaction Confirmations: 85
 
-Transaction Confirmations:
+- Relay Fee 7 KBI
 
-50
+- Pow Reward :
 
-Pow Reward :
-
-(2)Even High Reward
+- (2)Even High Reward
 
 (1)Odd Low Reward
  ![alt text](https://i.imgur.com/bftaxlA.png)
+
+## Blocks
+- Block size 10mb
+- Signature operations per block maximum 100k
+- 4 Minute block time * Algo
+
+## Difficulty
+- Dark Gravity Wave Algo
+
+#
+## Security
+- Mined blocks mature after 85 confirms
+- Kuberbitcoin is a fast currency but it does not compromise the safety of the blockchain in the process.
+
+## Ports
+Listen Port: 13580
+
+RPC Port: 13581
+
+
+
+## Conf Settings
+If you are setting up a pool or want to solo mine in SHA add the following to the conf file
+
+- algo=sha256d
+
+If you want to set the daemon to scrypt, set the algo= to 
+
+- algo=scrypt
+
+
+
+
+
+
+
+
+
 
 
 License
