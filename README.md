@@ -17,9 +17,7 @@ Specifications
 
 - Ticker :KBI
 
-- Algo :Scrypt
-
-- Type :Merged Auxpow Scrypt
+- Type :Merged Auxpow 
 
 - Wallet Address Start :K
 
