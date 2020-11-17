@@ -95,11 +95,11 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>&amp;Обрати</translation>
     </message>
     <message>
-        <source>Very sending addresses</source>
+        <source>Sending addresses</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Much receiving addresses</source>
+        <source>Receiving addresses</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -205,7 +205,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Підтвердити шифрування гаманця</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PESETACOINS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR KUBERBITCOINS&lt;/b&gt;!</source>
         <translation>УВАГА: Якщо ви зашифруєте гаманець і забудете пароль, ви &lt;b&gt;ВТРАТИТЕ ВСІ СВОЇ БІТКОІНИ&lt;/b&gt;!</translation>
     </message>
     <message>
@@ -328,7 +328,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Адреси для &amp;відправлення...</translation>
     </message>
     <message>
-        <source>Much &amp;receiving addresses...</source>
+        <source>Receiving addresses...</source>
         <translation>Адреси для &amp;отримання...</translation>
     </message>
     <message>
@@ -1357,8 +1357,8 @@ Address: %4
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Введіть адресу Kuberbitcoin (наприклад LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Введіть адресу Kuberbitcoin (наприклад AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
 </context>
 <context>
@@ -1902,8 +1902,8 @@ Address: %4
         <translation>&amp;Отримувач:</translation>
     </message>
     <message>
-        <source>The address to send the payment to (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Звернення до відправити платіж на (наприклад LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to send the payment to (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Звернення до відправити платіж на (наприклад AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to your address book</source>
@@ -1992,8 +1992,8 @@ Address: %4
         <translation>Ви можете зареєструватися повідомленнями зі своїми адресами, щоб довести, що ви є їх власником. Будьте обережні, щоб не підписувати що-небудь неясне, як фішинг-атак може спробувати обдурити вас в підписанні вашу особистість до них. Тільки підписати повністю докладні свідчення, користувач зобов&apos;язується.</translation>
     </message>
     <message>
-        <source>The address to sign the message with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Введіть адресу Kuberbitcoin (наприклад LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to sign the message with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Введіть адресу Kuberbitcoin (наприклад AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2048,8 +2048,8 @@ Address: %4
         <translation>Введіть адресу підписання, повідомлення (забезпечення копіюванні розриви рядків, прогалини, вкладки і т.д. точно) і підпис нижче, щоб перевірити повідомлення. Будьте обережні, щоб не читати далі в підпис, ніж те, що в підписаному самого повідомлення, щоб уникнути обдурять нападу чоловік-в-середній.</translation>
     </message>
     <message>
-        <source>The address the message was signed with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Введіть адресу Kuberbitcoin (наприклад LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address the message was signed with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Введіть адресу Kuberbitcoin (наприклад AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Kuberbitcoin address</source>
@@ -2064,8 +2064,8 @@ Address: %4
         <translation>Скинути всі поля перевірки повідомлення</translation>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Введіть адресу Kuberbitcoin (наприклад LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Введіть адресу Kuberbitcoin (наприклад AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Click &quot;Sign Message&quot; to generate signature</source>

@@ -94,11 +94,11 @@ Ez a termék az OpenSSL Project által lett kifejlesztve az OpenSSL Toolkit (htt
         <translation>&amp;Kiválaszt</translation>
     </message>
     <message>
-        <source>Very sending addresses</source>
+        <source>Sending addresses</source>
         <translation>Küldési címek</translation>
     </message>
     <message>
-        <source>Much receiving addresses</source>
+        <source>Receiving addresses</source>
         <translation>Fogadó címek</translation>
     </message>
     <message>
@@ -204,7 +204,7 @@ Ez a termék az OpenSSL Project által lett kifejlesztve az OpenSSL Toolkit (htt
         <translation>Biztosan kódolni akarod a tárcát?</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PESETACOINS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR KUBERBITCOINS&lt;/b&gt;!</source>
         <translation>Figyelem: Ha kódolod a tárcát, és elveszíted a jelszavad, akkor &lt;b&gt;AZ ÖSSZES KuberbitcoinODAT IS EL FOGOD VESZÍTENI!&lt;/b&gt;</translation>
     </message>
     <message>
@@ -327,7 +327,7 @@ Ez a termék az OpenSSL Project által lett kifejlesztve az OpenSSL Toolkit (htt
         <translation>&amp;Küldési címek...</translation>
     </message>
     <message>
-        <source>Much &amp;receiving addresses...</source>
+        <source>Receiving addresses...</source>
         <translation>&amp;Fogadó címek...</translation>
     </message>
     <message>
@@ -1357,8 +1357,8 @@ Cím: %4
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Adj meg egy Kuberbitcoin-címet (pl.: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q )</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Adj meg egy Kuberbitcoin-címet (pl.: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X )</translation>
     </message>
 </context>
 <context>
@@ -1902,7 +1902,7 @@ Cím: %4
         <translation>Címzett:</translation>
     </message>
     <message>
-        <source>The address to send the payment to (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
+        <source>The address to send the payment to (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1993,8 +1993,8 @@ Cím: %4
         <translation>Aláírhat a címeivel üzeneteket, amivel bizonyíthatja, hogy a címek az önéi. Vigyázzon, hogy ne írjon alá semmi félreérthetőt, mivel a phising támadásokkal megpróbálhatják becsapni, hogy az azonosságát átírja másokra. Csak olyan részletes állításokat írjon alá, amivel egyetért.</translation>
     </message>
     <message>
-        <source>The address to sign the message with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Adj meg egy Kuberbitcoin-címet (pl.: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q )</translation>
+        <source>The address to sign the message with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Adj meg egy Kuberbitcoin-címet (pl.: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X )</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2049,8 +2049,8 @@ Cím: %4
         <translation>Írja be az aláírás címét, az üzenetet (ügyelve arra, hogy az új-sor, szóköz, tab, stb. karaktereket is pontosan) és az aláírást az üzenet ellenőrzéséhez. Ügyeljen arra, ne gondoljon többet az aláírásról, mint amennyi az aláírt szövegben ténylegesen áll, hogy elkerülje a köztes-ember (man-in-the-middle) támadást.</translation>
     </message>
     <message>
-        <source>The address the message was signed with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Adj meg egy Kuberbitcoin-címet (pl.: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q )</translation>
+        <source>The address the message was signed with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Adj meg egy Kuberbitcoin-címet (pl.: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X )</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Kuberbitcoin address</source>
@@ -2065,8 +2065,8 @@ Cím: %4
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Adj meg egy Kuberbitcoin-címet (pl.: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q )</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Adj meg egy Kuberbitcoin-címet (pl.: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X )</translation>
     </message>
     <message>
         <source>Click &quot;Sign Message&quot; to generate signature</source>

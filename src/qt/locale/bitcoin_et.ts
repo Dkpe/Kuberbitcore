@@ -95,11 +95,11 @@ Toode sisaldab OpenSSL Projekti all toodetud tarkvara, mis on kasutamiseks OpenS
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Very sending addresses</source>
+        <source>Sending addresses</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Much receiving addresses</source>
+        <source>Receiving addresses</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -205,7 +205,7 @@ Toode sisaldab OpenSSL Projekti all toodetud tarkvara, mis on kasutamiseks OpenS
         <translation>Kinnita rahakoti krüpteering</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PESETACOINS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR KUBERBITCOINS&lt;/b&gt;!</source>
         <translation>Hoiatus: Kui sa kaotad oma, rahakoti krüpteerimisel kasutatud, salafraasi, siis &lt;b&gt;KAOTAD KA KÕIK OMA KuberbitcoinID&lt;/b&gt;!</translation>
     </message>
     <message>
@@ -328,7 +328,7 @@ Toode sisaldab OpenSSL Projekti all toodetud tarkvara, mis on kasutamiseks OpenS
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Much &amp;receiving addresses...</source>
+        <source>Receiving addresses...</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1356,8 +1356,8 @@ Aadress: %4⏎</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Sisesta Kuberbitcoini aadress (nt: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Sisesta Kuberbitcoini aadress (nt: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
 </context>
 <context>
@@ -1901,8 +1901,8 @@ Aadress: %4⏎</translation>
         <translation>Maksa &amp;:</translation>
     </message>
     <message>
-        <source>The address to send the payment to (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Tehingu saaja aadress (nt: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to send the payment to (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Tehingu saaja aadress (nt: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to your address book</source>
@@ -1991,8 +1991,8 @@ Aadress: %4⏎</translation>
         <translation>Omandiõigsuse tõestamiseks saad sõnumeid allkirjastada oma aadressiga. Ettevaatust petturitega, kes üritavad saada sinu allkirja endale saada. Allkirjasta ainult korralikult täidetud avaldusi, millega nõustud.</translation>
     </message>
     <message>
-        <source>The address to sign the message with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Sõnumi signeerimise aadress (nt: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to sign the message with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Sõnumi signeerimise aadress (nt: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2047,8 +2047,8 @@ Aadress: %4⏎</translation>
         <translation>Kinnitamiseks sisesta allkirjastamise aadress, sõnum (kindlasti kopeeri täpselt ka reavahetused, tühikud, tabulaatorid jms) ning allolev signatuur.</translation>
     </message>
     <message>
-        <source>The address the message was signed with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Aadress, millega sõnum allkirjastati (nt: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address the message was signed with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Aadress, millega sõnum allkirjastati (nt: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Kuberbitcoin address</source>
@@ -2063,8 +2063,8 @@ Aadress: %4⏎</translation>
         <translation>Tühjenda kõik sõnumi kinnitamise väljad</translation>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Sisesta Kuberbitcoini aadress (nt: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Sisesta Kuberbitcoini aadress (nt: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Click &quot;Sign Message&quot; to generate signature</source>

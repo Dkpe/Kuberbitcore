@@ -95,11 +95,11 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>בחר</translation>
     </message>
     <message>
-        <source>Very sending addresses</source>
+        <source>Sending addresses</source>
         <translation>כתובת לשליחה</translation>
     </message>
     <message>
-        <source>Much receiving addresses</source>
+        <source>Receiving addresses</source>
         <translation>קבל כתובות</translation>
     </message>
     <message>
@@ -205,7 +205,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>אשר הצפנת ארנק</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PESETACOINS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR KUBERBITCOINS&lt;/b&gt;!</source>
         <translation>אזהרה: אם אתה מצפין את הארנק ומאבד את הסיסמא, אתה &lt;b&gt;תאבד את כל הביטקוינים שלך&lt;/b&gt;!</translation>
     </message>
     <message>
@@ -328,7 +328,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Much &amp;receiving addresses...</source>
+        <source>Receiving addresses...</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1356,8 +1356,8 @@ Address: %4
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>הכנס כתובת ביטקוין (למשל LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>הכנס כתובת ביטקוין (למשל AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
 </context>
 <context>
@@ -1901,8 +1901,8 @@ Address: %4
         <translation>שלם &amp;ל:</translation>
     </message>
     <message>
-        <source>The address to send the payment to (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>הכתובת שאליה ישלח התשלום (למשל LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to send the payment to (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>הכתובת שאליה ישלח התשלום (למשל AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to your address book</source>
@@ -1991,8 +1991,8 @@ Address: %4
         <translation>אתה יכול לחתום על הודעות עם הכתובות שלך כדי להוכיח שהן בבעלותך. היזהר לא לחתום על משהו מעורפל, שכן התקפות פישינג עשויות לגרום לך בעורמה למסור את זהותך. חתום רק על אמרות מפורטות לחלוטין שאתה מסכים עימן.</translation>
     </message>
     <message>
-        <source>The address to sign the message with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>הכתובת איתה לחתום על ההודעה (למשל LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to sign the message with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>הכתובת איתה לחתום על ההודעה (למשל AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2047,8 +2047,8 @@ Address: %4
         <translation>הכנס למטה את הכתובת החותמת, ההודעה (ודא שאתה מעתיק מעברי שורה, רווחים, טאבים וכו&apos; באופן מדויק) והחתימה כדי לאמת את ההודעה. היזהר לא לפרש את החתימה כיותר ממה שמופיע בהודעה החתומה בעצמה, כדי להימנע מליפול קורבן למתקפת איש-באמצע.</translation>
     </message>
     <message>
-        <source>The address the message was signed with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>הכתובת איתה ההודעה נחתמה (למשל LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address the message was signed with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>הכתובת איתה ההודעה נחתמה (למשל AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Kuberbitcoin address</source>
@@ -2063,8 +2063,8 @@ Address: %4
         <translation>אפס את כל שדות אימות הודעה</translation>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>הכנס כתובת ביטקוין (למשל LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>הכנס כתובת ביטקוין (למשל AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Click &quot;Sign Message&quot; to generate signature</source>

@@ -95,11 +95,11 @@ Dette produktet inneholder programvare utviklet av OpenSSL Project for bruk i Op
         <translation>&amp;Velg</translation>
     </message>
     <message>
-        <source>Very sending addresses</source>
+        <source>Sending addresses</source>
         <translation>Utsendingsadresser</translation>
     </message>
     <message>
-        <source>Much receiving addresses</source>
+        <source>Receiving addresses</source>
         <translation>Mottaksadresser</translation>
     </message>
     <message>
@@ -205,8 +205,8 @@ Dette produktet inneholder programvare utviklet av OpenSSL Project for bruk i Op
         <translation>Bekreft kryptering av lommebok</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PESETACOINS&lt;/b&gt;!</source>
-        <translation>Advarsel: Hvis du krypterer lommeboken og mister adgangsfrasen, så vil du &lt;b&gt;MISTE ALLE DINE PESETACOINS&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR KUBERBITCOINS&lt;/b&gt;!</source>
+        <translation>Advarsel: Hvis du krypterer lommeboken og mister adgangsfrasen, så vil du &lt;b&gt;MISTE ALLE DINE KUBERBITCOINS&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -328,7 +328,7 @@ Dette produktet inneholder programvare utviklet av OpenSSL Project for bruk i Op
         <translation>&amp;Utsendingsadresser...</translation>
     </message>
     <message>
-        <source>Much &amp;receiving addresses...</source>
+        <source>Receiving addresses...</source>
         <translation>&amp;Mottaksadresser...</translation>
     </message>
     <message>
@@ -1357,8 +1357,8 @@ Adresse: %4
         <translation>Kuberbitcoin Core har annå ikke avsluttet på en sikker måte...</translation>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Skriv inn en Kuberbitcoin-adresse (f.eks. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Skriv inn en Kuberbitcoin-adresse (f.eks. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
 </context>
 <context>
@@ -1902,8 +1902,8 @@ Adresse: %4
         <translation>Betal &amp;Til:</translation>
     </message>
     <message>
-        <source>The address to send the payment to (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Adressen betalingen skal sendes til  (f.eks. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to send the payment to (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Adressen betalingen skal sendes til  (f.eks. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to your address book</source>
@@ -1992,8 +1992,8 @@ Adresse: %4
         <translation>Du kan signere meldinger med dine adresser for å bevise at du eier dem. Ikke signer vage meldinger da phishing-angrep kan prøve å lure deg til å signere din identitet over til andre. Signer kun fullt detaljerte utsagn som du er enig i.</translation>
     </message>
     <message>
-        <source>The address to sign the message with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Adressen for signering av meldingen (f.eks. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to sign the message with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Adressen for signering av meldingen (f.eks. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2048,8 +2048,8 @@ Adresse: %4
         <translation>Angi adresse for signering, melding (vær sikker på at du kopierer linjeskift, mellomrom, tab, etc. helt nøyaktig) og signatur under for å verifisere meldingen. Vær forsiktig med at du ikke gir signaturen mer betydning enn det som faktisk står i meldingen, for å unngå å bli lurt av såkalte &quot;man-in-the-middle&quot; angrep.</translation>
     </message>
     <message>
-        <source>The address the message was signed with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Adressen meldingen var signert med (f.eks. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address the message was signed with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Adressen meldingen var signert med (f.eks. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Kuberbitcoin address</source>
@@ -2064,8 +2064,8 @@ Adresse: %4
         <translation>Tilbakestill alle felter for meldingsverifikasjon</translation>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Skriv inn en Kuberbitcoin-adresse (f.eks. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Skriv inn en Kuberbitcoin-adresse (f.eks. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Click &quot;Sign Message&quot; to generate signature</source>

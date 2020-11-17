@@ -119,12 +119,12 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+6"/>
-        <source>All Send addresses</source>
+        <source>Sending addresses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>All Received addresses</source>
+        <source>Receiving addresses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -255,8 +255,8 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+1"/>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PESETACOINS&lt;/b&gt;!</source>
-        <translation>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PESETACOINS&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR KUBERBITCOINS&lt;/b&gt;!</source>
+        <translation>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR KUBERBITCOINS&lt;/b&gt;!</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -357,7 +357,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+20"/>
         <source>&amp;Transactions</source>
-        <translation>&amp;History</translation>
+        <translation>&amp;Transactions</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -417,7 +417,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+2"/>
-        <source>Much &amp;receiving addresses...</source>
+        <source>Receiving addresses...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1739,8 +1739,8 @@ Address: %4
     </message>
     <message>
         <location filename="../guiutil.cpp" line="+89"/>
-        <source>Enter a Kuberbitcoin address (e.g. KGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation type="unfinished">Enter a Kuberbitcoin address (e.g. KGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation type="unfinished">Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
 </context>
 <context>
@@ -2437,8 +2437,8 @@ Address: %4
     </message>
     <message>
         <location line="+18"/>
-        <source>The address to send the payment to (e.g. KGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>The address to send the payment to (e.g. KGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to send the payment to (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>The address to send the payment to (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <location filename="../sendcoinsentry.cpp" line="+30"/>
@@ -2552,8 +2552,8 @@ Address: %4
     </message>
     <message>
         <location line="+18"/>
-        <source>The address to sign the message with (e.g. KGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>The address to sign the message with (e.g. KGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to sign the message with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>The address to sign the message with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2625,8 +2625,8 @@ Address: %4
     </message>
     <message>
         <location line="+21"/>
-        <source>The address the message was signed with (e.g. KGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>The address the message was signed with (e.g. KGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address the message was signed with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>The address the message was signed with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <location line="+37"/>
@@ -2645,8 +2645,8 @@ Address: %4
     </message>
     <message>
         <location filename="../signverifymessagedialog.cpp" line="+30"/>
-        <source>Enter a Kuberbitcoin address (e.g. KGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Enter a Kuberbitcoin address (e.g. KGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <location line="-1"/>
@@ -2724,8 +2724,8 @@ Address: %4
     <name>SplashScreen</name>
     <message>
         <location filename="../splashscreen.cpp" line="+32"/>
-        <source>Kuberbitcoin Main Core</source>
-        <translation type="unfinished">Kuberbitcoin Main Core</translation>
+        <source>Kuberbitcoin Core</source>
+        <translation type="unfinished">Kuberbitcoin Core</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3361,8 +3361,8 @@ Address: %4
     </message>
     <message>
         <location line="-46"/>
-        <source>Listen for connections on &lt;port&gt; (default: 16639 or testnet: 44556)</source>
-        <translation>Listen for connections on &lt;port&gt; (default: 16639 or testnet: 44556)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 13580 or testnet: 40555)</source>
+        <translation>Listen for connections on &lt;port&gt; (default: 13580 or testnet: 40555)</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3396,8 +3396,8 @@ Address: %4
     </message>
     <message>
         <location line="+50"/>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 16638 or testnet: 44555)</source>
-        <translation>Listen for JSON-RPC connections on &lt;port&gt; (default: 16638 or testnet: 44555)</translation>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 13581 or testnet: 40556)</source>
+        <translation>Listen for JSON-RPC connections on &lt;port&gt; (default: 13581 or testnet: 40556)</translation>
     </message>
     <message>
         <location line="+51"/>
@@ -3621,7 +3621,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Kuberbitcoin Alert&quot; admin
     </message>
     <message>
         <location line="+1"/>
-        <source>Connect to JSON-RPC on &lt;port&gt; (default: 16638 or testnet: 44555)</source>
+        <source>Connect to JSON-RPC on &lt;port&gt; (default: 13581 or testnet: 44555)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -180,7 +180,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Many Wallets?</string>
+    <string>Choose number of wallets to print</string>
    </property>
   </widget>
   <widget class="QComboBox" name="walletCount">

@@ -90,11 +90,11 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Very sending addresses</source>
+        <source>Sending addresses</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Much receiving addresses</source>
+        <source>Receiving addresses</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -200,7 +200,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Beasl-Vaschlisselung bschtätign</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PESETACOINS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR KUBERBITCOINS&lt;/b&gt;!</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -323,7 +323,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Much &amp;receiving addresses...</source>
+        <source>Receiving addresses...</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1336,8 +1336,8 @@ Wohin: %4
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Gib a Kuberbitcoin-Adress ei (sowos wia: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Gib a Kuberbitcoin-Adress ei (sowos wia: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
 </context>
 <context>
@@ -1881,7 +1881,7 @@ Wohin: %4
         <translation>wo&amp;hin:</translation>
     </message>
     <message>
-        <source>The address to send the payment to (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
+        <source>The address to send the payment to (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1971,8 +1971,8 @@ Wohin: %4
         <translation>Duachs Untaschreim vo ana Mödung mit deina Adress stöllst kloa, dass du den Schlissl dazua host. Pass owa auf, dassd ned glei ois untaschreibsd wos da iangdana hinhoit, weu sunst kennts leicht passian, dassd vasehentlich kwasi an Blanko-Scheck untaschreibst. Untaschreib nua konkrete Mödungen denenst aa wiakli zuastimmst.</translation>
     </message>
     <message>
-        <source>The address to sign the message with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>De Adress mit dera&apos;st untaschreibst (z.B. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to sign the message with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>De Adress mit dera&apos;st untaschreibst (z.B. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2027,8 +2027,8 @@ Wohin: %4
         <translation>Gib de Untaschrifts-Adress, de Mödung und de Untaschrift ei. De Mödung muass auf Punkt und Beistrich (und Leerzeichn, Tabulatorn, Zeulnumbrüch, usw) gaunz genau des gleiche sein, wos untaschriem wuan is. Pass auf, dassd ned mea in de Mödung eineliest, ois wos wiakli drinsteht, sunst kenntast leicht auf an Schmäh einefoin.</translation>
     </message>
     <message>
-        <source>The address the message was signed with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>De Adress, mit dera untaschriem wuan is (z.B. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address the message was signed with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>De Adress, mit dera untaschriem wuan is (z.B. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Kuberbitcoin address</source>
@@ -2043,8 +2043,8 @@ Wohin: %4
         <translation>Olle Föda zrucksetzn</translation>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Gib a Kuberbitcoin-Adress ei (sowos wia: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Gib a Kuberbitcoin-Adress ei (sowos wia: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Click &quot;Sign Message&quot; to generate signature</source>
@@ -2601,8 +2601,8 @@ Wohin: %4
         <translation>Zwischnspeichagreß fia de Datenbank in megabeits (sunsta: 25)</translation>
     </message>
     <message>
-        <source>Listen for connections on &lt;port&gt; (default: 16639 or testnet: 44556)</source>
-        <translation>Auf Vabindungen am &lt;port&gt; lauschn (sunsta: 16639 bzw. testnet: 44556)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 13580 or testnet: 40555)</source>
+        <translation>Auf Vabindungen am &lt;port&gt; lauschn (sunsta: 13580 bzw. testnet: 40555)</translation>
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
@@ -2629,7 +2629,7 @@ Wohin: %4
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 16638 or testnet: 44555)</source>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 13581 or testnet: 40556)</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2763,7 +2763,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Kuberbitcoin Alert&quot; admin
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Connect to JSON-RPC on &lt;port&gt; (default: 16638 or testnet: 44555)</source>
+        <source>Connect to JSON-RPC on &lt;port&gt; (default: 13581 or testnet: 40556)</source>
         <translation type="unfinished"/>
     </message>
     <message>

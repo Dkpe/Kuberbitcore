@@ -95,11 +95,11 @@ MIT/X11 소프트웨어 사용권에 따라 배포하며, 첨부되어 있는 CO
         <translation>선택(&amp;h)</translation>
     </message>
     <message>
-        <source>Very sending addresses</source>
+        <source>Sending addresses</source>
         <translation>매우 보내는 주소들</translation>
     </message>
     <message>
-        <source>Much receiving addresses</source>
+        <source>Receiving addresses</source>
         <translation>많이 받는 주소들</translation>
     </message>
     <message>
@@ -205,7 +205,7 @@ MIT/X11 소프트웨어 사용권에 따라 배포하며, 첨부되어 있는 CO
         <translation>지갑 암호화 확인</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PESETACOINS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR KUBERBITCOINS&lt;/b&gt;!</source>
         <translation>경고: 만약 지갑을 암호화 한 뒤 암호문을 잃어버리면, 모든 도지코인을 잃어버리게 됩니다!</translation>
     </message>
     <message>
@@ -328,7 +328,7 @@ MIT/X11 소프트웨어 사용권에 따라 배포하며, 첨부되어 있는 CO
         <translation>매우 보내는 주소들(&amp;s)...</translation>
     </message>
     <message>
-        <source>Much &amp;receiving addresses...</source>
+        <source>Receiving addresses...</source>
         <translation>많이 받는 주소들(&amp;r)...</translation>
     </message>
     <message>
@@ -1380,8 +1380,8 @@ Address: %4
         <translation>도지코인 코어를 아직 안전하게 끝낼 수 없습니다…</translation>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>도지코인 주소 입력 (예: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>도지코인 주소 입력 (예: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
 </context>
 <context>
@@ -1925,8 +1925,8 @@ Address: %4
         <translation>지불할 곳(&amp;T):</translation>
     </message>
     <message>
-        <source>The address to send the payment to (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>금액을 보낼 주소 (예: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to send the payment to (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>금액을 보낼 주소 (예: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to your address book</source>
@@ -2015,8 +2015,8 @@ Address: %4
         <translation>메시지를 서명하여 주소를 가지고 있다는 것을 증명할 수 있습니다. 피싱 공격같이 사용자를 속여 개인정보를 넘기게 만들 수 있는 불분명한, 어떠한 것에도 서명하지 않게 주의하시고, 동의하는 완전무결한 사항에만 서명하세요.</translation>
     </message>
     <message>
-        <source>The address to sign the message with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>메시지를 서명할 주소입니다 (예: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to sign the message with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>메시지를 서명할 주소입니다 (예: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2071,8 +2071,8 @@ Address: %4
         <translation>메시지를 검증하기 위해 아래에 서명하는 주소, 메시지(띄어쓰기, 들여쓰기, 행 나눔 등을 정확하게 복사했는지 확인하세요)와 서명을 입력하세요. 사용자를 속이는 공격을 피하기 위해 서명된 메시지 내용을 잘못 읽지 않게 주의하세요.</translation>
     </message>
     <message>
-        <source>The address the message was signed with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>메시지가 서명된 주소 (예: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address the message was signed with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>메시지가 서명된 주소 (예: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Kuberbitcoin address</source>
@@ -2087,8 +2087,8 @@ Address: %4
         <translation>모든 메시지 검증 항목 재설정</translation>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>도지코인 주소 입력 (예: LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>도지코인 주소 입력 (예: AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Click &quot;Sign Message&quot; to generate signature</source>
@@ -2653,8 +2653,8 @@ Address: %4
         <translation>데이터 디렉토리 지정</translation>
     </message>
     <message>
-        <source>Listen for connections on &lt;port&gt; (default: 16639 or testnet: 44556)</source>
-        <translation>&lt;port&gt;의 연결에서 대기 (기본값: 16639  or testnet: 44556)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 13580 or testnet: 40555)</source>
+        <translation>&lt;port&gt;의 연결에서 대기 (기본값: 13580  or testnet: 40555)</translation>
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
@@ -2681,8 +2681,8 @@ Address: %4
         <translation>IPv4: %s에서 수신 대기를 위해 RPC 포트%u 설정 중 오류 발생</translation>
     </message>
     <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 16638 or testnet: 44555)</source>
-        <translation>&lt;포트&gt;의 JSON-RPC 연결에서 대기 중 (기본값: 16638 or testnet: 44555)</translation>
+        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 13581 or testnet: 40556)</source>
+        <translation>&lt;포트&gt;의 JSON-RPC 연결에서 대기 중 (기본값: 13581 or testnet: 40556)</translation>
     </message>
     <message>
         <source>Accept command line and JSON-RPC commands</source>
@@ -2865,8 +2865,8 @@ rpcpassword=%s
         <translation>SOCKS 프록시를 통해 연결</translation>
     </message>
     <message>
-        <source>Connect to JSON-RPC on &lt;port&gt; (default: 16638 or testnet: 44555)</source>
-        <translation>JSON-RPC에 연결 &lt;포트&gt; (기본값: 16638 or testnet: 44555)</translation>
+        <source>Connect to JSON-RPC on &lt;port&gt; (default: 13581 or testnet: 44555)</source>
+        <translation>JSON-RPC에 연결 &lt;포트&gt; (기본값: 13581 or testnet: 44555)</translation>
     </message>
     <message>
         <source>Connection options:</source>

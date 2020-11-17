@@ -90,11 +90,11 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>&amp;Izvēlēties</translation>
     </message>
     <message>
-        <source>Very sending addresses</source>
+        <source>Sending addresses</source>
         <translation>Sūtīšanas adreses</translation>
     </message>
     <message>
-        <source>Much receiving addresses</source>
+        <source>Receiving addresses</source>
         <translation>Saņemšanas adreses</translation>
     </message>
     <message>
@@ -200,7 +200,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Apstiprināt maciņa šifrēšanu</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PESETACOINS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR KUBERBITCOINS&lt;/b&gt;!</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -221,7 +221,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <source>Kuberbitcoin will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your kuberbitcoins from being stolen by malware infecting your computer.</source>
-        <translation>Kuberbitcoin aizvērsies, lai pabeigtu šifrēšanu. Atcerieties, ka maciņa šifrēšana nevar pilnībā novērst kuberbitcoinkoinu zādzību, ko veic datorā ieviesušās kaitīgas programmas.</translation>
+        <translation>Kuberbitcoin aizvērsies, lai pabeigtu šifrēšanu. Atcerieties, ka maciņa šifrēšana nevar pilnībā novērst dogekoinu zādzību, ko veic datorā ieviesušās kaitīgas programmas.</translation>
     </message>
     <message>
         <source>Wallet encryption failed</source>
@@ -323,7 +323,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>&amp;Adrešu sūtīšana...</translation>
     </message>
     <message>
-        <source>Much &amp;receiving addresses...</source>
+        <source>Receiving addresses...</source>
         <translation>Adrešu &amp;saņemšana...</translation>
     </message>
     <message>
@@ -340,7 +340,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <source>Send coins to a Kuberbitcoin address</source>
-        <translation>Nosūtīt kuberbitcoinkoinus uz Kuberbitcoin adresi</translation>
+        <translation>Nosūtīt dogekoinus uz Kuberbitcoin adresi</translation>
     </message>
     <message>
         <source>Modify configuration options for Kuberbitcoin Core</source>
@@ -1152,7 +1152,7 @@ Adrese: %4
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>Izvēlēties dalījuma vienību pēc noklusēšanas, ko izmantot interfeisā un nosūtot kuberbitcoinkoinus.</translation>
+        <translation>Izvēlēties dalījuma vienību pēc noklusēšanas, ko izmantot interfeisā un nosūtot dogekoinus.</translation>
     </message>
     <message>
         <source>Whether to show Kuberbitcoin addresses in the transaction list or not.</source>
@@ -1352,8 +1352,8 @@ Adrese: %4
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Ierakstiet Kuberbitcoin adresi (piem. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Ierakstiet Kuberbitcoin adresi (piem. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
 </context>
 <context>
@@ -1695,7 +1695,7 @@ Adrese: %4
     <name>SendCoinsDialog</name>
     <message>
         <source>Send Coins</source>
-        <translation>Sūtīt kuberbitcoinkoinus</translation>
+        <translation>Sūtīt dogekoinus</translation>
     </message>
     <message>
         <source>Coin Control Features</source>
@@ -1783,7 +1783,7 @@ Adrese: %4
     </message>
     <message>
         <source>Confirm send coins</source>
-        <translation>Apstiprināt kuberbitcoinkoinu sūtīšanu</translation>
+        <translation>Apstiprināt dogekoinu sūtīšanu</translation>
     </message>
     <message>
         <source>%1 to %2</source>
@@ -1897,8 +1897,8 @@ Adrese: %4
         <translation>&amp;Saņēmējs:</translation>
     </message>
     <message>
-        <source>The address to send the payment to (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Adrese lai sūtītu maksājumu uz (piem. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>The address to send the payment to (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Adrese lai sūtītu maksājumu uz (piem. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to your address book</source>
@@ -1987,7 +1987,7 @@ Adrese: %4
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>The address to sign the message with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
+        <source>The address to sign the message with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2043,7 +2043,7 @@ Adrese: %4
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>The address the message was signed with (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
+        <source>The address the message was signed with (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2059,8 +2059,8 @@ Adrese: %4
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</source>
-        <translation>Ierakstiet Kuberbitcoin adresi (piem. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)</translation>
+        <source>Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</source>
+        <translation>Ierakstiet Kuberbitcoin adresi (piem. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)</translation>
     </message>
     <message>
         <source>Click &quot;Sign Message&quot; to generate signature</source>
@@ -2544,7 +2544,7 @@ Adrese: %4
     <name>WalletModel</name>
     <message>
         <source>Send Coins</source>
-        <translation>Sūtīt Kuberbitcoinkoinus</translation>
+        <translation>Sūtīt Dogekoinus</translation>
     </message>
 </context>
 <context>
@@ -3320,7 +3320,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Kuberbitcoin Alert&quot; admin
     </message>
     <message>
         <source>Insufficient funds</source>
-        <translation>Nepietiek kuberbitcoinkoinu</translation>
+        <translation>Nepietiek dogekoinu</translation>
     </message>
     <message>
         <source>Loading block index...</source>
