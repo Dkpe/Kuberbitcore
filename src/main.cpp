@@ -1621,7 +1621,7 @@ unsigned int StabilX(const CBlockIndex* pindexLast, const CBlockHeader *pblock, 
     return bnNew.GetCompact();
 }
 
-static const int64_t SwitchToStabilX = 19345;
+static const int64_t SwitchToStabilX = 19342;
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlock *pblock, int algo)
 {
