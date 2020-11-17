@@ -11,8 +11,8 @@ m4trace:aclocal.m4:1198: -1- m4_include([src/m4/ax_check_preproc_flag.m4])
 m4trace:aclocal.m4:1199: -1- m4_include([src/m4/ax_pthread.m4])
 m4trace:aclocal.m4:1200: -1- m4_include([src/m4/bitcoin_qt.m4])
 m4trace:aclocal.m4:1201: -1- m4_include([src/m4/bitcoin_subdir_to_include.m4])
-m4trace:aclocal.m4:1202: -1- m4_include([src/m4/dogecoin_find_bdb51.m4])
-m4trace:configure.ac:9: -1- AC_INIT([Kuberbitcoin Core], [_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION], [info@kuberbitcoin.info], [kuberbitcoin])
+m4trace:aclocal.m4:1202: -1- m4_include([src/m4/kuberbitcoin_find_bdb48.m4])
+m4trace:configure.ac:9: -1- AC_INIT([Kuberbitcoin Core], [_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION], [info@kuberbitcoin.com], [kuberbitcoin])
 m4trace:configure.ac:9: -1- m4_pattern_forbid([^_?A[CHUM]_])
 m4trace:configure.ac:9: -1- m4_pattern_forbid([_AC_])
 m4trace:configure.ac:9: -1- m4_pattern_forbid([^LIBOBJS$], [do not use LIBOBJS directly, use AC_LIBOBJ (see section `AC_LIBOBJ vs LIBOBJS'])
@@ -823,11 +823,11 @@ m4trace:configure.ac:390: -1- AC_SUBST_TRACE([LIBMEMENV])
 m4trace:configure.ac:390: -1- m4_pattern_allow([^LIBMEMENV$])
 m4trace:configure.ac:394: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
 You should run autoupdate.], [../../lib/autoconf/general.m4:2625: AC_TRY_COMPILE is expanded from...
-src/m4/dogecoin_find_bdb51.m4:1: BITCOIN_FIND_BDB51 is expanded from...
+src/m4/kuberbitcoin_find_bdb48.m4:1: BITCOIN_FIND_BDB48 is expanded from...
 configure.ac:394: the top level])
 m4trace:configure.ac:394: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
 You should run autoupdate.], [../../lib/autoconf/general.m4:2625: AC_TRY_COMPILE is expanded from...
-src/m4/dogecoin_find_bdb51.m4:1: BITCOIN_FIND_BDB51 is expanded from...
+src/m4/kuberbitcoin_find_bdb48.m4:1: BITCOIN_FIND_BDB48 is expanded from...
 configure.ac:394: the top level])
 m4trace:configure.ac:394: -1- AC_SUBST([BDB_CPPFLAGS])
 m4trace:configure.ac:394: -1- AC_SUBST_TRACE([BDB_CPPFLAGS])
@@ -1329,7 +1329,7 @@ m4trace:configure.ac:684: -1- m4_pattern_allow([^CLIENT_VERSION_MAJOR$])
 m4trace:configure.ac:685: -1- AC_SUBST([CLIENT_VERSION_MINOR], [9])
 m4trace:configure.ac:685: -1- AC_SUBST_TRACE([CLIENT_VERSION_MINOR])
 m4trace:configure.ac:685: -1- m4_pattern_allow([^CLIENT_VERSION_MINOR$])
-m4trace:configure.ac:686: -1- AC_SUBST([CLIENT_VERSION_REVISION], [4])
+m4trace:configure.ac:686: -1- AC_SUBST([CLIENT_VERSION_REVISION], [5])
 m4trace:configure.ac:686: -1- AC_SUBST_TRACE([CLIENT_VERSION_REVISION])
 m4trace:configure.ac:686: -1- m4_pattern_allow([^CLIENT_VERSION_REVISION$])
 m4trace:configure.ac:687: -1- AC_SUBST([CLIENT_VERSION_BUILD], [0])

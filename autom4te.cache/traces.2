@@ -2647,9 +2647,6 @@ m4trace:configure.ac:138: -1- m4_pattern_forbid([^_?PKG_[A-Z_]+$])
 m4trace:configure.ac:138: -1- m4_pattern_allow([^PKG_CONFIG(_(PATH|LIBDIR|SYSROOT_DIR|ALLOW_SYSTEM_(CFLAGS|LIBS)))?$])
 m4trace:configure.ac:138: -1- m4_pattern_allow([^PKG_CONFIG_(DISABLE_UNINSTALLED|TOP_BUILD_DIR|DEBUG_SPEW)$])
 m4trace:configure.ac:138: -1- m4_pattern_allow([^PKG_CONFIG$])
-m4trace:configure.ac:138: -1- m4_pattern_allow([^PKG_CONFIG_PATH$])
-m4trace:configure.ac:138: -1- m4_pattern_allow([^PKG_CONFIG_LIBDIR$])
-m4trace:configure.ac:138: -1- m4_pattern_allow([^PKG_CONFIG$])
 m4trace:configure.ac:175: -1- m4_pattern_allow([^HAVE_LIBMINGWTHRD$])
 m4trace:configure.ac:176: -1- m4_pattern_allow([^HAVE_LIBKERNEL32$])
 m4trace:configure.ac:177: -1- m4_pattern_allow([^HAVE_LIBUSER32$])
@@ -2697,8 +2694,6 @@ m4trace:configure.ac:299: -1- m4_pattern_allow([^PTHREAD_LIBS$])
 m4trace:configure.ac:299: -1- m4_pattern_allow([^PTHREAD_CFLAGS$])
 m4trace:configure.ac:299: -1- m4_pattern_allow([^PTHREAD_CC$])
 m4trace:configure.ac:299: -1- m4_pattern_allow([^HAVE_PTHREAD$])
-m4trace:configure.ac:305: -1- m4_pattern_allow([^_FILE_OFFSET_BITS$])
-m4trace:configure.ac:305: -1- m4_pattern_allow([^_LARGE_FILES$])
 m4trace:configure.ac:307: -1- m4_pattern_allow([^HAVE_DECL_STRERROR_R$])
 m4trace:configure.ac:307: -1- m4_pattern_allow([^HAVE_STRERROR_R$])
 m4trace:configure.ac:307: -1- m4_pattern_allow([^STRERROR_R_CHAR_P$])
@@ -2798,16 +2793,12 @@ configure.ac:481: the top level])
 m4trace:configure.ac:481: -1- m4_pattern_allow([^HAVE_WORKING_BOOST_SLEEP$])
 m4trace:configure.ac:514: -1- BITCOIN_QT_INIT
 m4trace:configure.ac:523: -1- PKG_CHECK_MODULES([SSL], [libssl], [INCLUDES="$INCLUDES $SSL_CFLAGS"; LIBS="$LIBS $SSL_LIBS"], [AC_MSG_ERROR(openssl  not found.)])
-m4trace:configure.ac:523: -1- m4_pattern_allow([^SSL_CFLAGS$])
-m4trace:configure.ac:523: -1- m4_pattern_allow([^SSL_LIBS$])
 m4trace:configure.ac:523: -1- PKG_CHECK_EXISTS([libssl], [pkg_cv_[]SSL_CFLAGS=`$PKG_CONFIG --[]cflags "libssl" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:523: -1- PKG_CHECK_EXISTS([libssl], [pkg_cv_[]SSL_LIBS=`$PKG_CONFIG --[]libs "libssl" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:523: -1- _PKG_SHORT_ERRORS_SUPPORTED
 m4trace:configure.ac:523: -1- PKG_CHECK_MODULES([CRYPTO], [libcrypto], [INCLUDES="$INCLUDES $CRYPTO_CFLAGS"; LIBS="$LIBS $CRYPTO_LIBS"], [AC_MSG_ERROR(libcrypto  not found.)])
-m4trace:configure.ac:523: -1- m4_pattern_allow([^CRYPTO_CFLAGS$])
-m4trace:configure.ac:523: -1- m4_pattern_allow([^CRYPTO_LIBS$])
 m4trace:configure.ac:523: -1- PKG_CHECK_EXISTS([libcrypto], [pkg_cv_[]CRYPTO_CFLAGS=`$PKG_CONFIG --[]cflags "libcrypto" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:523: -1- PKG_CHECK_EXISTS([libcrypto], [pkg_cv_[]CRYPTO_LIBS=`$PKG_CONFIG --[]libs "libcrypto" 2>/dev/null`
@@ -2815,8 +2806,6 @@ m4trace:configure.ac:523: -1- PKG_CHECK_EXISTS([libcrypto], [pkg_cv_[]CRYPTO_LIB
 m4trace:configure.ac:523: -1- _PKG_SHORT_ERRORS_SUPPORTED
 m4trace:configure.ac:523: -1- BITCOIN_QT_CHECK([PKG_CHECK_MODULES([PROTOBUF], [protobuf], [have_protobuf=yes], [BITCOIN_QT_FAIL(libprotobuf not found)])])
 m4trace:configure.ac:523: -1- PKG_CHECK_MODULES([PROTOBUF], [protobuf], [have_protobuf=yes], [BITCOIN_QT_FAIL(libprotobuf not found)])
-m4trace:configure.ac:523: -1- m4_pattern_allow([^PROTOBUF_CFLAGS$])
-m4trace:configure.ac:523: -1- m4_pattern_allow([^PROTOBUF_LIBS$])
 m4trace:configure.ac:523: -1- PKG_CHECK_EXISTS([protobuf], [pkg_cv_[]PROTOBUF_CFLAGS=`$PKG_CONFIG --[]cflags "protobuf" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:523: -1- PKG_CHECK_EXISTS([protobuf], [pkg_cv_[]PROTOBUF_LIBS=`$PKG_CONFIG --[]libs "protobuf" 2>/dev/null`
@@ -2826,8 +2815,6 @@ m4trace:configure.ac:523: -1- BITCOIN_QT_FAIL([libprotobuf not found])
 m4trace:configure.ac:523: -1- BITCOIN_QT_FAIL([libprotobuf not found])
 m4trace:configure.ac:523: -1- BITCOIN_QT_CHECK([PKG_CHECK_MODULES([QR], [libqrencode], [have_qrencode=yes], [have_qrencode=no])])
 m4trace:configure.ac:523: -1- PKG_CHECK_MODULES([QR], [libqrencode], [have_qrencode=yes], [have_qrencode=no])
-m4trace:configure.ac:523: -1- m4_pattern_allow([^QR_CFLAGS$])
-m4trace:configure.ac:523: -1- m4_pattern_allow([^QR_LIBS$])
 m4trace:configure.ac:523: -1- PKG_CHECK_EXISTS([libqrencode], [pkg_cv_[]QR_CFLAGS=`$PKG_CONFIG --[]cflags "libqrencode" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:523: -1- PKG_CHECK_EXISTS([libqrencode], [pkg_cv_[]QR_LIBS=`$PKG_CONFIG --[]libs "libqrencode" 2>/dev/null`
@@ -2941,32 +2928,24 @@ m4trace:configure.ac:559: -1- BITCOIN_QT_CHECK([
       fi
     ])
 m4trace:configure.ac:559: -1- PKG_CHECK_MODULES([QT], [$qt5_modules], [QT_INCLUDES="$QT_CFLAGS"; have_qt=yes], [have_qt=no])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_CFLAGS$])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_LIBS$])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([$qt5_modules], [pkg_cv_[]QT_CFLAGS=`$PKG_CONFIG --[]cflags "$qt5_modules" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([$qt5_modules], [pkg_cv_[]QT_LIBS=`$PKG_CONFIG --[]libs "$qt5_modules" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:559: -1- _PKG_SHORT_ERRORS_SUPPORTED
 m4trace:configure.ac:559: -1- PKG_CHECK_MODULES([QT], [$qt4_modules], [QT_INCLUDES="$QT_CFLAGS"; have_qt=yes], [have_qt=no])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_CFLAGS$])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_LIBS$])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([$qt4_modules], [pkg_cv_[]QT_CFLAGS=`$PKG_CONFIG --[]cflags "$qt4_modules" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([$qt4_modules], [pkg_cv_[]QT_LIBS=`$PKG_CONFIG --[]libs "$qt4_modules" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:559: -1- _PKG_SHORT_ERRORS_SUPPORTED
 m4trace:configure.ac:559: -1- PKG_CHECK_MODULES([QT], [$qt4_modules], [QT_INCLUDES="$QT_CFLAGS"; have_qt=yes; QT_LIB_PREFIX=Qt; bitcoin_qt_got_major_vers=4], [have_qt=no])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_CFLAGS$])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_LIBS$])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([$qt4_modules], [pkg_cv_[]QT_CFLAGS=`$PKG_CONFIG --[]cflags "$qt4_modules" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([$qt4_modules], [pkg_cv_[]QT_LIBS=`$PKG_CONFIG --[]libs "$qt4_modules" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:559: -1- _PKG_SHORT_ERRORS_SUPPORTED
 m4trace:configure.ac:559: -1- PKG_CHECK_MODULES([QT], [$qt5_modules], [QT_INCLUDES="$QT_CFLAGS"; have_qt=yes; QT_LIB_PREFIX=Qt5; bitcoin_qt_got_major_vers=5], [have_qt=no])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_CFLAGS$])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_LIBS$])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([$qt5_modules], [pkg_cv_[]QT_CFLAGS=`$PKG_CONFIG --[]cflags "$qt5_modules" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([$qt5_modules], [pkg_cv_[]QT_LIBS=`$PKG_CONFIG --[]libs "$qt5_modules" 2>/dev/null`
@@ -2980,16 +2959,12 @@ m4trace:configure.ac:559: -1- BITCOIN_QT_CHECK([
       fi
     ])
 m4trace:configure.ac:559: -1- PKG_CHECK_MODULES([QT_TEST], [${QT_LIB_PREFIX}Test], [QT_TEST_INCLUDES="$QT_TEST_CFLAGS"; have_qt_test=yes], [have_qt_test=no])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_TEST_CFLAGS$])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_TEST_LIBS$])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([${QT_LIB_PREFIX}Test], [pkg_cv_[]QT_TEST_CFLAGS=`$PKG_CONFIG --[]cflags "${QT_LIB_PREFIX}Test" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([${QT_LIB_PREFIX}Test], [pkg_cv_[]QT_TEST_LIBS=`$PKG_CONFIG --[]libs "${QT_LIB_PREFIX}Test" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:559: -1- _PKG_SHORT_ERRORS_SUPPORTED
 m4trace:configure.ac:559: -1- PKG_CHECK_MODULES([QT_DBUS], [${QT_LIB_PREFIX}DBus], [QT_DBUS_INCLUDES="$QT_DBUS_CFLAGS"; have_qt_dbus=yes], [have_qt_dbus=no])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_DBUS_CFLAGS$])
-m4trace:configure.ac:559: -1- m4_pattern_allow([^QT_DBUS_LIBS$])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([${QT_LIB_PREFIX}DBus], [pkg_cv_[]QT_DBUS_CFLAGS=`$PKG_CONFIG --[]cflags "${QT_LIB_PREFIX}DBus" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes ], [pkg_failed=yes])
 m4trace:configure.ac:559: -1- PKG_CHECK_EXISTS([${QT_LIB_PREFIX}DBus], [pkg_cv_[]QT_DBUS_LIBS=`$PKG_CONFIG --[]libs "${QT_LIB_PREFIX}DBus" 2>/dev/null`
