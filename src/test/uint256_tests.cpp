@@ -312,7 +312,7 @@ BOOST_AUTO_TEST_CASE( unaryOperators ) // !    ~    -
 
 // Check if doing _A_ _OP_ _B_ results in the same as applying _OP_ onto each
 // element of Aarray and Barray, and then converting the result into a uint256.
-#define CHECKBITWISEOPERATOR(_A_,_B_,_OP_)                              \
+#define CHECARGTWISEOPERATOR(_A_,_B_,_OP_)                              \
     for (unsigned int i = 0; i < 32; ++i) { TmpArray[i] = _A_##Array[i] _OP_ _B_##Array[i]; } \
     BOOST_CHECK(uint256(std::vector<unsigned char>(TmpArray,TmpArray+32)) == (_A_##L _OP_ _B_##L)); \
     for (unsigned int i = 0; i < 20; ++i) { TmpArray[i] = _A_##Array[i] _OP_ _B_##Array[i]; } \
@@ -326,21 +326,21 @@ BOOST_AUTO_TEST_CASE( bitwiseOperators )
 {
     unsigned char TmpArray[32];
     
-    CHECKBITWISEOPERATOR(R1,R2,|)
-    CHECKBITWISEOPERATOR(R1,R2,^)
-    CHECKBITWISEOPERATOR(R1,R2,&)
-    CHECKBITWISEOPERATOR(R1,Zero,|)
-    CHECKBITWISEOPERATOR(R1,Zero,^)
-    CHECKBITWISEOPERATOR(R1,Zero,&)
-    CHECKBITWISEOPERATOR(R1,Max,|)
-    CHECKBITWISEOPERATOR(R1,Max,^)
-    CHECKBITWISEOPERATOR(R1,Max,&)
-    CHECKBITWISEOPERATOR(Zero,R1,|)
-    CHECKBITWISEOPERATOR(Zero,R1,^)
-    CHECKBITWISEOPERATOR(Zero,R1,&)
-    CHECKBITWISEOPERATOR(Max,R1,|)
-    CHECKBITWISEOPERATOR(Max,R1,^)
-    CHECKBITWISEOPERATOR(Max,R1,&)
+    CHECARGTWISEOPERATOR(R1,R2,|)
+    CHECARGTWISEOPERATOR(R1,R2,^)
+    CHECARGTWISEOPERATOR(R1,R2,&)
+    CHECARGTWISEOPERATOR(R1,Zero,|)
+    CHECARGTWISEOPERATOR(R1,Zero,^)
+    CHECARGTWISEOPERATOR(R1,Zero,&)
+    CHECARGTWISEOPERATOR(R1,Max,|)
+    CHECARGTWISEOPERATOR(R1,Max,^)
+    CHECARGTWISEOPERATOR(R1,Max,&)
+    CHECARGTWISEOPERATOR(Zero,R1,|)
+    CHECARGTWISEOPERATOR(Zero,R1,^)
+    CHECARGTWISEOPERATOR(Zero,R1,&)
+    CHECARGTWISEOPERATOR(Max,R1,|)
+    CHECARGTWISEOPERATOR(Max,R1,^)
+    CHECARGTWISEOPERATOR(Max,R1,&)
 
     uint256 TmpL;
     uint160 TmpS;
@@ -696,12 +696,12 @@ BOOST_AUTO_TEST_CASE( getmaxcoverage ) // some more tests just to get 100% cover
     BOOST_CHECK(~R1L != R1L); BOOST_CHECK(R1L != ~R1L); 
     BOOST_CHECK(~R1S != R1S); BOOST_CHECK(R1S != ~R1S); 
     unsigned char TmpArray[32];
-    CHECKBITWISEOPERATOR(~R1,R2,|)
-    CHECKBITWISEOPERATOR(~R1,R2,^)
-    CHECKBITWISEOPERATOR(~R1,R2,&)
-    CHECKBITWISEOPERATOR(R1,~R2,|)
-    CHECKBITWISEOPERATOR(R1,~R2,^)
-    CHECKBITWISEOPERATOR(R1,~R2,&)
+    CHECARGTWISEOPERATOR(~R1,R2,|)
+    CHECARGTWISEOPERATOR(~R1,R2,^)
+    CHECARGTWISEOPERATOR(~R1,R2,&)
+    CHECARGTWISEOPERATOR(R1,~R2,|)
+    CHECARGTWISEOPERATOR(R1,~R2,^)
+    CHECARGTWISEOPERATOR(R1,~R2,&)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
