@@ -125,7 +125,7 @@ function WaitMemPools {
 
 echo "Generating initial blockchain..."
 
-# 1 block, 500000 XDG each == 500000 KBI
+# 1 block, 500000 XDG each == 500000 ARG
 $CLI $B1ARGS setgenerate true 1
 WaitBlocks
 $CLI $B2ARGS setgenerate true 1
@@ -147,7 +147,7 @@ echo "Creating transactions..."
 function S {
   TXID=$( $CLI -datadir=${D}/node${1} sendtoaddress ${2} "${3}" 0 )
   if [[ $TXID == "" ]] ; then
-      echoerr "node${1}: error sending ${3} kuberbitcoin"
+      echoerr "node${1}: error sending ${3} doge"
       echo -n "node${1} balance: "
       $CLI -datadir=${D}/node${1} getbalance "*" 0
       exit 1

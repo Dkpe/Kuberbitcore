@@ -133,7 +133,7 @@ WaitPeers "$B1ARGS" 1
 $CLI $B2ARGS setgenerate true 1
 WaitBlocks
 
-# B1 should still be able to spend 1000000 (-1 KBI fee for the successful transaction), because D is conflicted
+# B1 should still be able to spend 1000000 (-1 ARG fee for the successful transaction), because D is conflicted
 # so does not count as a spend of B
 CheckBalance "$B1ARGS" "1000000-1"
 
