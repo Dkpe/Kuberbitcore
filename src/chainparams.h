@@ -8,6 +8,7 @@
 
 #include "bignum.h"
 #include "uint256.h"
+#include "core.h"
 
 #include <vector>
 
@@ -45,9 +46,10 @@ public:
     enum Base58Type {
         PUBKEY_ADDRESS,
         SCRIPT_ADDRESS,
-        SECRET_KEY,
-        EXT_PUBLIC_KEY,
-        EXT_SECRET_KEY,
+        SECRET_KEY,     // BIP 16
+        EXT_PUBLIC_KEY, // BIP 32
+        EXT_SECRET_KEY, // BIP 32
+        EXT_COIN_TYPE,  // BIP 44
 
         MAX_BASE58_TYPES
     };
@@ -56,7 +58,7 @@ public:
     const MessageStartChars& MessageStart() const { return pchMessageStart; }
     const vector<unsigned char>& AlertKey() const { return vAlertPubKey; }
     int GetDefaultPort() const { return nDefaultPort; }
-    const CBigNum& ProofOfWorkLimit() const { return bnProofOfWorkLimit; }
+    const CBigNum& ProofOfWorkLimit(int algo) const { return bnProofOfWorkLimit[algo]; }
     int SubsidyHalvingInterval() const { return nSubsidyHalvingInterval; }
     virtual const CBlock& GenesisBlock() const = 0;
     virtual bool RequireRPCPassword() const { return true; }
@@ -76,7 +78,7 @@ protected:
     vector<unsigned char> vAlertPubKey;
     int nDefaultPort;
     int nRPCPort;
-    CBigNum bnProofOfWorkLimit;
+    CBigNum bnProofOfWorkLimit[NUM_ALGOS];
     int nSubsidyHalvingInterval;
     string strDataDir;
     vector<CDNSSeedData> vSeeds;

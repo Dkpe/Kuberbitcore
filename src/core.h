@@ -2,7 +2,6 @@
 // Copyright (c) 2009-2013 The Bitcoin developers
 // Copyright (c) 2011-2013 The Litecoin developers
 // Copyright (c) 2013-2014 The Kuberbitcoin developers
-// Copyright (c)      2014 The Inutoshi developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -15,6 +14,45 @@
 #include "uint256.h"
 
 #include <stdint.h>
+
+enum {
+    ALGO_SHA256D = 0,
+    ALGO_SCRYPT  = 1,
+    NUM_ALGOS };
+
+enum
+{
+    // Primary version
+    BLOCK_VERSION_DEFAULT        = 1,
+
+    // algo
+    BLOCK_VERSION_ALGO           = (7 << 9),
+    BLOCK_VERSION_SHA256D        = (1 << 9),
+};
+
+inline int GetAlgo(int nVersion)
+{
+    switch (nVersion & BLOCK_VERSION_ALGO)
+    {
+        case 1:
+            return ALGO_SCRYPT;
+        case BLOCK_VERSION_SHA256D:
+            return ALGO_SHA256D;
+    }
+    return ALGO_SCRYPT;
+}
+
+inline std::string GetAlgoName(int Algo)
+{
+    switch (Algo)
+    {
+        case ALGO_SHA256D:
+            return std::string("sha256d");
+        case ALGO_SCRYPT:
+            return std::string("scrypt");
+    }
+    return std::string("unknown");       
+}
 
 class CTransaction;
 class CAuxPow;
@@ -29,10 +67,14 @@ template <typename Stream>
 int ReadWriteAuxPow(Stream& s, const boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionGetSerializeSize ser_action);
 
 // primary version
-static const int BLOCK_VERSION_DEFAULT = (1 << 0);
-static const int BLOCK_VERSION_AUXPOW = (1 << 8);
-static const int BLOCK_VERSION_CHAIN_START = (1 << 16);
-static const int BLOCK_VERSION_CHAIN_END = (1 << 30);
+// static const int BLOCK_VERSION_DEFAULT = 		(1 << 0);
+static const int BLOCK_VERSION_AUXPOW = 		(1 << 8);
+static const int BLOCK_VERSION_CHAIN_START = 		(1 << 16);
+static const int BLOCK_VERSION_CHAIN_END = 		(1 << 30);
+static const int BLOCK_VERSION_BASE_MASK = 0x000000ff;
+
+// Kuberbitcoin switch to Dark Gravity Wave UPDATED and Auxillary PoW - Removed this and just made DGW3 in place with updated code under main 
+
 
 // KuberbitCoin aux chain ID = 0x0041 (65)
 static const int AUXPOW_CHAIN_ID = 0x0041;
@@ -40,7 +82,7 @@ static const int AUXPOW_START_MAINNET = 1;
 static const int AUXPOW_START_TESTNET = 1;
 
 /** No amount larger than this (in satoshi) is valid */
-static const int64_t MAX_MONEY = 50000000000 * COIN; // Kuberbitcoin: maximum of 50000000000 coins
+static const int64_t MAX_MONEY = 50000000000  * COIN; // Kuberbitcoin: maximum of 64M coins.
 inline bool MoneyRange(int64_t nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 
 /** An outpoint - a combination of a transaction hash and an index n into its vout */
@@ -175,9 +217,15 @@ public:
 
     bool IsDust(int64_t nMinRelayTxFee) const
     {
-        // Kuberbitcoin: IsDust() detection disabled, allows any valid dust to be relayed.
-        // The fees imposed on each dust txo is considered sufficient spam deterrant.
-		return false;
+        // "Dust" is defined in terms of CTransaction::nMinRelayTxFee,
+        // which has units satoshis-per-kilobyte.
+        // If you'd pay more than 1/3 in fees
+        // to spend something, then we consider it dust.
+        // A typical txout is 34 bytes big, and will
+        // need a CTxIn of at least 148 bytes to spend,
+        // so dust is a txout less than 546 satoshis 
+        // with default nMinRelayTxFee.
+		return ((nValue*1000)/(3*((int)GetSerializeSize(SER_DISK,0)+148)) < nMinRelayTxFee);
     }
 
     friend bool operator==(const CTxOut& a, const CTxOut& b)
@@ -364,7 +412,7 @@ class CBlockHeader
 {
 public:
     // header
-    static const int CURRENT_VERSION=2;
+    static const int CURRENT_VERSION=3;
     int nVersion;
     uint256 hashPrevBlock;
     uint256 hashMerkleRoot;
@@ -377,6 +425,8 @@ public:
     {
         SetNull();
     }
+
+	int GetAlgo() const { return ::GetAlgo(nVersion); }
 
     IMPLEMENT_SERIALIZE
     (
@@ -394,6 +444,12 @@ public:
     int GetChainID() const
     {
         return nVersion / BLOCK_VERSION_CHAIN_START;
+    }
+
+    // base block version without auxpow chain
+    int GetBaseVersion() const
+    {
+        return nVersion & BLOCK_VERSION_BASE_MASK;
     }
 
     void SetAuxPow(CAuxPow* pow);
@@ -414,13 +470,24 @@ public:
     }
 
     uint256 GetHash() const;
-    
-    uint256 GetPoWHash() const
+       
+    uint256 GetPoWHash(int algo) const
     {
-        uint256 thash;
-        scrypt_1024_1_1_256(BEGIN(nVersion), BEGIN(thash));
-        return thash;
+        switch (algo)
+        {
+            case ALGO_SHA256D:
+                return GetHash();
+            case ALGO_SCRYPT:
+            {
+                uint256 thash;
+                // Caution: scrypt_1024_1_1_256 assumes fixed length of 80 bytes
+                scrypt_1024_1_1_256(BEGIN(nVersion), BEGIN(thash));
+                return thash;
+            }
+        }
+        return GetHash();
     }
+
 
     int64_t GetBlockTime() const
     {

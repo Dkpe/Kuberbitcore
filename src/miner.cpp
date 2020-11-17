@@ -2,7 +2,6 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2011-2013 The Litecoin developers
 // Copyright (c) 2013-2014 The Kuberbitcoin developers
-// Copyright (c)      2014 The Inutoshi developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -109,13 +108,29 @@ public:
     }
 };
 
-CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
+CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, int algo)
 {
     // Create new block
     auto_ptr<CBlockTemplate> pblocktemplate(new CBlockTemplate());
     if(!pblocktemplate.get())
         return NULL;
     CBlock *pblock = &pblocktemplate->block; // pointer for convenience
+    
+    // Set block version
+    // pblock->nVersion = CBlockHeader::CURRENT_VERSION;
+    CBlockIndex* pindexPrev = chainActive.Tip();
+    
+    switch (algo)
+    {
+        case ALGO_SCRYPT:
+            break;
+        case ALGO_SHA256D:
+            pblock->nVersion |= BLOCK_VERSION_SHA256D;
+            break;
+        default:
+            error("CreateNewBlock: bad algo");
+            return NULL;
+	}
 
     // Create coinbase tx
     CTransaction txNew;
@@ -327,7 +342,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
 
         nLastBlockTx = nBlockTx;
         nLastBlockSize = nBlockSize;
-        LogPrintf("CreateNewBlock(): total size %u\n", nBlockSize);
+        LogPrintf("CreateNewBlock(): total size %u\n, nVersion %u\n", nBlockSize, pblock->nVersion);
 
         pblock->vtx[0].vout[0].nValue = GetBlockValue(pindexPrev->nHeight+1, nFees, pindexPrev->GetBlockHash());
         pblocktemplate->vTxFees[0] = -nFees;
@@ -335,7 +350,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
         // Fill in header
         pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
         UpdateTime(*pblock, pindexPrev);
-        pblock->nBits          = GetNextWorkRequired(pindexPrev, pblock);
+        pblock->nBits          = GetNextWRKReq(pindexPrev, pblock, algo);
         pblock->nNonce         = 0;
         pblock->vtx[0].vin[0].scriptSig = CScript() << OP_0 << OP_0;
         pblocktemplate->vTxSigOps[0] = GetLegacySigOpCount(pblock->vtx[0]);
@@ -423,19 +438,56 @@ void FormatHashBuffers(CBlock* pblock, char* pmidstate, char* pdata, char* phash
 double dHashesPerSec = 0.0;
 int64_t nHPSTimerStart = 0;
 
-CBlockTemplate* CreateNewBlockWithKey(CReserveKey& reservekey)
+//
+// ScanHash scans nonces looking for a hash with at least some zero bits.
+// It operates on big endian data.  Caller does the byte reversing.
+// All input buffers are 16-byte aligned.  nNonce is usually preserved
+// between calls, but periodically or if nNonce is 0xffff0000 or above,
+// the block is rebuilt and nNonce starts over at zero.
+//
+unsigned int static ScanHash_CryptoPP(char* pmidstate, char* pdata, char* phash1, char* phash, unsigned int& nHashesDone)
+{
+    unsigned int& nNonce = *(unsigned int*)(pdata + 12);
+    for (;;)
+    {
+        // Crypto++ SHA256
+        // Hash pdata using pmidstate as the starting state into
+        // pre-formatted buffer phash1, then hash phash1 into phash
+        nNonce++;
+        SHA256Transform(phash1, pdata, pmidstate);
+        SHA256Transform(phash, phash1, pSHA256InitState);
+
+        // Return the nonce if the hash has at least some zero bits,
+        // caller will check if it has enough to reach the target
+        if (((unsigned short*)phash)[14] == 0)
+            return nNonce;
+
+        // If nothing found after trying for a while, return -1
+        if ((nNonce & 0xffff) == 0)
+        {
+            nHashesDone = 0xffff+1;
+            return (unsigned int) -1;
+        }
+        if ((nNonce & 0xfff) == 0)
+            boost::this_thread::interruption_point();
+    }
+}
+
+CBlockTemplate* CreateNewBlockWithKey(CReserveKey& reservekey, int algo)
 {
     CPubKey pubkey;
     if (!reservekey.GetReservedKey(pubkey))
         return NULL;
 
     CScript scriptPubKey = CScript() << pubkey << OP_CHECKSIG;
-    return CreateNewBlock(scriptPubKey);
+    return CreateNewBlock(scriptPubKey, algo);
 }
 
 bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
 {
-    uint256 hash = pblock->GetPoWHash();
+	int algo = pblock->GetAlgo();
+	uint256 hashPoW = pblock->GetPoWHash(algo);
+	uint256 hash = pblock->GetHash();
     uint256 hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
 
     CAuxPow *auxpow = pblock->auxpow.get();
@@ -444,19 +496,21 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
         if (!auxpow->Check(pblock->GetHash(), pblock->GetChainID()))
             return error("AUX POW is not valid");
 
-        if (auxpow->GetParentBlockHash() > hashTarget)
-            return error("AUX POW parent hash %s is not under target %s", auxpow->GetParentBlockHash().GetHex().c_str(), hashTarget.GetHex().c_str());
+        if (auxpow->GetParentBlockHash(algo) > hashTarget)
+            return error("AUX POW parent hash %s is not under target %s", auxpow->GetParentBlockHash(algo).GetHex().c_str(), hashTarget.GetHex().c_str());
         
         // print to log
         LogPrintf("KuberbitcoinMiner: AUX proof-of-work found; our hash: %s ; parent hash: %s ; target: %s\n",
                hash.GetHex().c_str(),
-               auxpow->GetParentBlockHash().GetHex().c_str(),
+               auxpow->GetParentBlockHash(algo).GetHex().c_str(),
                hashTarget.GetHex().c_str());
     }
     else
     {
-        if (hash > hashTarget)
+        if (hashPoW > hashTarget)
             return false;
+
+    uint256 hashBlock = pblock->GetHash();
 
         // print to log
         LogPrintf("KuberbitcoinMiner: proof-of-work found; hash: %s ; target: %s\n", hash.GetHex().c_str(), hashTarget.GetHex().c_str());
@@ -489,23 +543,29 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     return true;
 }
 
-void static KuberbitcoinMiner(CWallet *pwallet)
+void static MinerWaitOnline()
 {
-    LogPrintf("KuberbitcoinMiner started\n");
-    SetThreadPriority(THREAD_PRIORITY_LOWEST);
-    RenameThread("kuberbitcoin-miner");
+    if (Params().NetworkID() != CChainParams::REGTEST) 
+    {
+        // Busy-wait for the network to come online so we don't waste time mining
+        // on an obsolete chain. In regtest mode we expect to fly solo.
+        while (vNodes.empty())
+        {
+            MilliSleep(1000);
+            boost::this_thread::interruption_point();
+        }
+    }
+}
 
+void static ScryptMiner(CWallet *pwallet)
+{
     // Each thread has its own key and counter
     CReserveKey reservekey(pwallet);
     unsigned int nExtraNonce = 0;
 
-    try { while (true) {
-        if (Params().NetworkID() != CChainParams::REGTEST) {
-            // Busy-wait for the network to come online so we don't waste time mining
-            // on an obsolete chain. In regtest mode we expect to fly solo.
-            while (vNodes.empty())
-                MilliSleep(1000);
-        }
+    while(true)
+    {
+        MinerWaitOnline();
 
         //
         // Create new block
@@ -513,17 +573,17 @@ void static KuberbitcoinMiner(CWallet *pwallet)
         unsigned int nTransactionsUpdatedLast = mempool.GetTransactionsUpdated();
         CBlockIndex* pindexPrev = chainActive.Tip();
 
-        auto_ptr<CBlockTemplate> pblocktemplate(CreateNewBlockWithKey(reservekey));
+        auto_ptr<CBlockTemplate> pblocktemplate(CreateNewBlockWithKey(reservekey, ALGO_SCRYPT));
         if (!pblocktemplate.get())
             return;
         CBlock *pblock = &pblocktemplate->block;
         IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
 
-        LogPrintf("Running KuberbitcoinMiner with %" PRIszu" transactions in block (%u bytes)\n", pblock->vtx.size(),
+        LogPrintf("Running scrypt miner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
         //
-        // Pre-build hash buffers
+        // Prebuild hash buffers
         //
         char pmidstatebuf[32+16]; char* pmidstate = alignup<16>(pmidstatebuf);
         char pdatabuf[128+16];    char* pdata     = alignup<16>(pdatabuf);
@@ -533,24 +593,33 @@ void static KuberbitcoinMiner(CWallet *pwallet)
 
         unsigned int& nBlockTime = *(unsigned int*)(pdata + 64 + 4);
         unsigned int& nBlockBits = *(unsigned int*)(pdata + 64 + 8);
-        //unsigned int& nBlockNonce = *(unsigned int*)(pdata + 64 + 12);
-
 
         //
         // Search
         //
         int64_t nStart = GetTime();
         uint256 hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
-        while (true)
+        while(true)
         {
             unsigned int nHashesDone = 0;
-
             uint256 thash;
             char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
-            while (true)
+            while(true)
             {
-
+#if defined(USE_SSE2)
+                // Detection would work, but in cases where we KNOW it always has SSE2,
+                // it is faster to use directly than to use a function pointer or conditional.
+#if defined(_M_X64) || defined(__x86_64__) || defined(_M_AMD64) || (defined(MAC_OSX) && defined(__i386__))
+                // Always SSE2: x86_64 or Intel MacOS X
+                scrypt_1024_1_1_256_sp_sse2(BEGIN(pblock->nVersion), BEGIN(thash), scratchpad);
+#else
+                // Detect SSE2: 32bit x86 Linux or Windows
                 scrypt_1024_1_1_256_sp(BEGIN(pblock->nVersion), BEGIN(thash), scratchpad);
+#endif
+#else
+                // Generic scrypt
+                scrypt_1024_1_1_256_sp_generic(BEGIN(pblock->nVersion), BEGIN(thash), scratchpad);
+#endif
 
                 if (thash <= hashTarget)
                 {
@@ -558,12 +627,6 @@ void static KuberbitcoinMiner(CWallet *pwallet)
                     SetThreadPriority(THREAD_PRIORITY_NORMAL);
                     CheckWork(pblock, *pwallet, reservekey);
                     SetThreadPriority(THREAD_PRIORITY_LOWEST);
-                    
-                    // In regression test mode, stop mining after a block is found. This
-                    // allows developers to controllably generate a block on demand.
-                    if (Params().NetworkID() == CChainParams::REGTEST)
-                        throw boost::thread_interrupted();
-                    
                     break;
                 }
                 pblock->nNonce += 1;
@@ -621,8 +684,177 @@ void static KuberbitcoinMiner(CWallet *pwallet)
                 nBlockBits = ByteReverse(pblock->nBits);
                 hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
             }
+            
         }
-    } }
+    }
+}
+
+void static BitcoinMiner(CWallet *pwallet)
+{
+    LogPrintf("BitcoinMiner started\n");
+    SetThreadPriority(THREAD_PRIORITY_LOWEST);
+    RenameThread("bitcoin-miner");
+
+    // Each thread has its own key and counter
+    CReserveKey reservekey(pwallet);
+    unsigned int nExtraNonce = 0;
+
+    while(true)
+    {
+        MinerWaitOnline();
+		try { 
+			while (true) {
+				if (Params().NetworkID() != CChainParams::REGTEST) {
+					// Busy-wait for the network to come online so we don't waste time mining
+					// on an obsolete chain. In regtest mode we expect to fly solo.
+					while (vNodes.empty())
+						MilliSleep(1000);
+				}
+
+				//
+				// Create new block
+				//
+				unsigned int nTransactionsUpdatedLast = mempool.GetTransactionsUpdated();
+				CBlockIndex* pindexPrev = chainActive.Tip();
+
+				auto_ptr<CBlockTemplate> pblocktemplate(CreateNewBlockWithKey(reservekey, ALGO_SHA256D));
+				if (!pblocktemplate.get())
+					return;
+				CBlock *pblock = &pblocktemplate->block;
+				IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
+
+				LogPrintf("Running sha256d with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
+					   ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
+
+				//
+				// Pre-build hash buffers
+				//
+				char pmidstatebuf[32+16]; char* pmidstate = alignup<16>(pmidstatebuf);
+				char pdatabuf[128+16];    char* pdata     = alignup<16>(pdatabuf);
+				char phash1buf[64+16];    char* phash1    = alignup<16>(phash1buf);
+
+				FormatHashBuffers(pblock, pmidstate, pdata, phash1);
+
+				unsigned int& nBlockTime = *(unsigned int*)(pdata + 64 + 4);
+				unsigned int& nBlockBits = *(unsigned int*)(pdata + 64 + 8);
+				unsigned int& nBlockNonce = *(unsigned int*)(pdata + 64 + 12);
+
+
+				//
+				// Search
+				//
+				int64_t nStart = GetTime();
+				uint256 hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
+				uint256 hashbuf[2];
+				uint256& hash = *alignup<16>(hashbuf);
+				while (true)
+				{
+					unsigned int nHashesDone = 0;
+					unsigned int nNonceFound;
+
+					// Crypto++ SHA256
+					nNonceFound = ScanHash_CryptoPP(pmidstate, pdata + 64, phash1,
+													(char*)&hash, nHashesDone);
+
+					// Check if something found
+					if (nNonceFound != (unsigned int) -1)
+					{
+						for (unsigned int i = 0; i < sizeof(hash)/4; i++)
+							((unsigned int*)&hash)[i] = ByteReverse(((unsigned int*)&hash)[i]);
+
+						if (hash <= hashTarget)
+						{
+							// Found a solution
+							pblock->nNonce = ByteReverse(nNonceFound);
+							assert(hash == pblock->GetHash());
+
+							SetThreadPriority(THREAD_PRIORITY_NORMAL);
+							CheckWork(pblock, *pwallet, reservekey);
+							SetThreadPriority(THREAD_PRIORITY_LOWEST);
+
+							// In regression test mode, stop mining after a block is found. This
+							// allows developers to controllably generate a block on demand.
+							if (Params().NetworkID() == CChainParams::REGTEST)
+								throw boost::thread_interrupted();
+
+							break;
+						}
+					}
+
+					// Meter hashes/sec
+					static int64_t nHashCounter;
+					if (nHPSTimerStart == 0)
+					{
+						nHPSTimerStart = GetTimeMillis();
+						nHashCounter = 0;
+					}
+					else
+						nHashCounter += nHashesDone;
+					if (GetTimeMillis() - nHPSTimerStart > 4000)
+					{
+						static CCriticalSection cs;
+						{
+							LOCK(cs);
+							if (GetTimeMillis() - nHPSTimerStart > 4000)
+							{
+								dHashesPerSec = 1000.0 * nHashCounter / (GetTimeMillis() - nHPSTimerStart);
+								nHPSTimerStart = GetTimeMillis();
+								nHashCounter = 0;
+								static int64_t nLogTime;
+								if (GetTime() - nLogTime > 30 * 60)
+								{
+									nLogTime = GetTime();
+									LogPrintf("hashmeter %6.0f khash/s\n", dHashesPerSec/1000.0);
+								}
+							}
+						}
+					}
+
+					// Check for stop or if block needs to be rebuilt
+					boost::this_thread::interruption_point();
+					if (vNodes.empty() && Params().NetworkID() != CChainParams::REGTEST)
+						break;
+					if (nBlockNonce >= 0xffff0000)
+						break;
+					if (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 60)
+						break;
+					if (pindexPrev != chainActive.Tip())
+						break;
+
+					// Update nTime every few seconds
+					UpdateTime(*pblock, pindexPrev);
+					nBlockTime = ByteReverse(pblock->nTime);
+					if (TestNet())
+					{
+						// Changing pblock->nTime can change work required on testnet:
+						nBlockBits = ByteReverse(pblock->nBits);
+						hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
+					}
+				}
+			}
+		}
+		catch (...){}
+	}
+}
+
+void static KuberbitcoinMiner(CWallet *pwallet)
+{
+    LogPrintf("Kuberbitcoin miner started\n");
+    SetThreadPriority(THREAD_PRIORITY_LOWEST);
+    RenameThread("bitcoin-miner");
+    
+    try 
+    {
+        switch (miningAlgo)
+        {
+            case ALGO_SHA256D:
+                BitcoinMiner(pwallet);
+                break;
+            case ALGO_SCRYPT:
+                ScryptMiner(pwallet);
+                break;
+        }
+    }
     catch (boost::thread_interrupted)
     {
         LogPrintf("KuberbitcoinMiner terminated\n");

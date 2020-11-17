@@ -21,7 +21,7 @@
 #define CLIENT_VERSION_MINOR 9
 
 /* Build revision */
-#define CLIENT_VERSION_REVISION 4
+#define CLIENT_VERSION_REVISION 5
 
 /* Version is release */
 #define COPYRIGHT_YEAR 2020
@@ -199,13 +199,13 @@
 #define HAVE_WORKING_BOOST_SLEEP_FOR 1
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "info@kuberbitcoin.info"
+#define PACKAGE_BUGREPORT "info@kuberbitcoin.com"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "Kuberbitcoin Core"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Kuberbitcoin Core 1.9.4"
+#define PACKAGE_STRING "Kuberbitcoin Core 1.9.5"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "kuberbitcoin"
@@ -214,7 +214,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.9.4"
+#define PACKAGE_VERSION "1.9.5"
 
 /* Define to necessary symbol if this constant uses a non-standard name on
    your system. */
@@ -233,7 +233,7 @@
 #define USE_DBUS 1
 
 /* Define if QR support should be compiled in */
-#define USE_QRCODE 1
+/* #undef USE_QRCODE */
 
 /* UPnP support not compiled if undefined, otherwise value (0 or 1) determines
    default state */

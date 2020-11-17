@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <vector>
+#include "auxpow.h"
 
 class CBlock;
 class CBlockIndex;
@@ -20,8 +21,8 @@ class CAuxPow;
 /** Run the miner threads */
 void GenerateBitcoins(bool fGenerate, CWallet* pwallet, int nThreads);
 /** Generate a new block, without valid proof-of-work */
-CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn);
-CBlockTemplate* CreateNewBlockWithKey(CReserveKey& reservekey);
+CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, int algo);
+CBlockTemplate* CreateNewBlockWithKey(CReserveKey& reservekey, int algo);
 /** Modify the extranonce in a block */
 void IncrementExtraNonce(CBlock* pblock, CBlockIndex* pindexPrev, unsigned int& nExtraNonce);
 void IncrementExtraNonceWithAux(CBlock* pblock, CBlockIndex* pindexPrev, unsigned int& nExtraNonce, std::vector<unsigned char>& vchAux);

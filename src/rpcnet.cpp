@@ -134,8 +134,8 @@ Value getpeerinfo(const Array& params, bool fHelp)
         if (fStateStats) {
             obj.push_back(Pair("banscore", statestats.nMisbehavior));
         }
-        if (stats.fSyncNode)
-            obj.push_back(Pair("syncnode", true));
+        obj.push_back(Pair("syncnode", stats.fSyncNode));
+        obj.push_back(Pair("whitelisted", stats.fWhitelisted));
 
         ret.push_back(obj);
     }
@@ -158,8 +158,8 @@ Value addnode(const Array& params, bool fHelp)
             "1. \"node\"     (string, required) The node (see getpeerinfo for nodes)\n"
             "2. \"command\"  (string, required) 'add' to add a node to the list, 'remove' to remove a node from the list, 'onetry' to try a connection to the node once\n"
             "\nExamples:\n"
-            + HelpExampleCli("addnode", "\"192.168.0.6:16639\" \"onetry\"")
-            + HelpExampleRpc("addnode", "\"192.168.0.6:16639\", \"onetry\"")
+            + HelpExampleCli("addnode", "\"192.168.0.6:13580\" \"onetry\"")
+            + HelpExampleRpc("addnode", "\"192.168.0.6:13580\", \"onetry\"")
         );
 
     string strNode = params[0].get_str();
@@ -212,7 +212,7 @@ Value getaddednodeinfo(const Array& params, bool fHelp)
             "    \"connected\" : true|false,          (boolean) If connected\n"
             "    \"addresses\" : [\n"
             "       {\n"
-            "         \"address\" : \"192.168.0.201:16639\",  (string) The Kuberbitcoin server host and port\n"
+            "         \"address\" : \"192.168.0.201:13580\",  (string) The Kuberbitcoin server host and port\n"
             "         \"connected\" : \"outbound\"           (string) connection, inbound or outbound\n"
             "       }\n"
             "       ,...\n"
@@ -368,7 +368,7 @@ Value getnetworkinfo(const Array& params, bool fHelp)
     obj.push_back(Pair("protocolversion",(int)PROTOCOL_VERSION));
     obj.push_back(Pair("timeoffset",    GetTimeOffset()));
     obj.push_back(Pair("connections",   (int)vNodes.size()));
-    obj.push_back(Pair("proxy",         (proxy.first.IsValid() ? proxy.first.ToStringIPPort() : string())));
+    obj.push_back(Pair("proxy",         (proxy.IsValid() ? proxy.ToStringIPPort() : string())));
     obj.push_back(Pair("relayfee",      ValueFromAmount(CTransaction::nMinRelayTxFee)));
     Array localAddresses;
     {

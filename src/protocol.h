@@ -2,7 +2,6 @@
 // Copyright (c) 2009-2013 The Bitcoin developers
 // Copyright (c) 2011-2013 The Litecoin developers
 // Copyright (c) 2013-2014 The Kuberbitcoin developers
-// Copyright (c)      2014 The Inutoshi developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -66,6 +65,7 @@ enum
 {
     NODE_NETWORK = (1 << 0),
     NODE_BLOOM = (1 << 1),
+    NODE_GETUTXO = (1 << 2), // not implemented, added for reference
 };
 
 /** A CService with information about it as peer */

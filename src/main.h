@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2011-2013 The Litecoin developers
-// Copyright (c) 2020 The Kuberbitcoin developers
+// Copyright (c) 2013-2014 The Kuberbitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -37,7 +37,7 @@ class CBloomFilter;
 class CInv;
 
 /** The maximum allowed size for a serialized block, in bytes (network rule) */
-static const unsigned int MAX_BLOCK_SIZE = 1000000;
+static const unsigned int MAX_BLOCK_SIZE = 10000000;
 /** Default for -blockmaxsize and -blockminsize, which control the range of sizes the mining code will create **/
 static const unsigned int DEFAULT_BLOCK_MAX_SIZE = 250000;
 static const unsigned int DEFAULT_BLOCK_MIN_SIZE = 0;
@@ -48,7 +48,7 @@ static const unsigned int MAX_STANDARD_TX_SIZE = 100000;
 /** The maximum allowed number of signature check operations in a block (network rule) */
 static const unsigned int MAX_BLOCK_SIGOPS = MAX_BLOCK_SIZE/50;
 /** The maximum number of orphan transactions kept in memory */
-static const unsigned int MAX_ORPHAN_TRANSACTIONS = MAX_BLOCK_SIZE/100;
+/** static const unsigned int MAX_ORPHAN_TRANSACTIONS = MAX_BLOCK_SIZE/100; */
 /** The maximum number of orphan blocks kept in memory */
 static const unsigned int MAX_ORPHAN_BLOCKS = 750;
 /** Default for -maxorphantx, maximum number of orphan transactions kept in memory */
@@ -62,29 +62,27 @@ static const unsigned int BLOCKFILE_CHUNK_SIZE = 0x1000000; // 16 MiB
 /** The pre-allocation chunk size for rev?????.dat files (since 0.8) */
 static const unsigned int UNDOFILE_CHUNK_SIZE = 0x100000; // 1 MiB
 /** Dust Soft Limit, allowed with additional fee per output */
-//static const int64_t DUST_SOFT_LIMIT = COIN;
-static const int64_t DUST_SOFT_LIMIT = 100000;
-/** Dust Hard Limit, ignored as wallet inputs (mininput default) */
-//static const int64_t DUST_HARD_LIMIT = 1000000;
-static const int64_t DUST_HARD_LIMIT = 1000;
+static const int64_t DUST_SOFT_LIMIT = 70000000; //DUSTING Limit 0.7KBI 
+/** Dust Hard Limit, ignored as wallet inputs (mininput default)
+static const int64_t DUST_HARD_LIMIT = 1000000; was never used in Kuberbitcoin implementation */
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
 static const int COINBASE_MATURITY = 30;
-
-/** Coinbase maturity after block 600000 **/
-static const int COINBASE_MATURITY_NEW = 400; // 			#fixme 
-/** Block at which COINBASE_MATURITY_NEW comes into effect **/
-static const int COINBASE_MATURITY_SWITCH = 9999999; // 			#fixme 
-
 /** Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
 /** Maximum number of script-checking threads allowed */
-static const int MAX_SCRIKBIHECK_THREADS = 16;
+static const int MAX_SCRIPTCHECK_THREADS = 16;
 /** -par default (number of script-checking threads, 0 = auto) */
-static const int DEFAULT_SCRIKBIHECK_THREADS = 0;
+static const int DEFAULT_SCRIPTCHECK_THREADS = 0;
 /** Number of blocks that can be requested at any given time from a single peer. */
-static const int MAX_BLOCKS_IN_TRANSIT_PER_PEER = 128;
+static const int MAX_BLOCKS_IN_TRANSIT_PER_PEER = 512;
 /** Timeout in seconds before considering a block download peer unresponsive. */
-static const unsigned int BLOCK_DOWNLOAD_TIMEOUT = 60;
+static const unsigned int BLOCK_DOWNLOAD_TIMEOUT = 30;
+
+static const int mAlgo_FORK = 20000; // Block where multi-algoritm mining starts   //#fixme
+static const int MAX_BLOCK_ALGO_COUNT = 6; // Maximum number block accepted by the same algorithm
+static const int MAX_BLOCK_ALGO_COUNT_V2_START = 20001;  //#fixme
+static const int MAX_BLOCK_ALGO_COUNT_V2 = 8; // Maximum number block accepted by the same algorithm version 2
+const int64_t multiAlgoDiffChangeTarget = 20000; //#fixme
 
 /** AuxPow Block versions for sanity checks. */
 /** bare AuxPoW block version which will be modulated further. */
@@ -125,6 +123,7 @@ extern bool fBenchmark;
 extern int nScriptCheckThreads;
 extern bool fTxIndex;
 extern unsigned int nCoinCacheSize;
+extern int miningAlgo;
 
 // Minimum disk space required - used in CheckDiskSpace()
 static const uint64_t nMinDiskSpace = 52428800;
@@ -184,9 +183,9 @@ bool SendMessages(CNode* pto, bool fSendTrickle);
 /** Run an instance of the script checking thread */
 void ThreadScriptCheck();
 /** Check whether a block hash satisfies the proof-of-work requirement specified by nBits */
-bool CheckProofOfWork(uint256 hash, unsigned int nBits);
+bool CheckProofOfWork(uint256 hash, unsigned int nBits, int algo);
 /** Calculate the minimum amount of work a received block needs, without knowing its direct parent */
-unsigned int ComputeMinWork(unsigned int nBase, int64_t nTime);
+unsigned int ComputeMinWork(unsigned int nBase, int64_t nTime, int algo);
 /** Check whether we are doing an initial block download (synchronizing from disk or network) */
 bool IsInitialBlockDownload();
 /** Format a string that describes several potential problems detected by the core */
@@ -196,8 +195,15 @@ bool GetTransaction(const uint256 &hash, CTransaction &tx, uint256 &hashBlock, b
 /** Find the best known block, and make it the tip of the block chain */
 bool ActivateBestChain(CValidationState &state);
 int64_t GetBlockValue(int nHeight, int64_t nFees, uint256 prevHash);
-unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock);
-unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockHeader *pblock);
+
+
+const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, int algo);
+const CBlockIndex* GetLastBlockIndexForAlgo(const CBlockIndex* pindex, int algo);
+
+unsigned int GetNextWorkRequired_Legacy(const CBlockIndex* pindexLast, const CBlockHeader *pblock, int algo);
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, int algo);
+unsigned int GetNextWRKReq(const CBlockIndex* pindexLast, const CBlock *pblock, int algo);
+unsigned int GetNextWorkRequiredM(const CBlockIndex* pindexLast, const CBlockHeader *pblock, int algo);
 
 void UpdateTime(CBlockHeader& block, const CBlockIndex* pindexPrev);
 
@@ -331,8 +337,7 @@ inline bool AllowFree(double dPriority)
 {
     // Large (in bytes) low-priority (new, small-coin) transactions
     // need a fee.
-        //return dPriority > 100 * COIN * 1440 / 250; // Kuberbitcoin: 1440 blocks found a day. Priority cutoff is 100 kuberbitcoin day / 250 bytes.
-        return dPriority > COIN * 576 / 250;
+        return dPriority > COIN * 1920 / 250; // Kuberbitcoin: 1920 blocks found a day / 250 bytes.
     }
 
 /** Get the maturity depth for coinbase transactions at a given height.
@@ -774,6 +779,8 @@ public:
 
     // (memory only) Sequencial id assigned to distinguish order in which blocks are received.
     uint32_t nSequenceId;
+	
+	int GetAlgo() const { return ::GetAlgo(nVersion); }
 
     CBlockIndex()
     {
@@ -863,6 +870,21 @@ public:
         return (int64_t)nTime;
     }
 
+    CBigNum GetPrevWorkForAlgo(int algo) const
+    {
+        CBigNum nWork;
+        CBlockIndex* pindex = this->pprev;
+        while (pindex)
+        {
+            if (pindex->GetAlgo() == algo)
+            {
+                return pindex->GetBlockWork();
+            }
+            pindex = pindex->pprev;
+        }
+        return Params().ProofOfWorkLimit(algo);
+	}
+
     CBigNum GetBlockWork() const
     {
         CBigNum bnTarget;
@@ -872,12 +894,23 @@ public:
         return (CBigNum(1)<<256) / (bnTarget+1);
     }
 
-    bool CheckIndex() const
+    int GetAlgoWorkFactor() const 
     {
-        /** Scrypt is used for block proof-of-work, but for purposes of performance the index internally uses sha256.
-         *  This check was considered unneccessary given the other safeguards like the genesis and checkpoints. */
-        return true; // return CheckProofOfWork(GetBlockHash(), nBits);
-    }
+        if (!TestNet() && (nHeight < multiAlgoDiffChangeTarget))
+        {
+            return 1;
+        }
+        switch (GetAlgo())
+        {
+            case ALGO_SHA256D:
+                return 1; 
+            // work factor = absolute work ratio * optimisation factor
+            case ALGO_SCRYPT:
+                return 1024 * 4;
+            default:
+                return 1;
+        }
+	}
 
     enum { nMedianTimeSpan=11 };
 
@@ -894,6 +927,40 @@ public:
         std::sort(pbegin, pend);
         return pbegin[(pend - pbegin)/2];
     }
+
+    CBigNum GetBlockWorkAdjusted() const
+    {
+        CBigNum bnRes;
+		if ((TestNet() && (nHeight >= 1)) || (!TestNet() && nHeight >= mAlgo_FORK)) 
+		{
+			// Adjusted Block Work is the Sum of work of this block and the most recent work of one block of each algo
+			CBigNum nBlockWork = GetBlockWork();
+			int nAlgo = GetAlgo();
+			for (int algo = 0; algo < NUM_ALGOS; algo++)
+			{
+				if (algo != nAlgo)
+				{
+					nBlockWork += GetPrevWorkForAlgo(algo);
+				}
+			}
+			bnRes = nBlockWork / NUM_ALGOS;
+		}
+		else
+		{
+			bnRes = GetBlockWork() * GetAlgoWorkFactor();
+		}
+			return bnRes;
+	}
+
+
+    bool CheckIndex() const
+    {
+        int algo = GetAlgo();
+        if (algo == ALGO_SHA256D)
+            return CheckProofOfWork(GetBlockHash(), nBits, algo);
+        else
+            return true;
+	}
 
     int64_t GetMedianTime() const;
 
@@ -932,6 +999,12 @@ public:
             return true;
         }
         return false;
+    }
+
+    // base block version without auxpow chain
+    int GetBaseVersion() const
+    {
+        return nVersion & BLOCK_VERSION_BASE_MASK;
     }
 };
 

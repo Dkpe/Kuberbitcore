@@ -2,7 +2,6 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2011-2013 The Litecoin developers
 // Copyright (c) 2013-2014 The Kuberbitcoin developers
-// Copyright (c)      2014 The Inutoshi developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -45,8 +44,6 @@ CCriticalSection cs_main;
 
 CTxMemPool mempool;
 
-static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Kuberbitcoin: starting difficulty is 1 / 2^12
-
 map<uint256, CBlockIndex*> mapBlockIndex;
 CChain chainActive;
 CChain chainMostWork;
@@ -59,9 +56,11 @@ bool fTxIndex = false;
 unsigned int nCoinCacheSize = 5000;
 
 /** Fees smaller than this (in satoshi) are considered zero fee (for transaction creation) */
-int64_t CTransaction::nMinTxFee = 100000;  // Override with -mintxfee
+int64_t CTransaction::nMinTxFee = 700000000;  // Override with -mintxfee                     7KBI PER TX
 /** Fees smaller than this (in satoshi) are considered zero fee (for relaying and mining) */
-int64_t CTransaction::nMinRelayTxFee = 100000;
+int64_t CTransaction::nMinRelayTxFee = 700000000; //     Relay TX 7KBI PER TX
+
+int miningAlgo = ALGO_SCRYPT;
 
 struct COrphanBlock {
     uint256 hashBlock;
@@ -209,9 +208,13 @@ struct CBlockReject {
 // processing of incoming data is done after the ProcessMessage call returns,
 // and we're no longer holding the node's locks.
 struct CNodeState {
+    //! The peer's address
+    CService address;
+    //! Whether we have a fully established connection.
+    bool fCurrentlyConnected;
     // Accumulated misbehaviour score for this peer.
     int nMisbehavior;
-    // Whether this peer should be disconnected and banned.
+    // Whether this peer should be disconnected and banned (unless whitelisted).
     bool fShouldBan;
     // String name of this peer (debugging/logging purposes).
     std::string name;
@@ -225,6 +228,7 @@ struct CNodeState {
     int64_t nLastBlockProcess;
 
     CNodeState() {
+        fCurrentlyConnected = false;
         nMisbehavior = 0;
         fShouldBan = false;
         nBlocksToDownload = 0;
@@ -255,12 +259,16 @@ void InitializeNode(NodeId nodeid, const CNode *pnode) {
     LOCK(cs_main);
     CNodeState &state = mapNodeState.insert(std::make_pair(nodeid, CNodeState())).first->second;
     state.name = pnode->addrName;
+    state.address = pnode->addr;
 }
 
 void FinalizeNode(NodeId nodeid) {
     LOCK(cs_main);
     CNodeState *state = State(nodeid);
 
+    if (state->nMisbehavior == 0 && state->fCurrentlyConnected) {
+        AddressCurrentlyConnected(state->address);
+    }
     BOOST_FOREACH(const QueuedBlock& entry, state->vBlocksInFlight)
         mapBlocksInFlight.erase(entry.hash);
     BOOST_FOREACH(const uint256& hash, state->vBlocksToDownload)
@@ -823,24 +831,12 @@ int64_t GetMinFee(const CTransaction& tx, unsigned int nBytes, bool fAllowFree, 
     int64_t nBaseFee = (mode == GMF_RELAY) ? tx.nMinRelayTxFee : tx.nMinTxFee;
 
     int64_t nMinFee = (1 + (int64_t)nBytes / 1000) * nBaseFee;
-/*
+
     if (fAllowFree && mode != GMF_SEND)
     {
             // Free transaction area
             if (nBytes < 26000)
                 nMinFee = 0;
-    }
-*/
-        if (fAllowFree)
-    {
-        // There is a free transaction area in blocks created by most miners,
-        // * If we are relaying we allow transactions up to DEFAULT_BLOCK_PRIORITY_SIZE - 1000
-        //   to be considered to fall into this category. We don't want to encourage sending
-        //   multiple transactions instead of one big transaction to avoid fees.
-        // * If we are creating a transaction we allow transactions up to 5,000 bytes
-        //   to be considered safe and assume they can likely make it into this section.
-        if (nBytes < (mode == GMF_SEND ? 5000 : (DEFAULT_BLOCK_PRIORITY_SIZE - 1000)))
-            nMinFee = 0;
     }
 
     // Kuberbitcoin
@@ -1245,6 +1241,27 @@ void static PruneOrphanBlocks()
     mapOrphanBlocks.erase(hash);
 }
 
+
+
+const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, int algo)
+{
+    while (pindex && pindex->pprev && (pindex->GetAlgo() != algo))
+        pindex = pindex->pprev;
+    return pindex;
+}
+
+const CBlockIndex* GetLastBlockIndexForAlgo(const CBlockIndex* pindex, int algo)
+{
+    for (;;)
+    {
+        if (!pindex)
+            return NULL;
+        if (pindex->GetAlgo() == algo)
+            return pindex;
+        pindex = pindex->pprev;
+    }
+}
+
 int static generateMTRandom(unsigned int s, int range)
 {
     boost::mt19937 gen(s);
@@ -1252,7 +1269,10 @@ int static generateMTRandom(unsigned int s, int range)
     return dist(gen);
 }
 
+//int DGW3_Start_Block = 19999; //#fixme
+
 int64_t GetBlockValue(int nHeight, int64_t nFees, uint256 prevHash)
+
 {
     int64_t nSubsidy = 0 * COIN; //Kuberbit 50% Block High 50% Low  Reward
 
@@ -1275,42 +1295,28 @@ int64_t GetBlockValue(int nHeight, int64_t nFees, uint256 prevHash)
 return nSubsidy + nFees;
 }
 
-// New Difficulty adjustement and reward scheme by /u/lleti, rog1121, and DigiByte (DigiShield Developers).
-static const int64_t nTargetTimespan = 48 * 60; // Kuberbitcoin: every 48 Minutes 12 blocks 
-static const int64_t nTargetSpacing = 4 * 60; // Kuberbitcoin: 4 minute
+static const int64_t nTargetTimespan = 48 * 60; // Kuberbitcoin: every 12 blocks
+static const int64_t nTargetSpacing = 4 * 60; // Kuberbitcoin: 240 sec
 static const int64_t nInterval = nTargetTimespan / nTargetSpacing;
+
+static const int64_t nTargetTimeSpan2 = 48 * 60; // Kuberbitcoin: Every 12 blocks For DGW Update
+static const int64_t nTargetSpacing2 = 4 * 60; // Kuberbitcoin: 240 Seconds For DGW Update
 
 //
 // minimum amount of work that could possibly be required nTime after
 // minimum work required was nBase
 //
-
-unsigned int ComputeMinWork(unsigned int nBase, int64_t nTime)
+unsigned int ComputeMinWork(unsigned int nBase, int64_t nTime, int algo)
 {
-    const CBigNum &bnLimit = Params().ProofOfWorkLimit();
-    // Testnet has min-difficulty blocks
-    // after nTargetSpacing*2 time between blocks:
-    if (TestNet() && nTime > nTargetSpacing*2)
-        return bnLimit.GetCompact();
-
-    CBigNum bnResult;
-    bnResult.SetCompact(nBase);
-    while (nTime > 0 && bnResult < bnLimit)
-    {
-        // Maximum 400% adjustment...
-        bnResult *= 4;
-        // ... in best-case exactly 4-times-normal target time
-        nTime -= nTargetTimespan*4;
-        
-    }
-    if (bnResult > bnLimit)
-        bnResult = bnLimit;
-    return bnResult.GetCompact();
+    return Params().ProofOfWorkLimit(ALGO_SHA256D).GetCompact();
 }
 
-unsigned int GetNextWorkRequired_V1(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
+unsigned int GetNextWorkRequired_Legacy(const CBlockIndex* pindexLast, const CBlock *pblock, int algo)
 {
-    unsigned int nProofOfWorkLimit = bnProofOfWorkLimit.GetCompact();
+    unsigned int nProofOfWorkLimit = Params().ProofOfWorkLimit(algo).GetCompact();
+
+    // kuberbitcoin difficulty adjustment protocol switch
+   int nHeight = pindexLast->nHeight + 1;
 
     // Genesis block
     if (pindexLast == NULL)
@@ -1339,13 +1345,13 @@ unsigned int GetNextWorkRequired_V1(const CBlockIndex* pindexLast, const CBlockH
         return pindexLast->nBits;
     }
 
-    // Kuberbitcoin: This fixes an issue where a 51% attack can change difficulty at will.
+    // kuberbitcoin: This fixes an issue where a 51% attack can change difficulty at will.
     // Go back the full period unless it's the first retarget after genesis. Code courtesy of Art Forz
     int blockstogoback = nInterval-1;
     if ((pindexLast->nHeight+1) != nInterval)
         blockstogoback = nInterval;
 
-    // Go back by what we want to be 14 days worth of blocks
+    // Go back by what we want to be the last intervals worth of blocks
     const CBlockIndex* pindexFirst = pindexLast;
     for (int i = 0; pindexFirst && i < blockstogoback; i++)
         pindexFirst = pindexFirst->pprev;
@@ -1353,11 +1359,37 @@ unsigned int GetNextWorkRequired_V1(const CBlockIndex* pindexLast, const CBlockH
 
     // Limit adjustment step
     int64_t nActualTimespan = pindexLast->GetBlockTime() - pindexFirst->GetBlockTime();
-    printf("  nActualTimespan = %d  before bounds\n", nActualTimespan);
-    if (nActualTimespan < nTargetTimespan/4)
-        nActualTimespan = nTargetTimespan/4;
-    if (nActualTimespan > nTargetTimespan*4)
-        nActualTimespan = nTargetTimespan*4;
+
+	if(nHeight >= 111500){ 
+	if (nActualTimespan < ((nTargetTimespan*55)/73))
+		nActualTimespan = ((nTargetTimespan*55)/73);
+	if (nActualTimespan > ((nTargetTimespan*75)/60))
+		nActualTimespan = ((nTargetTimespan*75)/60);
+	}
+	else if(nHeight >= 79000){ 
+	if (nActualTimespan < nTargetTimespan/2)
+		nActualTimespan = nTargetTimespan/2;
+	if (nActualTimespan > nTargetTimespan*2)
+		nActualTimespan = nTargetTimespan*2;
+	}
+	else if(nHeight > 10000){ 
+	if (nActualTimespan < nTargetTimespan/4)
+		nActualTimespan = nTargetTimespan/4;
+	if (nActualTimespan > nTargetTimespan*4)
+		nActualTimespan = nTargetTimespan*4;
+	}
+	else if(nHeight > 5000){ 
+	if (nActualTimespan < nTargetTimespan/8)
+		nActualTimespan = nTargetTimespan/8;
+	if (nActualTimespan > nTargetTimespan*4)
+		nActualTimespan = nTargetTimespan*4;
+	}
+	else{ 
+	if (nActualTimespan < nTargetTimespan/16)
+		nActualTimespan = nTargetTimespan/16;
+	if (nActualTimespan > nTargetTimespan*4)
+		nActualTimespan = nTargetTimespan*4;
+	}
 
     // Retarget
     CBigNum bnNew;
@@ -1365,200 +1397,265 @@ unsigned int GetNextWorkRequired_V1(const CBlockIndex* pindexLast, const CBlockH
     bnNew *= nActualTimespan;
     bnNew /= nTargetTimespan;
 
-    if (bnNew > bnProofOfWorkLimit)
-        bnNew = bnProofOfWorkLimit;
-
-    /// debug print
-    printf("GetNextWorkRequired RETARGET\n");
-    printf("nTargetTimespan = %d    nActualTimespan = %d\n", nTargetTimespan, nActualTimespan);
-    printf("Before: %08x  %s\n", pindexLast->nBits, CBigNum().SetCompact(pindexLast->nBits).getuint256().ToString().c_str());
-    printf("After:  %08x  %s\n", bnNew.GetCompact(), bnNew.getuint256().ToString().c_str());
+    if (bnNew > Params().ProofOfWorkLimit(algo))
+        bnNew = Params().ProofOfWorkLimit(algo);
 
     return bnNew.GetCompact();
 }
 
-unsigned int KimotoGravityWell(const CBlockIndex* pindexLast, const CBlockHeader *pblock, uint64_t TargetBlocksSpacingSeconds, uint64_t PastBlocksMin, uint64_t PastBlocksMax) {
-        /* current difficulty formula, megacoin - kimoto gravity well */
-        const CBlockIndex  *BlockLastSolved	= pindexLast;
-        const CBlockIndex  *BlockReading	= pindexLast;
-        const CBlockHeader *BlockCreating	= pblock;
+unsigned int static DarkGravityWave3(const CBlockIndex* pindexLast, const CBlock *pblock, int algo) {
+   /* current difficulty formula, darkcoin - DarkGravity v3, written by Evan Duffield - evan@darkcoin.io */
+    const CBlockIndex *BlockLastSolved = pindexLast;
+    const CBlockIndex *BlockReading = pindexLast;
+    const CBlock *BlockCreating = pblock;
+    BlockCreating = BlockCreating;
+    int64_t nActualTimespan = 0;
+    int64_t LastBlockTime = 0;
+    int64_t PastBlocksMin = 24;
+    int64_t PastBlocksMax = 24;
+    int64_t CountBlocks = 0;
+    CBigNum PastDifficultyAverage;
+    CBigNum PastDifficultyAveragePrev;
+
+    if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || BlockLastSolved->nHeight < PastBlocksMin) { 
+        return Params().ProofOfWorkLimit(algo).GetCompact(); 
+    }
         
-        BlockCreating				= BlockCreating;
-        
-        uint64_t	PastBlocksMass		= 0;
-        int64_t		PastRateActualSeconds	= 0;
-        int64_t		PastRateTargetSeconds	= 0;
-        double		PastRateAdjustmentRatio	= double(1);
-        CBigNum		PastDifficultyAverage;
-        CBigNum		PastDifficultyAveragePrev;
-        double		EventHorizonDeviation;
-        double		EventHorizonDeviationFast;
-        double		EventHorizonDeviationSlow;
-        
-    if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || (uint64_t)BlockLastSolved->nHeight < PastBlocksMin) { return bnProofOfWorkLimit.GetCompact(); }
-	
-	// CryptoMP - KGW Fix
-	int64_t LatestBlockTime = BlockLastSolved->GetBlockTime();
-       
-        for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
-                if (PastBlocksMax > 0 && i > PastBlocksMax) { break; }
-                PastBlocksMass++;
-                
-                if (i == 1)        { PastDifficultyAverage.SetCompact(BlockReading->nBits); }
-                else                { PastDifficultyAverage = ((CBigNum().SetCompact(BlockReading->nBits) - PastDifficultyAveragePrev) / i) + PastDifficultyAveragePrev; }
-                PastDifficultyAveragePrev = PastDifficultyAverage;
-                
-                // CryptoMP - KGW Fix - PastRateActualSeconds                        = BlockLastSolved->GetBlockTime() - BlockReading->GetBlockTime();
-                if (LatestBlockTime < BlockReading->GetBlockTime()) {
+    for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
+        if (PastBlocksMax > 0 && i > PastBlocksMax) { break; }
+        CountBlocks++;
 
-		        if (BlockReading->nHeight > 127500) { LatestBlockTime = BlockReading->GetBlockTime(); }
-
-		}
-
-		PastRateActualSeconds = LatestBlockTime - BlockReading->GetBlockTime();
-                
-                
-                
-                PastRateTargetSeconds                        = TargetBlocksSpacingSeconds * PastBlocksMass;
-                PastRateAdjustmentRatio                        = double(1);
-                // CryptoMP -KGW FIx - if (PastRateActualSeconds < 0) { PastRateActualSeconds = 0; }
-                if (BlockReading->nHeight > 127500) {
-
-		        if (PastRateActualSeconds < 1) { PastRateActualSeconds = 1; }
-
-		} else {
-
-		        if (PastRateActualSeconds < 0) { PastRateActualSeconds = 0; }
-
-		}
-                
-                if (PastRateActualSeconds != 0 && PastRateTargetSeconds != 0) {
-                PastRateAdjustmentRatio                        = double(PastRateTargetSeconds) / double(PastRateActualSeconds);
-                }
-                EventHorizonDeviation                        = 1 + (0.7084 * pow((double(PastBlocksMass)/double(28.2)), -1.228));
-                EventHorizonDeviationFast                = EventHorizonDeviation;
-                EventHorizonDeviationSlow                = 1 / EventHorizonDeviation;
-                
-                if (PastBlocksMass >= PastBlocksMin) {
-                        if ((PastRateAdjustmentRatio <= EventHorizonDeviationSlow) || (PastRateAdjustmentRatio >= EventHorizonDeviationFast)) { assert(BlockReading); break; }
-                }
-                if (BlockReading->pprev == NULL) { assert(BlockReading); break; }
-                BlockReading = BlockReading->pprev;
+        if(CountBlocks <= PastBlocksMin) {
+            if (CountBlocks == 1) { PastDifficultyAverage.SetCompact(BlockReading->nBits); }
+            else { PastDifficultyAverage = ((PastDifficultyAveragePrev * CountBlocks)+(CBigNum().SetCompact(BlockReading->nBits))) / (CountBlocks+1); }
+            PastDifficultyAveragePrev = PastDifficultyAverage;
         }
-        
-        CBigNum bnNew(PastDifficultyAverage);
-        if (PastRateActualSeconds != 0 && PastRateTargetSeconds != 0) {
-                bnNew *= PastRateActualSeconds;
-                bnNew /= PastRateTargetSeconds;
+
+        if(LastBlockTime > 0){
+            int64_t Diff = (LastBlockTime - BlockReading->GetBlockTime());
+            nActualTimespan += Diff;
         }
-    if (bnNew > bnProofOfWorkLimit) { bnNew = bnProofOfWorkLimit; }
-        
-    /// debug print
-    LogPrintf("Difficulty Retarget - Kimoto Gravity Well\n");
-    LogPrintf("PastRateAdjustmentRatio = %g\n", PastRateAdjustmentRatio);
-    LogPrintf("Before: %08x  %s\n", BlockLastSolved->nBits, CBigNum().SetCompact(BlockLastSolved->nBits).getuint256().ToString().c_str());
-    LogPrintf("After:  %08x  %s\n", bnNew.GetCompact(), bnNew.getuint256().ToString().c_str());
-        
-        return bnNew.GetCompact();
+        LastBlockTime = BlockReading->GetBlockTime();      
+
+        if (BlockReading->pprev == NULL) { assert(BlockReading); break; }
+        BlockReading = BlockReading->pprev;
+    }
+    
+    CBigNum bnNew(PastDifficultyAverage);
+
+    int64_t nTargetTimespan = CountBlocks*nTargetSpacing2;
+
+    if (nActualTimespan < nTargetTimespan/3)
+        nActualTimespan = nTargetTimespan/3;
+    if (nActualTimespan > nTargetTimespan*3)
+        nActualTimespan = nTargetTimespan*3;
+
+    // Retarget
+    bnNew *= nActualTimespan;
+    bnNew /= nTargetTimeSpan2;
+
+    if (bnNew > Params().ProofOfWorkLimit(algo)){
+        bnNew = Params().ProofOfWorkLimit(algo);
+    }
+     
+    return bnNew.GetCompact();
 }
 
-unsigned int GetNextWorkRequired_V2(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
-{
-        static const int64_t  BlocksTargetSpacing = 1 * 60; // 60 seconds KBI Block Target //CryptoMP
-        unsigned int	      TimeDaySeconds      = 60 * 60 * 24;
-        int64_t               PastSecondsMin      = TimeDaySeconds * 0.01;
-        int64_t               PastSecondsMax      = TimeDaySeconds * 0.14;
-        uint64_t              PastBlocksMin       = PastSecondsMin / BlocksTargetSpacing;
-        uint64_t              PastBlocksMax       = PastSecondsMax / BlocksTargetSpacing;        
+
+unsigned int static DarkGravityWave_Upd(const CBlockIndex* pindexLast, const CBlock *pblock, int algo) {
+    /* current difficulty formula, darkcoin - DarkGravity v3, written by Evan Duffield - evan@darkcoin.io */
+    const CBlockIndex *BlockLastSolved = pindexLast;
+    const CBlockIndex *BlockReading = pindexLast;
+    const CBlock *BlockCreating = pblock;
+    BlockCreating = BlockCreating;
+    int64_t nActualTimespan = 0;
+    int64_t LastBlockTime = 0;
+    int64_t PastBlocksMin = 24;
+    int64_t PastBlocksMax = 24;
+    int64_t CountBlocks = 0;
+    CBigNum PastDifficultyAverage;
+    CBigNum PastDifficultyAveragePrev;
+
+    if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || BlockLastSolved->nHeight < PastBlocksMin) { 
+        return Params().ProofOfWorkLimit(algo).GetCompact(); 
+    }
         
-        return KimotoGravityWell(pindexLast, pblock, BlocksTargetSpacing, PastBlocksMin, PastBlocksMax);
+    for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
+        if (PastBlocksMax > 0 && i > PastBlocksMax) { break; }
+        CountBlocks++;
+
+        if(CountBlocks <= PastBlocksMin) {
+            if (CountBlocks == 1) { PastDifficultyAverage.SetCompact(BlockReading->nBits); }
+            else { PastDifficultyAverage = ((PastDifficultyAveragePrev * CountBlocks)+(CBigNum().SetCompact(BlockReading->nBits))) / (CountBlocks+1); }
+            PastDifficultyAveragePrev = PastDifficultyAverage;
+        }
+
+        if(LastBlockTime > 0){
+            int64_t Diff = (LastBlockTime - BlockReading->GetBlockTime());
+            nActualTimespan += Diff;
+        }
+        LastBlockTime = BlockReading->GetBlockTime();      
+
+        if (BlockReading->pprev == NULL) { assert(BlockReading); break; }
+        BlockReading = BlockReading->pprev;
+    }
+    
+    CBigNum bnNew(PastDifficultyAverage);
+
+    int64_t nTargetTimespan = CountBlocks*nTargetSpacing2;
+
+    if (nActualTimespan < nTargetTimespan/3)
+        nActualTimespan = nTargetTimespan/3;
+    if (nActualTimespan > nTargetTimespan*3)
+        nActualTimespan = nTargetTimespan*3;
+
+    // Retarget
+    bnNew *= nActualTimespan;
+    bnNew /= nTargetTimeSpan2;
+
+    if (bnNew > Params().ProofOfWorkLimit(algo)){
+        bnNew = Params().ProofOfWorkLimit(algo);
+    }
+     
+    return bnNew.GetCompact();
 }
 
-unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
+static const int64_t nAveragingInterval = 10; // 10 blocks
+static const int64_t multiAlgoTargetSpacing = 240 * 2; // 90 Seconds (NUM_ALGOS * 45 seconds)
+static const int64_t nAveragingTargetTimespan = nAveragingInterval * multiAlgoTargetSpacing; // 900 sec or 15 minutes for 20 blocks
+
+static const int64_t nMaxAdjustDownV2 = 22; // 22% adjustment down 
+static const int64_t nMaxAdjustUpV2 = 14; // 14% adjustment up
+static const int64_t nLocalDifficultyAdjustment = 12; // 12% down, 12% up
+
+static const int64_t nMinActualTimespanV2 = nAveragingTargetTimespan * (100 - nMaxAdjustUpV2) / 100;
+static const int64_t nMaxActualTimespanV2 = nAveragingTargetTimespan * (100 + nMaxAdjustDownV2) / 100;
+
+unsigned int StabilX(const CBlockIndex* pindexLast, const CBlockHeader *pblock, int algo)
 {
-        int DiffMode = 1;
-        if (TestNet())
+    unsigned int nProofOfWorkLimit = Params().ProofOfWorkLimit(algo).GetCompact();
+
+    // Genesis block
+    if (pindexLast == NULL)
+        return nProofOfWorkLimit;
+    
+    const CBlockIndex* pindexPrev = GetLastBlockIndexForAlgo(pindexLast, algo);
+    
+    // find first block in averaging interval
+    // Go back by what we want to be nAveragingInterval blocks per algo
+    const CBlockIndex* pindexFirst = pindexLast;
+    for (int i = 0; pindexFirst && i < NUM_ALGOS*nAveragingInterval; i++)
+    {
+        pindexFirst = pindexFirst->pprev;
+    }
+    const CBlockIndex* pindexPrevAlgo = GetLastBlockIndexForAlgo(pindexLast, algo);
+    if (pindexPrevAlgo == NULL || pindexFirst == NULL)
+    {
+        if (fDebug)
         {
-                if (pindexLast->nHeight+1 >= 50) { DiffMode = 2; }
+            LogPrintf("StabilX(Algo=%d): not enough blocks available, using default POW limit\n");
         }
-        else 
-        { 
-                // CryptoMP - Kimoto Will Start at block 46.000 // FIXED
-                if (pindexLast->nHeight+1 >= 46000) 
-                	DiffMode = 2;
-                if (pindexLast->nHeight+1 >= 582500)
-                	DiffMode = 3;
-                	
+        return nProofOfWorkLimit; // not enough blocks available
+    }
+
+    // Limit adjustment step
+    // Use medians to prevent time-warp attacks
+    int64_t nActualTimespan = pindexLast->GetMedianTimePast() - pindexFirst->GetMedianTimePast();
+    nActualTimespan = nAveragingTargetTimespan + (nActualTimespan - nAveragingTargetTimespan)/6;
+    if (fDebug)
+    {
+        LogPrintf("StabilX(Algo=%d): nActualTimespan = %d before bounds (%d - %d)\n", algo, nActualTimespan, nMinActualTimespanV2, nMaxActualTimespanV2);
+    }
+    if (nActualTimespan < nMinActualTimespanV2)
+        nActualTimespan = nMinActualTimespanV2;
+    if (nActualTimespan > nMaxActualTimespanV2)
+        nActualTimespan = nMaxActualTimespanV2;
+    if (fDebug)
+    {
+        LogPrintf("StabilX(Algo=%d): nActualTimespan = %d after bounds (%d - %d)\n", algo, nActualTimespan, nMinActualTimespanV2, nMaxActualTimespanV2);
+    }
+    
+    // Global retarget
+    CBigNum bnNew;
+    bnNew.SetCompact(pindexPrevAlgo->nBits);
+    bnNew *= nActualTimespan;
+    bnNew /= nAveragingTargetTimespan;
+
+    // Per-algo retarget
+    int nAdjustments = pindexPrevAlgo->nHeight - pindexLast->nHeight + NUM_ALGOS - 1;
+    if (nAdjustments > 0)
+    {
+        for (int i = 0; i < nAdjustments; i++)
+        {
+            bnNew *= 100;
+            bnNew /= (100 + nLocalDifficultyAdjustment);
         }
-        
-        if             (DiffMode == 1) { return GetNextWorkRequired_V1(pindexLast, pblock); }
-        else if        (DiffMode == 2) { return GetNextWorkRequired_V2(pindexLast, pblock); }
-        else if        (DiffMode == 3) { return DarkGravityWave(pindexLast, pblock); }
-        return GetNextWorkRequired_V2(pindexLast, pblock);
+    }
+    else if (nAdjustments < 0)
+    {
+        for (int i = 0; i < -nAdjustments; i++)
+        {
+            bnNew *= (100 + nLocalDifficultyAdjustment);
+            bnNew /= 100;
+        }
+    }
+
+    if (bnNew > Params().ProofOfWorkLimit(algo))
+    {
+        if (fDebug)
+        {
+            LogPrintf("StabilX(Algo=%d): Adjusted target large than limit, so is now POW limit\n", algo);
+        }
+        bnNew = Params().ProofOfWorkLimit(algo);
+    }
+
+    /// debug print
+    if (fDebug)
+    {
+        LogPrintf("StabilX(Algo=%d): RETARGET\n", algo);
+        LogPrintf("StabilX(Algo=%d): nTargetTimespan = %d, nActualTimespan = %d\n", algo, nAveragingTargetTimespan, nActualTimespan);
+        LogPrintf("StabilX(Algo=%d): Before: %08x  %s\n", algo, pindexPrev->nBits, CBigNum().SetCompact(pindexPrev->nBits).getuint256().ToString());
+        LogPrintf("StabilX(Algo=%d): After:  %08x  %s\n", algo, bnNew.GetCompact(), bnNew.getuint256().ToString());
+    }
+
+    return bnNew.GetCompact();
 }
 
-unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockHeader *pblock) {
-/* current difficulty formula, darkcoin - DarkGravity v3, written by Evan Duffield - evan@darkcoin.io */
-const CBlockIndex *BlockLastSolved = pindexLast;
-const CBlockIndex *BlockReading = pindexLast;
-const CBlockHeader *BlockCreating = pblock;
-BlockCreating = BlockCreating;
-int64_t nActualTimespan = 0;
-int64_t LastBlockTime = 0;
-int64_t PastBlocksMin = 24;
-int64_t PastBlocksMax = 24;
-int64_t CountBlocks = 0;
-CBigNum PastDifficultyAverage;
-CBigNum PastDifficultyAveragePrev;
+static const int64_t SwitchToStabilX = 20000;
 
-if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || BlockLastSolved->nHeight < PastBlocksMin) {
-	return bnProofOfWorkLimit.GetCompact();
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlock *pblock, int algo)
+{
+	if (chainActive.Tip()->nHeight >= SwitchToStabilX) {
+			return GetNextWorkRequiredM(pindexLast, pblock, algo);
+        }
+
+// else if (chainActive.Tip()->nHeight >= DGW3_Start_Block) {
+//return DarkGravityWave3(pindexLast, pblock, algo);
+// } - Not needed For stabil
+
+        return GetNextWorkRequired_Legacy(pindexLast, pblock, algo);
+
 }
 
-for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
-	if (PastBlocksMax > 0 && i > PastBlocksMax) { break; }
-	CountBlocks++;
-	if(CountBlocks <= PastBlocksMin) {
-		if (CountBlocks == 1) { PastDifficultyAverage.SetCompact(BlockReading->nBits); }
-		else { PastDifficultyAverage = ((PastDifficultyAveragePrev * CountBlocks)+(CBigNum().SetCompact(BlockReading->nBits))) / (CountBlocks+1); }
-		PastDifficultyAveragePrev = PastDifficultyAverage;
-	}
-	if(LastBlockTime > 0){
-		int64_t Diff = (LastBlockTime - BlockReading->GetBlockTime());
-		nActualTimespan += Diff;
-	}
-	LastBlockTime = BlockReading->GetBlockTime();
-	if (BlockReading->pprev == NULL) { assert(BlockReading); break; }
-	BlockReading = BlockReading->pprev;
-	}
-	CBigNum bnNew(PastDifficultyAverage);
-	int64_t _nTargetTimespan = CountBlocks*nTargetSpacing;
-	if (nActualTimespan < _nTargetTimespan/3)
-		nActualTimespan = _nTargetTimespan/3;
-	if (nActualTimespan > _nTargetTimespan*3)
-		nActualTimespan = _nTargetTimespan*3;
-	// Retarget
-	bnNew *= nActualTimespan;
-	bnNew /= _nTargetTimespan;
-	
-	if (bnNew > bnProofOfWorkLimit){
-		bnNew = bnProofOfWorkLimit;
-	}
-return bnNew.GetCompact();
+unsigned int GetNextWorkRequiredM(const CBlockIndex* pindexLast, const CBlockHeader *pblock, int algo)
+{ 
+    return StabilX(pindexLast, pblock, algo);
 }
 
-bool CheckProofOfWork(uint256 hash, unsigned int nBits)
+unsigned int GetNextWRKReq(const CBlockIndex* pindexLast, const CBlock *pblock, int algo)
+{
+    return GetNextWorkRequired(pindexLast, pblock, algo);
+}
+
+
+bool CheckProofOfWork(uint256 hash, unsigned int nBits, int algo)
 {
     CBigNum bnTarget;
     bnTarget.SetCompact(nBits);
 
     // Check range
-    if (bnTarget <= 0 || bnTarget > Params().ProofOfWorkLimit())
+    if (bnTarget <= 0 || bnTarget > Params().ProofOfWorkLimit(algo))
         return error("CheckProofOfWork() : nBits below minimum work");
-
-    // Check proof of work matches claimed amount
-    if (hash > bnTarget.getuint256())
-        return error("CheckProofOfWork() : hash doesn't match nBits");
 
     return true;
 }
@@ -1615,7 +1712,7 @@ void CheckForkWarningConditions()
     if (pindexBestForkTip && chainActive.Height() - pindexBestForkTip->nHeight >= 360)
         pindexBestForkTip = NULL;
 
-    if (pindexBestForkTip || (pindexBestInvalid && pindexBestInvalid->nChainWork > chainActive.Tip()->nChainWork + (chainActive.Tip()->GetBlockWork() * 30).getuint256()))
+    if (pindexBestForkTip || (pindexBestInvalid && pindexBestInvalid->nChainWork > chainActive.Tip()->nChainWork + (chainActive.Tip()->GetBlockWorkAdjusted() * 30).getuint256()))
     {
         if (!fLargeWorkForkFound)
         {
@@ -1671,7 +1768,7 @@ void CheckForkWarningConditionsOnNewFork(CBlockIndex* pindexNewForkTip)
     // We define it this way because it allows us to only store the highest fork tip (+ base) which meets
     // the 7-block condition and from this always have the most-likely-to-cause-warning fork
     if (pfork && (!pindexBestForkTip || (pindexBestForkTip && pindexNewForkTip->nHeight > pindexBestForkTip->nHeight)) &&
-            pindexNewForkTip->nChainWork - pfork->nChainWork > (pfork->GetBlockWork() * 7).getuint256() &&
+            pindexNewForkTip->nChainWork - pfork->nChainWork > (pfork->GetBlockWorkAdjusted() * 7).getuint256() &&
             chainActive.Height() - pindexNewForkTip->nHeight < 72)
     {
         pindexBestForkTip = pindexNewForkTip;
@@ -1692,7 +1789,8 @@ void Misbehaving(NodeId pnode, int howmuch)
         return;
 
     state->nMisbehavior += howmuch;
-    if (state->nMisbehavior >= GetArg("-banscore", 100))
+    int banscore = GetArg("-banscore", 100);
+    if (state->nMisbehavior >= banscore && state->nMisbehavior - howmuch < banscore)
     {
         LogPrintf("Misbehaving: %s (%d -> %d) BAN THRESHOLD EXCEEDED\n", state->name, state->nMisbehavior-howmuch, state->nMisbehavior);
         state->fShouldBan = true;
@@ -1743,10 +1841,6 @@ void static InvalidBlockFound(CBlockIndex *pindex, const CValidationState &state
 void UpdateTime(CBlockHeader& block, const CBlockIndex* pindexPrev)
 {
     block.nTime = max(pindexPrev->GetMedianTimePast()+1, GetAdjustedTime());
-
-    // Updating time can change work required on testnet:
-    if (TestNet())
-        block.nBits = GetNextWorkRequired(pindexPrev, &block);
 }
 
 
@@ -1792,15 +1886,7 @@ bool VerifySignature(const CCoins& txFrom, const CTransaction& txTo, unsigned in
 
 int GetRequiredMaturityDepth(int nHeight)
 {
-
-//    if (nHeight >= COINBASE_MATURITY_SWITCH)
-//    {
-//        return COINBASE_MATURITY_NEW;
-//    }
-//    else
-//    {
         return COINBASE_MATURITY;
-//    }
 }
 
 bool CheckInputs(const CTransaction& tx, CValidationState &state, CCoinsViewCache &inputs, bool fScriptChecks, unsigned int flags, std::vector<CScriptCheck> *pvChecks)
@@ -2077,6 +2163,12 @@ bool ConnectBlock(CBlock& block, CValidationState& state, CBlockIndex* pindex, C
     unsigned int flags = SCRIPT_VERIFY_NOCACHE |
                          (fStrictPayToScriptHash ? SCRIPT_VERIFY_P2SH : SCRIPT_VERIFY_NONE);
 
+    if (block.GetBaseVersion() >= 3 &&
+        ((!TestNet() && CBlockIndex::IsSuperMajority(3, pindex->pprev, 1500, 2000)) ||
+            (TestNet() && CBlockIndex::IsSuperMajority(3, pindex->pprev, 501, 1000)))) {
+        flags |= SCRIPT_VERIFY_DERSIG;
+    }
+
     CBlockUndo blockundo;
 
     CCheckQueueControl<CScriptCheck> control(fScriptChecks && nScriptCheckThreads ? &scriptcheckqueue : NULL);
@@ -2236,13 +2328,13 @@ void static UpdateTip(CBlockIndex *pindexNew) {
       Checkpoints::GuessVerificationProgress(chainActive.Tip()));
 
     // Check the version of the last 100 blocks to see if we need to upgrade:
-    if (!fIsInitialDownload)
+/*  if (!fIsInitialDownload)
     {
         int nUpgraded = 0;
         const CBlockIndex* pindex = chainActive.Tip();
         for (int i = 0; i < 100 && pindex != NULL; i++)
         {
-            if (pindex->nVersion > CBlock::CURRENT_VERSION && !IsAuxPowVersion(pindex->nVersion))
+            if (pindex->GetBaseVersion() > CBlock::CURRENT_VERSION)
                 ++nUpgraded;
             pindex = pindex->pprev;
         }
@@ -2251,7 +2343,7 @@ void static UpdateTip(CBlockIndex *pindexNew) {
         if (nUpgraded > 100/2)
             // strMiscWarning is read by GetWarnings(), called by Qt and the JSON-RPC code to warn the user:
             strMiscWarning = _("Warning: This version is obsolete, upgrade required!");
-    }
+    }   */
 }
 
 // Disconnect chainActive's tip.
@@ -2472,7 +2564,7 @@ CBlockIndex* AddToBlockIndex(CBlockHeader& block)
         pindexNew->pprev = (*miPrev).second;
         pindexNew->nHeight = pindexNew->pprev->nHeight + 1;
     }
-    pindexNew->nChainWork = (pindexNew->pprev ? pindexNew->pprev->nChainWork : 0) + pindexNew->GetBlockWork().getuint256();
+    pindexNew->nChainWork = (pindexNew->pprev ? pindexNew->pprev->nChainWork : 0) + pindexNew->GetBlockWorkAdjusted().getuint256();
     pindexNew->RaiseValidity(BLOCK_VALID_TREE);
 
     return pindexNew;
@@ -2547,6 +2639,7 @@ int GetAuxPowStartBlock()
 
 bool CBlockHeader::CheckProofOfWork(int nHeight) const
 {
+    int algo = GetAlgo();
     if (nHeight >= GetAuxPowStartBlock())
     {
         // Prevent same work from being submitted twice:
@@ -2554,20 +2647,21 @@ bool CBlockHeader::CheckProofOfWork(int nHeight) const
         // - parent block must not have the same chain ID (see CAuxPow::Check)
         // - index of this chain in chain merkle tree must be pre-determined (see CAuxPow::Check)
         if (!TestNet() && nHeight != INT_MAX && GetChainID() != AUXPOW_CHAIN_ID)
-            return error("CheckProofOfWork() : block does not have our chain ID");
+            return error("CheckProofOfWork() : block (chainID=%d) does not have our chain ID (chainID=%d)", GetChainID(),AUXPOW_CHAIN_ID);
 
         if (auxpow.get() != NULL)
         {
             if (!auxpow->Check(GetHash(), GetChainID()))
                 return error("CheckProofOfWork() : AUX POW is not valid");
             // Check proof of work matches claimed amount
-            if (!::CheckProofOfWork(auxpow->GetParentBlockHash(), nBits))
+            if (!::CheckProofOfWork(auxpow->GetParentBlockHash(algo), nBits, algo))
                 return error("CheckProofOfWork() : AUX proof of work failed");
         }
         else
         {
             // Check proof of work matches claimed amount
-            if (!::CheckProofOfWork(GetPoWHash(), nBits))
+            // LogPrintf("CBlockHeader::CheckProofOfWork - Algo %d, Height %d \r\n",algo, nHeight);
+            if (!::CheckProofOfWork(GetPoWHash(algo), nBits, algo))
                 return error("CheckProofOfWork() : proof of work failed");
         }
     }
@@ -2579,7 +2673,7 @@ bool CBlockHeader::CheckProofOfWork(int nHeight) const
         }
 
         // Check if proof of work marches claimed amount
-        if (!::CheckProofOfWork(GetPoWHash(), nBits))
+        if (!::CheckProofOfWork(GetPoWHash(algo), nBits, algo))
             return error("CheckProofOfWork() : proof of work failed");
     }
     return true;
@@ -2683,6 +2777,7 @@ bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state, int nH
 {
     // Check proof of work matches claimed amount
     if (fCheckPOW && !block.CheckProofOfWork(nHeight))
+    //if (fCheckPOW && !CheckProofOfWork(block.GetPoWHash(block.GetAlgo()), block.nBits, block.GetAlgo()))
         return state.DoS(50, error("CheckBlockHeader() : proof of work failed"),
                          REJECT_INVALID, "high-hash");
 
@@ -2690,27 +2785,6 @@ bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state, int nH
     if (block.GetBlockTime() > GetAdjustedTime() + 2 * 60 * 60)
         return state.Invalid(error("CheckBlockHeader() : block timestamp too far in the future"),
                              REJECT_INVALID, "time-too-new");
-
-    CBlockIndex* pcheckpoint = Checkpoints::GetLastCheckpoint(mapBlockIndex);
-    if (pcheckpoint && block.hashPrevBlock != (chainActive.Tip() ? chainActive.Tip()->GetBlockHash() : uint256(0)))
-    {
-        // Extra checks to prevent "fill up memory by spamming with bogus blocks"
-        int64_t deltaTime = block.GetBlockTime() - pcheckpoint->nTime;
-        if (deltaTime < 0)
-        {
-            return state.DoS(100, error("CheckBlockHeader() : block with timestamp before last checkpoint"),
-                             REJECT_CHECKPOINT, "time-too-old");
-        }
-        CBigNum bnNewBlock;
-        bnNewBlock.SetCompact(block.nBits);
-        CBigNum bnRequired;
-        bnRequired.SetCompact(ComputeMinWork(pcheckpoint->nBits, deltaTime));
-        if (bnNewBlock > bnRequired)
-        {
-            return state.DoS(100, error("CheckBlockHeader() : block with too little proof-of-work"),
-                             REJECT_INVALID, "bad-diffbits");
-        }
-    }
 
     return true;
 }
@@ -2796,23 +2870,57 @@ bool AcceptBlockHeader(CBlockHeader& block, CValidationState& state, CBlockIndex
             return state.DoS(10, error("AcceptBlock() : prev block not found"), 0, "bad-prevblk");
         pindexPrev = (*mi).second;
         nHeight = pindexPrev->nHeight+1;
-        
-	// Check proof of work
-	if (nHeight < 555000)
-	{
-		
-		if (block.nBits != GetNextWorkRequired(pindexPrev, &block))
-			LogPrintf("AcceptBlock() : incorrect proof of work nBits: %d : GetNextWorkRequired: %d ",block.nBits, GetNextWorkRequired(pindexPrev, &block));		
-	}
-	else
-	{
-        
-        	if (block.nBits != GetNextWorkRequired(pindexPrev, &block))
-            		return state.DoS(100, error("AcceptBlock() : incorrect proof of work"),
+            // Check count of sequence of the same algorithm
+        if (nHeight > mAlgo_FORK)
+        {
+            int nAlgo = block.GetAlgo();
+            int nAlgoCount = 1;
+            CBlockIndex* piPrev = pindexPrev;
+
+            // Maximum sequence count allowed
+            int nMaxSeqCount;
+            if (nHeight > MAX_BLOCK_ALGO_COUNT_V2_START)
+                nMaxSeqCount = MAX_BLOCK_ALGO_COUNT_V2;
+            else
+                if (nHeight > mAlgo_FORK)
+                    nMaxSeqCount = MAX_BLOCK_ALGO_COUNT;
+
+            while (piPrev!=NULL && (nAlgoCount <= nMaxSeqCount))
+            {
+                if (piPrev->GetAlgo() != nAlgo)
+                    break;
+                nAlgoCount++;
+                piPrev = piPrev->pprev;
+            }
+
+            if(fDebug)
+            {
+                LogPrintf("MaxSequentialAlgoRule DEBUG: nHeight: %d, nAlgoCount: %d, nMaxSeqCount: %d\n", nHeight, nAlgoCount, nMaxSeqCount);
+            }
+            if (nAlgoCount > nMaxSeqCount)
+            {
+            return state.DoS(100, error("AcceptBlock() : Too Many Blocks From the Same Algo"), REJECT_INVALID, "algo-toomany");
+            }
+        }
+
+        LogPrintf("Checking Block %d with Algo %d \n", nHeight, block.GetAlgo());
+        if (block.GetAlgo() == ALGO_SCRYPT)  { LogPrintf("Algo is Scrypt \n ");}
+        if (block.GetAlgo() == ALGO_SHA256D) { LogPrintf("Algo is SHA256 \n");}
+
+        // Check proof of work
+        if ((nHeight > SwitchToStabilX) && (block.nBits != GetNextWorkRequiredM(pindexPrev, &block, block.GetAlgo())))
+            return state.DoS(100, error("AcceptBlock() : incorrect proof of work"),
                              REJECT_INVALID, "bad-diffbits");
-	
-		
-	}
+
+        #if 0 
+     if (TestNet() && block.GetAlgo() != ALGO_SCRYPT )
+            return state.Invalid(error("AcceptBlock() : incorrect hashing algo, only scrypt accepted until block %u", mAlgo_FORK),
+                REJECT_INVALID, "bad-hashalgo");
+
+     else if(!TestNet() && nHeight < mAlgo_FORK && block.GetAlgo() != ALGO_SCRYPT)
+               return state.Invalid(error("AcceptBlock() : incorrect hashing algo, only scrypt accepted until block %u", mAlgo_FORK),
+                           REJECT_INVALID, "bad-hashalgo");
+        #endif
 
         // Check timestamp against prev
         if (block.GetBlockTime() <= pindexPrev->GetMedianTimePast())
@@ -2829,15 +2937,13 @@ bool AcceptBlockHeader(CBlockHeader& block, CValidationState& state, CBlockIndex
         if (pcheckpoint && nHeight < pcheckpoint->nHeight)
             return state.DoS(100, error("AcceptBlock() : forked chain older than last checkpoint (height %d)", nHeight));
 
-        // Reject block.nVersion=1 blocks when 95% (75% on testnet) of the network has upgraded:
-        if (block.nVersion < 2)
-        {
-            if ((!TestNet() && CBlockIndex::IsSuperMajority(2, pindexPrev, 950, 1000)) ||
-                (TestNet() && CBlockIndex::IsSuperMajority(2, pindexPrev, 75, 100)))
-            {
-                return state.Invalid(error("AcceptBlock() : rejected nVersion=1 block"),
+        // Reject block.nVersion<3 blocks when 95% (75% on testnet) of the network has upgraded
+        // Kuberbitcoin: reject v2 and v1 blocks at the same time, only check once
+        if (block.GetBaseVersion() < 3) {
+            if ((!TestNet() && CBlockIndex::IsSuperMajority(3, pindexPrev, 1900, 2000)) ||
+                (TestNet() && CBlockIndex::IsSuperMajority(3, pindexPrev, 750, 1000)))
+                return state.Invalid(error("AcceptBlock() : rejected nVersion<3 block"),
                                      REJECT_OBSOLETE, "bad-version");
-            }
         }
     }
 
@@ -2879,11 +2985,13 @@ bool AcceptBlock(CBlock& block, CValidationState& state, CBlockIndex** ppindex, 
         }
 
     // Enforce block.nVersion=2 rule that the coinbase starts with serialized block height
-    if (block.nVersion >= 2)
+    // Kuberbitcoin: reject ONLY if block.nVersion=3 has a supermajority because CBlockIndex::IsSuperMajority
+    //           was hard-disabled until now
+    if (block.GetBaseVersion() >= 2)
     {
         // if 750 of the last 1,000 blocks are version 2 or greater (51/100 if testnet):
-        if ((!TestNet() && CBlockIndex::IsSuperMajority(2, pindex->pprev, 750, 1000)) ||
-            (TestNet() && CBlockIndex::IsSuperMajority(2, pindex->pprev, 51, 100)))
+        if ((!TestNet() && CBlockIndex::IsSuperMajority(3, pindex->pprev, 1500, 2000)) ||
+            (TestNet() && CBlockIndex::IsSuperMajority(3, pindex->pprev, 501, 1000)))
         {
             CScript expect = CScript() << nHeight;
             if (block.vtx[0].vin[0].scriptSig.size() < expect.size() ||
@@ -2927,13 +3035,11 @@ bool AcceptBlock(CBlock& block, CValidationState& state, CBlockIndex** ppindex, 
 
 bool CBlockIndex::IsSuperMajority(int minVersion, const CBlockIndex* pstart, unsigned int nRequired, unsigned int nToCheck)
 {
-    // Kuberbitcoin: temporarily disable v2 block lockin until we are ready for v2 transition
-    return false;
 
     unsigned int nFound = 0;
     for (unsigned int i = 0; i < nToCheck && nFound < nRequired && pstart != NULL; i++)
     {
-        if (pstart->nVersion >= minVersion)
+        if (pstart->GetBaseVersion() >= minVersion)
             ++nFound;
         pstart = pstart->pprev;
     }
@@ -2963,12 +3069,14 @@ std::string CBlockIndex::ToString() const
 
 std::string CDiskBlockIndex::ToString() const
 {
+	int algo = GetAlgo();
+ 	
     std::string str = "CDiskBlockIndex(";
     str += CBlockIndex::ToString();
     str += strprintf("\n                hashBlock=%s, hashPrev=%s, hashParentBlock=%s)",
         GetBlockHash().ToString().c_str(),
         hashPrev.ToString().c_str(),
-        (auxpow.get() != NULL) ? auxpow->GetParentBlockHash().ToString().substr(0,20).c_str() : "-");
+        (auxpow.get() != NULL) ? auxpow->GetParentBlockHash(algo).ToString().substr(0,20).c_str() : "-");
     return str;
 }
 
@@ -3024,6 +3132,28 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
             mapAlreadyAskedFor.erase(CInv(MSG_BLOCK, hash));
         return error("ProcessBlock() : CheckBlock FAILED");
     }
+    
+    CBlockIndex* pcheckpoint = Checkpoints::GetLastCheckpoint(mapBlockIndex);
+    if (pcheckpoint && pblock->hashPrevBlock != (chainActive.Tip() ? chainActive.Tip()->GetBlockHash() : uint256(0)))
+    {
+        // Extra checks to prevent "fill up memory by spamming with bogus blocks"
+        int64_t deltaTime = pblock->GetBlockTime() - pcheckpoint->nTime;
+        if (deltaTime < 0)
+        {
+            return state.DoS(100, error("ProcessBlock() : block with timestamp before last checkpoint"),
+                             REJECT_CHECKPOINT, "time-too-old");
+        }
+        CBigNum bnNewBlock;
+        bnNewBlock.SetCompact(pblock->nBits);
+        CBigNum bnRequired;
+        bnRequired.SetCompact(ComputeMinWork(pcheckpoint->nBits, deltaTime, GetAlgo(pblock->nVersion)));
+        if (bnNewBlock > bnRequired)
+        {
+            return state.DoS(100, error("ProcessBlock() : block with too little proof-of-work"),
+                             REJECT_INVALID, "bad-diffbits");
+        }
+    }
+
 
     // If we don't already have its previous block (with full data), shunt it off to holding area until we get it
     std::map<uint256, CBlockIndex*>::iterator it = mapBlockIndex.find(pblock->hashPrevBlock);
@@ -3337,7 +3467,7 @@ bool static LoadBlockIndexDB()
     BOOST_FOREACH(const PAIRTYPE(int, CBlockIndex*)& item, vSortedByHeight)
     {
         CBlockIndex* pindex = item.second;
-        pindex->nChainWork = (pindex->pprev ? pindex->pprev->nChainWork : 0) + pindex->GetBlockWork().getuint256();
+        pindex->nChainWork = (pindex->pprev ? pindex->pprev->nChainWork : 0) + pindex->GetBlockWorkAdjusted().getuint256();
         pindex->nChainTx = (pindex->pprev ? pindex->pprev->nChainTx : 0) + pindex->nTx;
         if (pindex->IsValid(BLOCK_VALID_TRANSACTIONS))
             setBlockIndexValid.insert(pindex);
@@ -3870,7 +4000,7 @@ void static ProcessGetData(CNode* pfrom)
     }
 }
 
-bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
+bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, int64_t nTimeReceived)
 {
     RandAddSeedPerfmon();
     LogPrint("net", "received: %s (%" PRIszu" bytes)\n", strCommand, vRecv.size());
@@ -3919,6 +4049,26 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         if (!vRecv.empty()) {
             vRecv >> LIMITED_STRING(pfrom->strSubVer, 256);
             pfrom->cleanSubVer = SanitizeString(pfrom->strSubVer);
+
+            if (
+                (pfrom->cleanSubVer == "/Argetoshi:1.8.3/") || 
+                (pfrom->cleanSubVer == "/Argetoshi:2.0.0/") || 
+                (pfrom->cleanSubVer == "/Argetoshi:2.1.0/") ||
+                (pfrom->cleanSubVer == "/Argetoshi:2.2.0/") ||
+                (pfrom->cleanSubVer == "/Argetoshi:2.3.0/") ||
+                (pfrom->cleanSubVer == "/Argetoshi:2.3.1/") ||
+                (pfrom->cleanSubVer == "/Argetoshi:2.3.2/") ||
+                (pfrom->cleanSubVer == "/Argetoshi:2.3.3/") ||
+                (pfrom->cleanSubVer == "/Argetoshi:2.4.0/") 
+            )
+            {
+                // disconnect from peers older than this client version
+                LogPrintf("partner %s using obsolete client sub version %s; disconnecting\n", pfrom->addr.ToString(), pfrom->cleanSubVer);
+                pfrom->PushMessage("reject", strCommand, REJECT_OBSOLETE,
+                    strprintf("Version must be %d or greater", MIN_PEER_CLIENT_VERSION));
+                pfrom->fDisconnect = true;
+                return false;
+            }
         }
         if (!vRecv.empty())
             vRecv >> pfrom->nStartingHeight;
@@ -3955,7 +4105,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         if (!pfrom->fInbound)
         {
             // Advertise our address
-            if (!fNoListen && !IsInitialBlockDownload())
+            if (fListen && !IsInitialBlockDownload())
             {
                 CAddress addr = GetLocalAddress(&pfrom->addr);
                 if (addr.IsRoutable())
@@ -4003,6 +4153,12 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
     else if (strCommand == "verack")
     {
         pfrom->SetRecvVersion(min(pfrom->nVersion, PROTOCOL_VERSION));
+
+        // Mark this node as currently connected, so we update its timestamp later.
+        if (pfrom->fNetworkNode) {
+            LOCK(cs_main);
+            State(pfrom->GetId())->fCurrentlyConnected = true;
+        }
     }
 
 
@@ -4296,6 +4452,11 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             unsigned int nEvicted = LimitOrphanTxSize(nMaxOrphanTx);
             if (nEvicted > 0)
                 LogPrint("mempool", "mapOrphan overflow, removed %u tx\n", nEvicted);
+        } else if (pfrom->fWhitelisted) {
+            // Always relay transactions received from whitelisted peers, even
+            // if they are already in the mempool (allowing the node to function
+            // as a gateway for nodes hidden behind it).
+            RelayTransaction(tx, tx.GetHash());
         }
         int nDoS = 0;
         if (state.IsInvalid(nDoS))
@@ -4390,7 +4551,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
 
     else if (strCommand == "pong")
     {
-        int64_t pingUsecEnd = GetTimeMicros();
+        int64_t pingUsecEnd = nTimeReceived;
         uint64_t nonce = 0;
         size_t nAvail = vRecv.in_avail();
         bool bPingFinished = false;
@@ -4559,11 +4720,6 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
     }
 
 
-    // Update the last seen time for this node's address
-    if (pfrom->fNetworkNode)
-        if (strCommand == "version" || strCommand == "addr" || strCommand == "inv" || strCommand == "getdata" || strCommand == "ping")
-            AddressCurrentlyConnected(pfrom->addr);
-
 
     return true;
 }
@@ -4646,7 +4802,7 @@ bool ProcessMessages(CNode* pfrom)
         bool fRet = false;
         try
         {
-            fRet = ProcessMessage(pfrom, strCommand, vRecv);
+            fRet = ProcessMessage(pfrom, strCommand, vRecv, msg.nTime);
             boost::this_thread::interruption_point();
         }
         catch (std::ios_base::failure& e)
@@ -4705,8 +4861,8 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
             // RPC ping request by user
             pingSend = true;
         }
-        if (pto->nLastSend && GetTime() - pto->nLastSend > 30 * 60 && pto->vSendMsg.empty()) {
-            // Ping automatically sent as a keepalive
+        if (pto->nPingNonceSent == 0 && pto->nPingUsecStart + PING_INTERVAL * 1000000 < GetTimeMicros()) {
+            // Ping automatically sent as a latency probe & keepalive.
             pingSend = true;
         }
         if (pingSend) {
@@ -4714,15 +4870,14 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
             while (nonce == 0) {
                 RAND_bytes((unsigned char*)&nonce, sizeof(nonce));
             }
-            pto->nPingNonceSent = nonce;
             pto->fPingQueued = false;
+            pto->nPingUsecStart = GetTimeMicros();
             if (pto->nVersion > BIP0031_VERSION) {
-                // Take timestamp as close as possible before transmitting ping
-                pto->nPingUsecStart = GetTimeMicros();
+                pto->nPingNonceSent = nonce;
                 pto->PushMessage("ping", nonce);
             } else {
-                // Peer is too old to support ping command with nonce, pong will never arrive, disable timing
-                pto->nPingUsecStart = 0;
+                // Peer is too old to support ping command with nonce, pong will never arrive.
+                pto->nPingNonceSent = 0;
                 pto->PushMessage("ping");
             }
         }
@@ -4744,7 +4899,7 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
                         pnode->setAddrKnown.clear();
 
                     // Rebroadcast our address
-                    if (!fNoListen)
+                    if (fListen)
                     {
                         CAddress addr = GetLocalAddress(&pnode->addr);
                         if (addr.IsRoutable())
@@ -4783,11 +4938,14 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
 
         CNodeState &state = *State(pto->GetId());
         if (state.fShouldBan) {
-            if (pto->addr.IsLocal())
-                LogPrintf("Warning: not banning local node %s!\n", pto->addr.ToString());
+            if (pto->fWhitelisted)
+                LogPrintf("Warning: not punishing whitelisted peer %s!\n", pto->addr.ToString());
             else {
                 pto->fDisconnect = true;
-                CNode::Ban(pto->addr);
+                if (pto->addr.IsLocal())
+                    LogPrintf("Warning: not banning local peer %s!\n", pto->addr.ToString());
+                else
+                    CNode::Ban(pto->addr);
             }
             state.fShouldBan = false;
         }

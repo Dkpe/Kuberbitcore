@@ -38,9 +38,9 @@ public:
 
     bool Check(uint256 hashAuxBlock, int nChainID);
 
-    uint256 GetParentBlockHash()
+    uint256 GetParentBlockHash(int algo)
     {
-        return parentBlockHeader.GetPoWHash();
+        return parentBlockHeader.GetPoWHash(algo);
     }
 };
 

@@ -1,6 +1,5 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2013-2014 The Kuberbitcoin developers
-// Copyright (c)      2014 The Inutoshi developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -39,8 +38,9 @@ namespace Checkpoints
     //   (no blocks before with a timestamp after, none after with
     //    timestamp before)
     // + Contains no strange transactions
+    // no checkpoint now, can be added in later releases
     static MapCheckpoints mapCheckpoints =
-        boost::assign::map_list_of
+            boost::assign::map_list_of
         (       0, uint256("0xb0422f5a081f5ff5b2261653ce7816edd171ebf21e758273aa937bdd96f480c9"))
         (       500, uint256("e5714f2682d36865a81e9283598b743e494a49a3ac7e64947e875f7824b5fd63"))
         (       1000, uint256("90d9336757b513603e404f2aa1930d22c3ae9b8660b548b98fb83a131cf1de67"))
@@ -62,42 +62,38 @@ namespace Checkpoints
         (       12000, uint256("a0bc3c3572a4f52a8a79c1001090dcbdd24ef3061eb3279958146852aecc8de9")) 
         (       13000, uint256("1aa1e4caaea9e0e5bcd05a84016cb253b9baea60c251083c032059b9f9a979df")) 
         (       14000, uint256("38c033596c06320e9ba9360c24e7fb46d3bc1a5cf64c864d3e4961f618f4aafc")) 
-        (       15000, uint256("e8da0421fca659fb44c11c847a290cb56aaa6e721caec9a55956d82efb1b3b98")) 
-       
-        
-        ;
-        
-    static const CCheckpointData data = {
+        (       15000, uint256("e8da0421fca659fb44c11c847a290cb56aaa6e721caec9a55956d82efb1b3b98"))
+    ;
+            
+	static const CCheckpointData data = {
         &mapCheckpoints,
-        1500877754, // * UNIX timestamp of last checkpoint block
-        1995092,    // * total number of transactions between genesis and last checkpoint
-                  //   (the tx=... number in the SetBestChain debug.log lines)
-        1800.0     // * estimated number of transactions per day after checkpoint
+        1477330596, // * UNIX timestamp of last checkpoint block
+        2263089,   // * total number of transactions between genesis and last checkpoint
+                    //   (the tx=... number in the SetBestChain debug.log lines)
+        2000.0     // * estimated number of transactions per day after checkpoint
     };
 
-    static MapCheckpoints mapCheckpointsTestnet = 
+    static MapCheckpoints mapCheckpointsTestnet =
         boost::assign::map_list_of
-        (     0, uint256("523f8a9f38bb5998df20870d8e306a15e75e60935ee37b66df0fd36584a0e48a"))
+        (     0, uint256("0x"))
         ;
     static const CCheckpointData dataTestnet = {
         &mapCheckpointsTestnet,
-        1385836559,
-        1,
-        960.0
+        0,
+        0,
+        0
     };
 
     static MapCheckpoints mapCheckpointsRegtest =
         boost::assign::map_list_of
         ( 0, uint256("3d2160a3b5dc4a9d62e7e66a295f70313ac808440ef7400d6c0772171ce973a5"))
-    ;
+        ;
     static const CCheckpointData dataRegtest = {
         &mapCheckpointsRegtest,
         0,
         0,
         0
     };
-    
-
 
     const CCheckpointData &Checkpoints() {
         if (Params().NetworkID() == CChainParams::TESTNET)
