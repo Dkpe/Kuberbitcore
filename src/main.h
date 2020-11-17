@@ -78,11 +78,11 @@ static const int MAX_BLOCKS_IN_TRANSIT_PER_PEER = 512;
 /** Timeout in seconds before considering a block download peer unresponsive. */
 static const unsigned int BLOCK_DOWNLOAD_TIMEOUT = 30;
 
-static const int mAlgo_FORK = 19345; // Block where multi-algoritm mining starts   //#fixme
+static const int mAlgo_FORK = 19342; // Block where multi-algoritm mining starts   //#fixme
 static const int MAX_BLOCK_ALGO_COUNT = 6; // Maximum number block accepted by the same algorithm
 static const int MAX_BLOCK_ALGO_COUNT_V2_START = 19351;  //#fixme
 static const int MAX_BLOCK_ALGO_COUNT_V2 = 10; // Maximum number block accepted by the same algorithm version 2
-const int64_t multiAlgoDiffChangeTarget = 19345; //#fixme
+const int64_t multiAlgoDiffChangeTarget = 19342; //#fixme
 
 /** AuxPow Block versions for sanity checks. */
 /** bare AuxPoW block version which will be modulated further. */
