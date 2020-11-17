@@ -9,20 +9,16 @@ You only need to do this when first syncing Kuberbitcoin Core; after that, updat
 - A fresh install of the Kuberbitcoin Core client software.
 
 ### Download the block chain
-Be sure to only use the official repositories listed below.
-Both mirrors are updated nightly and hosted by [SoChain](https://chain.so)
+
+WIP
 
 #### US Mirror
 
-Click [here](https://bootstrap.chain.so/) to go to the download page, or use the URL below.
-
-    https://bootstrap.chain.so/bootstrap.dat
+WIP
 
 #### EU Mirror
 
-Click [here](https://uk.bootstrap.chain.so/) to go to the download page, or use the URL below.
-
-    https://uk.bootstrap.chain.so/bootstrap.dat
+WIP
 
 ### Importing the blockchain
 Launch the Kuberbitcoin Core client once before continuing the process and then exit the Kuberbitcoin Core software. Be sure not to have an actively used wallet in use. Now we are going to copy the download of the blockchain to the Kuberbitcoin Core data directory. You should run the client software at least once so it can generate the data directory. Copy the downloaded bootstrap.dat file into the Kuberbitcoin data folder.
@@ -30,15 +26,15 @@ Launch the Kuberbitcoin Core client once before continuing the process and then 
 **For Windows users:**
 Open explorer, and type into the address bar:
 
-    %APPDATA%\Roaming\KuberbitCoin
+    %APPDATA%\Roaming\Kuberbitcoin
 
 This will open up the data folder. It should look like the image below. Copy over the bootstrap.dat from your download folder to this directory.
-![Fig4](img/kuberbitcoinstrap1.png)
+WIP
 
 **For OSX users:**
 Open Finder by pressing Press [shift] + [cmd] + [g] and enter:
 
-    ~/Library/Application Support/KuberbitCoin/
+    ~/Library/Application Support/Kuberbitcoin/
 
 **For Linux users:**
 The directory is hidden in your User folder. Go to:
@@ -47,7 +43,7 @@ The directory is hidden in your User folder. Go to:
 
 ### Importing the blockchain
 Now start the Kuberbitcoin Core client software. It should show "Importing blocks from disk" like the image below. 
-![Fig5](img/kuberbitcoinstrap2.png)
+WIP
 Wait until the import finishes. The client will download the last days not covered by the import. Congratulations you have successfully imported the blockchain!
 
 ### Is this safe?

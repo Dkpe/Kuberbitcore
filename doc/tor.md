@@ -1,4 +1,4 @@
-TOR SUPPORT IN PESETACOIN
+TOR SUPPORT IN KUBERBITCOIN
 =======================
 
 It is possible to run Kuberbitcoin as a Tor hidden service, and connect to such services.
@@ -47,11 +47,11 @@ reachable from the Tor network. Add these lines to your /etc/tor/torrc (or equiv
 config file):
 
 	HiddenServiceDir /var/lib/tor/kuberbitcoin-service/
-	HiddenServicePort 16639 127.0.0.1:8333
+	HiddenServicePort 13580 127.0.0.1:8333
 	HiddenServicePort 44556 127.0.0.1:44556
 
 The directory can be different of course, but (both) port numbers should be equal to
-your kuberbitcoind's P2P listen port (16639 by default).
+your kuberbitcoind's P2P listen port (13580 by default).
 
 	-externalip=X   You can tell kuberbitcoin about its publicly reachable address using
 	                this option, and this can be a .onion address. Given the above
@@ -81,7 +81,7 @@ specify:
 
 	./kuberbitcoind ... -discover
 
-and open port 16639 on your firewall (or use -upnp).
+and open port 13580 on your firewall (or use -upnp).
 
 If you only want to use Tor to reach onion addresses, but not use it as a proxy
 for normal IPv4/IPv6 communication, use:

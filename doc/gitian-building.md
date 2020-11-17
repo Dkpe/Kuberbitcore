@@ -11,7 +11,7 @@ the same, tested dependencies are used and statically built into the executable.
 Multiple developers build the source code by following a specific descriptor
 ("recipe"), cryptographically sign the result, and upload the resulting signature.
 These results are compared and only if they match, the build is accepted and uploaded
-to kuberbitcoin.com.
+to http://github.com/kuberbitcoinproject/kuberbitcoin.
 
 More independent gitian builders are needed, which is why I wrote this
 guide. It is preferred to follow these steps yourself instead of using someone else's
@@ -283,7 +283,7 @@ Clone the git repositories for kuberbitcoin and gitian,
 
 ```bash
 git clone https://github.com/devrandom/gitian-builder.git
-git clone https://github.com/kuberbitcoin/kuberbitcoin
+git clone https://github.com/kuberbitcoinproject/kuberbitcoin
 ```
 
 Setting up gitian images
@@ -345,7 +345,7 @@ Output from `gbuild` will look something like
     remote: Total 35606 (delta 0), reused 0 (delta 0)
     Receiving objects: 100% (35606/35606), 26.52 MiB | 4.28 MiB/s, done.
     Resolving deltas: 100% (25724/25724), done.
-    From https://github.com/kuberbitcoin/kuberbitcoin
+    From https://github.com/kuberbitcoinproject/kuberbitcoin
     ... (new tags, new branch etc)
     --- Building for precise i386 ---
     Stopping target if it is up

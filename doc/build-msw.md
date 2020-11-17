@@ -22,7 +22,7 @@ for the build process to succeed.
 
 	name            default path               download
 	--------------------------------------------------------------------------------------------------------------------
-	OpenSSL         \openssl-1.0.1j-mgw        http://www.openssl.org/source/
+	OpenSSL         \openssl-1.0.1l-mgw        http://www.openssl.org/source/
 	Berkeley DB     \db-5.1.29.NC-mgw          http://www.oracle.com/technology/software/products/berkeley-db/index.html
 	Boost           \boost-1.55.0-mgw          http://www.boost.org/users/download/
 	miniupnpc       \miniupnpc-1.6-mgw         http://miniupnp.tuxfamily.org/files/
@@ -44,7 +44,7 @@ Their licenses:
 
 Versions used in this release:
 
-	OpenSSL      1.0.1j
+	OpenSSL      1.0.1l
 	Berkeley DB  5.1.29.NC
 	Boost        1.55.0
 	miniupnpc    1.6
@@ -61,11 +61,11 @@ MSYS shell:
 un-tar sources with MSYS 'tar xfz' to avoid issue with symlinks (OpenSSL ticket 2377)
 change 'MAKE' env. variable from 'C:\MinGW32\bin\mingw32-make.exe' to '/c/MinGW32/bin/mingw32-make.exe'
 
-	cd /c/openssl-1.0.1j-mgw
+	cd /c/openssl-1.0.1l-mgw
 	./config
 	make
 
-Berkeley DB
+Berkeley DB (see end of document for important info regarding BDB)
 -----------
 MSYS shell:
 
@@ -110,3 +110,32 @@ MSYS shell:
 	BOOST_ROOT=../boost_1_55_0 ./configure --disable-tests
 	mingw32-make
 	strip kuberbitcoind.exe
+
+
+Berkeley DB
+-----------
+# Installing libdb5.1 onto a system with libdb4.8 already installed. 
+From https://bitcointalk.org/index.php?topic=1432608.msg15382962#msg15382962
+
+BITCOIN_ROOT=$(pwd)
+
+- Pick some path to install BDB to, here we create a directory within the kuberbitcoin directory  
+> BDB_PREFIX="${BITCOIN_ROOT}/db5" mkdir -p $BDB_PREFIX
+
+- Fetch the source and verify that it is not tampered with  
+> wget 'http://download.oracle.com/berkeley-db/db-5.1.29.NC.tar.gz'
+echo '08238e59736d1aacdd47cfb8e68684c695516c37f4fbe1b8267dde58dc3a576c  db-5.1.29.NC.tar.gz' | sha256sum -c  
+tar -xzvf db-5.1.29.NC.tar.gz
+
+- Build the library and install to our prefix  
+> cd db-5.1.29.NC/build_unix/
+
+-  Note: Do a static build so that it can be embedded into the exectuable, instead of having to find a .so at runtime
+> ../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
+make install
+
+- Configure Kuberbitcoin Core to use our own-built instance of BDB  
+> cd $BITCOIN_ROOT
+./autogen.sh
+./configure LDFLAGS="-L${BDB_PREFIX}/lib/" CPPFLAGS="-I${BDB_PREFIX}/include/"
+make
