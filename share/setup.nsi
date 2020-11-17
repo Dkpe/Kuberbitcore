@@ -5,16 +5,16 @@ SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 1.9.4
-!define COMPANY "Kuberbitcoin project"
-!define URL http://www.kuberbitcoin.com/
+!define VERSION 1.9.5
+!define COMPANY "Kuberbitcoin Project"
+!define URL http://www.kuberbitcoin.io/
 
 # MUI Symbol Definitions
-!define MUI_ICON "/home/valk/Music/Kuberbitcoin0.9.3sourceupdate/share/pixmaps/bitcoin.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/valk/Music/Kuberbitcoin0.9.3sourceupdate/share/pixmaps/nsis-wizard.bmp"
+!define MUI_ICON "/home/zarhex/Pictures/kbiscryptsha256/share/pixmaps/bitcoin.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/zarhex/Pictures/kbiscryptsha256/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "/home/valk/Music/Kuberbitcoin0.9.3sourceupdate/share/pixmaps/nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "/home/zarhex/Pictures/kbiscryptsha256/share/pixmaps/nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
@@ -22,7 +22,7 @@ SetCompressor /SOLID lzma
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER "Kuberbitcoin Core"
 !define MUI_FINISHPAGE_RUN $INSTDIR\kuberbitcoin-qt.exe
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/valk/Music/Kuberbitcoin0.9.3sourceupdate/share/pixmaps/nsis-wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/zarhex/Pictures/kbiscryptsha256/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -48,7 +48,7 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile /home/valk/Music/Kuberbitcoin0.9.3sourceupdate/kuberbitcoin-${VERSION}-win-setup.exe
+OutFile /home/zarhex/Pictures/kbiscryptsha256/kuberbitcoin-${VERSION}-win-setup.exe
 !if "" == "64"
 InstallDir $PROGRAMFILES64\Kuberbitcoin
 !else
@@ -73,14 +73,14 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File /home/valk/Music/Kuberbitcoin0.9.3sourceupdate/release/kuberbitcoin-qt.exe
-    File /oname=COPYING.txt /home/valk/Music/Kuberbitcoin0.9.3sourceupdate/COPYING
-    File /oname=readme.txt /home/valk/Music/Kuberbitcoin0.9.3sourceupdate/doc/README_windows.txt
+    File /home/zarhex/Pictures/kbiscryptsha256/release/kuberbitcoin-qt.exe
+    File /oname=COPYING.txt /home/zarhex/Pictures/kbiscryptsha256/COPYING
+    File /oname=readme.txt /home/zarhex/Pictures/kbiscryptsha256/doc/README_windows.txt
     SetOutPath $INSTDIR\daemon
-    File /home/valk/Music/Kuberbitcoin0.9.3sourceupdate/release/kuberbitcoind.exe
-    File /home/valk/Music/Kuberbitcoin0.9.3sourceupdate/release/kuberbitcoin-cli.exe
+    File /home/zarhex/Pictures/kbiscryptsha256/release/kuberbitcoind.exe
+    File /home/zarhex/Pictures/kbiscryptsha256/release/kuberbitcoin-cli.exe
     SetOutPath $INSTDIR\doc
-    File /r /home/valk/Music/Kuberbitcoin0.9.3sourceupdate/doc\*.*
+    File /r /home/zarhex/Pictures/kbiscryptsha256/doc\*.*
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
 
