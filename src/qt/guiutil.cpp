@@ -75,8 +75,12 @@ QString dateTimeStr(qint64 nTime)
 
 QFont bitcoinAddressFont()
 {
-    QFont font("Cursive");
-    font.setFamily("Comic Sans MS");
+    QFont font("Monospace");
+#if QT_VERSION >= 0x040800
+    font.setStyleHint(QFont::Monospace);
+#else
+    font.setStyleHint(QFont::TypeWriter);
+#endif    
     return font;
 }
 
@@ -86,7 +90,7 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent)
 
     widget->setFont(bitcoinAddressFont());
 #if QT_VERSION >= 0x040700
-    widget->setPlaceholderText(QObject::tr("Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)"));
+    widget->setPlaceholderText(QObject::tr("Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)"));
 #endif
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent));

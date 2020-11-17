@@ -122,9 +122,9 @@ OverviewPage::OverviewPage(QWidget *parent) :
     ui->labelTransactionsStatus->setText("(" + tr("out of sync") + ")");
 
     // Customized branding image.
-    boost::filesystem::path kuberbitcoinpath = GetDataDir(false);
-    kuberbitcoinpath /= "kuberbitcoin.png";
-    QPixmap shibecoin(kuberbitcoinpath.string().c_str());
+    boost::filesystem::path dogepath = GetDataDir(false);
+    dogepath /= "kuberbitcoin.png";
+    QPixmap shibecoin(dogepath.string().c_str());
 
     if ( !shibecoin.isNull() ) {
         ui->label_wallet_bgcoin->setPixmap(shibecoin);
@@ -198,7 +198,7 @@ void OverviewPage::setWalletModel(WalletModel *model)
         connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
     }
 
-    // update the display unit, to not use the default ("KBI")
+    // update the display unit, to not use the default ("ARG")
     updateDisplayUnit();
 }
 

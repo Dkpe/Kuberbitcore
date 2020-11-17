@@ -129,21 +129,6 @@ BitcoinGUI::BitcoinGUI(bool fIsTestnet, QWidget *parent) :
          */
         setCentralWidget(rpcConsole);
     }
-    
-    // Kuberbitcoin: load fallback font in case Comic Sans is not availble on the system
-/*    QFontDatabase::addApplicationFont(":fonts/ComicNeue-Bold");
-    QFontDatabase::addApplicationFont(":fonts/ComicNeue-Bold-Oblique");
-    QFontDatabase::addApplicationFont(":fonts/ComicNeue-Light");
-    QFontDatabase::addApplicationFont(":fonts/ComicNeue-Light-Oblique");
-    QFontDatabase::addApplicationFont(":fonts/ComicNeue-Regular");
-    QFontDatabase::addApplicationFont(":fonts/ComicNeue-Regular-Oblique");
-    QFont::insertSubstitution("Comic Sans MS", "Comic Neue");*/
-
-    // Kuberbitcoin: Specify Comic Sans as new font.
-    //QFont newFont("Comic Sans MS", 10);
-
-    // Kuberbitcoin: Set new application font
-    //QApplication::setFont(newFont);
 
     // Accept D&D of URIs
     setAcceptDrops(true);
@@ -317,9 +302,9 @@ void BitcoinGUI::createActions(bool fIsTestnet)
     openRPCConsoleAction = new QAction(QIcon(":/icons/debugwindow"), tr("&Debug window"), this);
     openRPCConsoleAction->setStatusTip(tr("Open debugging and diagnostic console"));
 
-    usedSendingAddressesAction = new QAction(QIcon(":/icons/address-book"), tr("&Sending addresses..."), this);
+    usedSendingAddressesAction = new QAction(QIcon(":/icons/address-book"), tr("Sending addresses..."), this);
     usedSendingAddressesAction->setStatusTip(tr("Show the list of used sending addresses and labels"));
-    usedReceivingAddressesAction = new QAction(QIcon(":/icons/address-book"), tr("&Receiving addresses..."), this);
+    usedReceivingAddressesAction = new QAction(QIcon(":/icons/address-book"), tr("Receiving addresses..."), this);
     usedReceivingAddressesAction->setStatusTip(tr("Show the list of used receiving addresses and labels"));
 
     openAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_FileIcon), tr("Open &URI..."), this);

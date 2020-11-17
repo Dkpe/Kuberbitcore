@@ -22,20 +22,19 @@ SplashScreen::SplashScreen(const QPixmap &pixmap, Qt::WindowFlags f, bool isTest
     setAutoFillBackground(true);
 
     // set reference point, paddings
-    int paddingRight            = 50;
-    int paddingTop              = 350;
+    int paddingRight            = 350;
+    int paddingTop              = 50;
     int titleVersionVSpace      = 17;
     int titleCopyrightVSpace    = 40;
 
     float fontFactor            = 1.0;
 
     // define text to place
-    QString titleText       = tr("Kuberbitcoin MasterCore");
+    QString titleText       = tr("Kuberbitcoin Core");
     QString versionText     = QString("Version %1").arg(QString::fromStdString(FormatFullVersion()));
-    QString copyrightText   = QChar(0xA9)+QString(" 2009-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Bitcoin Core developers\n")) + QChar(0xA9)+QString(" 2013-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Kuberbitcoin MasterCore developers"));
+    QString copyrightText   = QChar(0xA9)+QString(" 2009-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Bitcoin Core developers\n")) + QChar(0xA9)+QString(" 2013-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The Kuberbitcoin Core developers"));
     QString testnetAddText  = QString(tr("[testnet]")); // define text to place as single text object
-
-    QString font            = "Arial";
+    QString font            = QApplication::font().toString();
 
     // load the bitmap for writing some text over it
     QPixmap newPixmap;
@@ -47,7 +46,7 @@ SplashScreen::SplashScreen(const QPixmap &pixmap, Qt::WindowFlags f, bool isTest
     }
 
     QPainter pixPaint(&newPixmap);
-    pixPaint.setPen(QColor(100,100,100));
+    pixPaint.setPen(QColor(176,193,245));
 
     // check font size and drawing with
     pixPaint.setFont(QFont(font, 33*fontFactor));
@@ -61,7 +60,7 @@ SplashScreen::SplashScreen(const QPixmap &pixmap, Qt::WindowFlags f, bool isTest
     pixPaint.setFont(QFont(font, 33*fontFactor));
     fm = pixPaint.fontMetrics();
     titleTextWidth  = fm.width(titleText);
-    //pixPaint.drawText(newPixmap.width()-titleTextWidth-paddingRight,paddingTop,titleText);
+    pixPaint.drawText(newPixmap.width()-titleTextWidth-paddingRight,paddingTop,titleText);
 
     pixPaint.setFont(QFont(font, 15*fontFactor));
 
@@ -112,7 +111,7 @@ static void InitMessage(SplashScreen *splash, const std::string &message)
         Qt::QueuedConnection,
         Q_ARG(QString, QString::fromStdString(message)),
         Q_ARG(int, Qt::AlignBottom|Qt::AlignHCenter),
-        Q_ARG(QColor, QColor(0,218,247)));
+        Q_ARG(QColor, QColor(176,193,245)));
 }
 
 static void ShowProgress(SplashScreen *splash, const std::string &title, int nProgress)

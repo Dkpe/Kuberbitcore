@@ -14,7 +14,7 @@
 #include "monitoreddatamapper.h"
 #include "optionsmodel.h"
 
-#include "main.h" // for CTransaction::nMinTxFee and MAX_SCRIKBIHECK_THREADS
+#include "main.h" // for CTransaction::nMinTxFee and MAX_SCRIPTCHECK_THREADS
 #include "netbase.h"
 #include "txdb.h" // for -dbcache defaults
 
@@ -38,7 +38,7 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
     ui->databaseCache->setMinimum(nMinDbCache);
     ui->databaseCache->setMaximum(nMaxDbCache);
     ui->threadsScriptVerif->setMinimum(-(int)boost::thread::hardware_concurrency());
-    ui->threadsScriptVerif->setMaximum(MAX_SCRIKBIHECK_THREADS);
+    ui->threadsScriptVerif->setMaximum(MAX_SCRIPTCHECK_THREADS);
 
     /* Network elements init */
 #ifndef USE_UPNP
@@ -49,15 +49,8 @@ OptionsDialog::OptionsDialog(QWidget *parent) :
     ui->proxyPort->setEnabled(false);
     ui->proxyPort->setValidator(new QIntValidator(1, 65535, this));
 
-    /** SOCKS version is only selectable for default proxy and is always 5 for IPv6 and Tor */
-    ui->socksVersion->setEnabled(false);
-    ui->socksVersion->addItem("5", 5);
-    ui->socksVersion->addItem("4", 4);
-    ui->socksVersion->setCurrentIndex(0);
-
     connect(ui->connectSocks, SIGNAL(toggled(bool)), ui->proxyIp, SLOT(setEnabled(bool)));
     connect(ui->connectSocks, SIGNAL(toggled(bool)), ui->proxyPort, SLOT(setEnabled(bool)));
-    connect(ui->connectSocks, SIGNAL(toggled(bool)), ui->socksVersion, SLOT(setEnabled(bool)));
 
     ui->proxyIp->installEventFilter(this);
 
@@ -140,7 +133,7 @@ void OptionsDialog::setModel(OptionsModel *model)
         mapper->toFirst();
     }
 
-    /* update the display unit, to not use the default ("KBI") */
+    /* update the display unit, to not use the default ("ARG") */
     updateDisplayUnit();
 
     /* warn when one of the following settings changes by user action (placed here so init via mapper doesn't trigger them) */
@@ -175,7 +168,6 @@ void OptionsDialog::setMapper()
     mapper->addMapping(ui->connectSocks, OptionsModel::ProxyUse);
     mapper->addMapping(ui->proxyIp, OptionsModel::ProxyIP);
     mapper->addMapping(ui->proxyPort, OptionsModel::ProxyPort);
-    mapper->addMapping(ui->socksVersion, OptionsModel::ProxySocksVersion);
 
     /* Window */
 #ifndef Q_OS_MAC

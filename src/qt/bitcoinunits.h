@@ -25,11 +25,8 @@ public:
     enum Unit   //Note: preserve positions in order to preserve existing settings
     {
         KBI,
-        //formerly mKBI
-        //formerly uKBI
-        MKBI = 3,
-        kKBI = 4,
-        Koinu = 5
+        mKBI,
+        uKBI,
     };
 
     //! @name Static API

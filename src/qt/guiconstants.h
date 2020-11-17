@@ -42,7 +42,7 @@ static const int MAX_PAYMENT_REQUEST_SIZE = 50000; // bytes
 #define SPINNER_FRAMES 35
 
 #define QAPP_ORG_NAME "Kuberbitcoin"
-#define QAPP_ORG_DOMAIN "kuberbitcoin.com"
+#define QAPP_ORG_DOMAIN "kuberbitcoin.io"
 #define QAPP_APP_NAME_DEFAULT "Kuberbitcoin-Qt"
 #define QAPP_APP_NAME_TESTNET "Kuberbitcoin-Qt-testnet"
 

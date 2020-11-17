@@ -76,7 +76,7 @@ QT_TRANSLATE_NOOP("bitcoin-core", ""
 "In this mode -genproclimit controls how many blocks are generated "
 "immediately."),
 QT_TRANSLATE_NOOP("bitcoin-core", ""
-"Listen for JSON-RPC connections on <port> (default: 16639 or testnet: 16640)"),
+"Listen for JSON-RPC connections on <port> (default: 13581 or testnet: 40556)"),
 QT_TRANSLATE_NOOP("bitcoin-core", ""
 "Number of seconds to keep misbehaving peers from reconnecting (default: "
 "86400)"),
@@ -142,7 +142,7 @@ QT_TRANSLATE_NOOP("bitcoin-core", "Cannot write default address"),
 QT_TRANSLATE_NOOP("bitcoin-core", "Clear list of wallet transactions (diagnostic tool; implies -rescan)"),
 QT_TRANSLATE_NOOP("bitcoin-core", "Connect only to the specified node(s)"),
 QT_TRANSLATE_NOOP("bitcoin-core", "Connect through SOCKS proxy"),
-QT_TRANSLATE_NOOP("bitcoin-core", "Connect to JSON-RPC on <port> (default: 16639 or testnet: 16640)"),
+QT_TRANSLATE_NOOP("bitcoin-core", "Connect to JSON-RPC on <port> (default: 13581 or testnet: 40556)"),
 QT_TRANSLATE_NOOP("bitcoin-core", "Connect to a node to retrieve peer addresses, and disconnect"),
 QT_TRANSLATE_NOOP("bitcoin-core", "Connection options:"),
 QT_TRANSLATE_NOOP("bitcoin-core", "Corrupted block database detected"),
@@ -197,7 +197,7 @@ QT_TRANSLATE_NOOP("bitcoin-core", "Invalid amount for -paytxfee=<amount>: '%s'")
 QT_TRANSLATE_NOOP("bitcoin-core", "Invalid amount"),
 QT_TRANSLATE_NOOP("bitcoin-core", "Limit size of signature cache to <n> entries (default: 50000)"),
 QT_TRANSLATE_NOOP("bitcoin-core", "List commands"),
-QT_TRANSLATE_NOOP("bitcoin-core", "Listen for connections on <port> (default: 16638 or testnet: X)"),
+QT_TRANSLATE_NOOP("bitcoin-core", "Listen for connections on <port> (default: 13580 or testnet: 40555)"),
 QT_TRANSLATE_NOOP("bitcoin-core", "Loading addresses..."),
 QT_TRANSLATE_NOOP("bitcoin-core", "Loading block index..."),
 QT_TRANSLATE_NOOP("bitcoin-core", "Loading wallet..."),

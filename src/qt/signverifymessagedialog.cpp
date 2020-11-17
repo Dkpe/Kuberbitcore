@@ -27,7 +27,7 @@ SignVerifyMessageDialog::SignVerifyMessageDialog(QWidget *parent) :
 
 #if QT_VERSION >= 0x040700
     ui->signatureOut_SM->setPlaceholderText(tr("Click \"Sign Message\" to generate signature"));
-    ui->addressIn_VM->setPlaceholderText(tr("Enter a Kuberbitcoin address (e.g. LGfR55WPULK6S7eoeEGYW5CLSUFWWZiH5Q)"));
+    ui->addressIn_VM->setPlaceholderText(tr("Enter a Kuberbitcoin address (e.g. AWRLWS0d6eEuu0qwsNBxkGxB4RV6FMo90X)"));
 #endif
 
     GUIUtil::setupAddressWidget(ui->addressIn_SM, this);

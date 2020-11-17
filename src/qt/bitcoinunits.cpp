@@ -16,10 +16,9 @@ BitcoinUnits::BitcoinUnits(QObject *parent):
 QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
-    unitlist.append(MKBI);
-    unitlist.append(kKBI);
     unitlist.append(KBI);
-    unitlist.append(Koinu);
+    unitlist.append(mKBI);
+    unitlist.append(uKBI);
     return unitlist;
 }
 
@@ -27,10 +26,9 @@ bool BitcoinUnits::valid(int unit)
 {
     switch(unit)
     {
-    case MKBI:
-    case kKBI:
     case KBI:
-    case Koinu:
+    case mKBI:
+    case uKBI:
         return true;
     default:
         return false;
@@ -41,10 +39,9 @@ QString BitcoinUnits::name(int unit)
 {
     switch(unit)
     {
-    case MKBI: return QString("MKBI");
-    case kKBI: return QString("kKBI");
     case KBI: return QString("KBI");
-    case Koinu: return QString("Koinu");
+    case mKBI: return QString("mKBI");
+    case uKBI: return QString("uKBI");
     default: return QString("???");
     }
 }
@@ -53,10 +50,9 @@ QString BitcoinUnits::description(int unit)
 {
     switch(unit)
     {
-    case MKBI: return QString("Mega-Kuberbitcoin (1,000,000 KBI)");
-    case kKBI: return QString("Kilo-Kuberbitcoin (1000 KBI)");
     case KBI: return QString("Kuberbitcoin");
-    case Koinu: return QString("Koinu (1 / 100,000,000");
+    case mKBI: return QString("Milli-Kuberbitcoin (100,000 KBI)");
+    case uKBI: return QString("Micro-Kuberbitcoin (100 KBI)");
     default: return QString("???");
     }
 }
@@ -65,11 +61,10 @@ qint64 BitcoinUnits::factor(int unit)
 {
     switch(unit)
     {
-    case MKBI: return Q_INT64_C(100000000000000);
-    case kKBI: return Q_INT64_C(100000000000);
-    case KBI:  return Q_INT64_C(100000000);
-    case Koinu: return Q_INT64_C(1);
-    default:    return Q_INT64_C(100000000);
+    case KBI:  return 100000000;
+    case mKBI: return 100000;
+    case uKBI: return 100;
+    default:    return 100000000;
     }
 }
 
@@ -77,10 +72,9 @@ qint64 BitcoinUnits::maxAmount(int unit)
 {
     switch(unit)
     {
-    case MKBI: return Q_INT64_C(900000);
-    case kKBI: return Q_INT64_C(900000000);
-    case KBI:  return Q_INT64_C(900000000000);    //less than the coin supply until the year 2170
-    case Koinu: return Q_INT64_C(9000000000000000000); // Slightly under max value for int64
+    case KBI:  return Q_INT64_C(64000000);
+    case mKBI: return Q_INT64_C(64000000000);
+    case uKBI: return Q_INT64_C(64000000000000);
     default:   return 0;
     }
 }
@@ -89,10 +83,9 @@ int BitcoinUnits::amountDigits(int unit)
 {
     switch(unit)
     {
-    case MKBI: return 6;  // 900,000 (# digits, without commas)
-    case kKBI: return 9;  // 900,000,000
-    case KBI:  return 12; // 900,000,000,000
-    case Koinu: return 19; // 9,000,000,000,000,000,000
+    case KBI:  return 8; // 64,000,000 (# digits, without commas)
+    case mKBI: return 11;  // 64,000,000,000
+    case uKBI: return 14;  // 64,000,000,000,000
     default: return 0;
     }
 }
@@ -101,10 +94,9 @@ int BitcoinUnits::decimals(int unit)
 {
     switch(unit)
     {
-    case MKBI: return 14;
-    case kKBI: return 11;
     case KBI: return 8;
-    case Koinu: return 0;
+    case mKBI: return 5;
+    case uKBI: return 2;
     default: return 0;
     }
 }
