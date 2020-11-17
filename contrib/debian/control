@@ -21,9 +21,9 @@ Build-Depends: debhelper,
  libqrencode-dev,
  libprotobuf-dev, protobuf-compiler
 Standards-Version: 3.9.2
-Homepage: http://www.kuberbitcoin.com/
-Vcs-Git: git://github.com/kuberbitcoin/kuberbitcoin.git
-Vcs-Browser: http://github.com/kuberbitcoin/kuberbitcoin
+Homepage: http://www.kuberbitcoin.io/
+Vcs-Git: git://github.com/kuberbitcoinproject/kuberbitcoin.git
+Vcs-Browser: http://github.com/kuberbitcoinproject/kuberbitcoin
 
 Package: kuberbitcoind
 Architecture: any
