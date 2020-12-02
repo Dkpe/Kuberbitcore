@@ -62,7 +62,16 @@ namespace Checkpoints
         (       12000, uint256("a0bc3c3572a4f52a8a79c1001090dcbdd24ef3061eb3279958146852aecc8de9")) 
         (       13000, uint256("1aa1e4caaea9e0e5bcd05a84016cb253b9baea60c251083c032059b9f9a979df")) 
         (       14000, uint256("38c033596c06320e9ba9360c24e7fb46d3bc1a5cf64c864d3e4961f618f4aafc")) 
-        (       15000, uint256("e8da0421fca659fb44c11c847a290cb56aaa6e721caec9a55956d82efb1b3b98"))
+        (       15000, uint256("e8da0421fca659fb44c11c847a290cb56aaa6e721caec9a55956d82efb1b3b98")) 
+	(       16000, uint256("44af53c6d8fd50357617d8aa51d4df0d7bd04fd204c0737bbb920a5c0c214688"))
+	(       17000, uint256("7d01d9e05d1bd1957491c7bdf8fe78763fb397304a621bc813f8b0ae6f373b03"))
+	(       18000, uint256("3faaf75cc5ca0330c7e59db8906485c55ac7c4a13904b48f47c9d713e0a9d2fc"))
+	(       19000, uint256("b96eea16c66b0d7bc5ba8b7b3dc9cbca2e3f3495471c60def767120e21aeafb2"))
+	(       20000, uint256("e8480cc2290297192b2c80f828dac0e32d1f27989617ddb7c03dcdc730f29e98"))
+	(       21000, uint256("d2fca018d1175479c60d1e99084332048b346073d9bff2f241be088f3264f08d"))
+        (       22000, uint256("2644bf7c43c5b13846896d87d90eae2267e9f1792a3f8ffd9b9e0280ea2775f9"))
+        (       23000, uint256("8aab653a8fe2a1bd7ad284ba7a60fb5ca342ee18470b3cb182e692bac72287e8"))
+	(       24000, uint256("760f17110d5701d6e4e9f64c72fdfbed236332fff072a56bb9cdb06efde8d981"))
     ;
             
 	static const CCheckpointData data = {
