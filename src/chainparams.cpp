@@ -156,12 +156,11 @@ public:
         genesis.nNonce = 904220;
 
         hashGenesisBlock = genesis.GetHash();
+	    //Correct Testnet for Kuberbitcoin
         assert(hashGenesisBlock == uint256("0x32c99f7fcad234c47ee3ae257d9ffcf233b0ac4d6882873a02f7417140de9915"));
         vFixedSeeds.clear();
         vSeeds.clear();
-		
-        // Boost sucks, and should not be used. Workaround for Boost not being compatible with C++11;
-        
+	
 
         std::vector<unsigned char> pka = list_of(113);
         base58Prefixes[PUBKEY_ADDRESS] = pka;
@@ -200,7 +199,7 @@ public:
         hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 18444;
         strDataDir = "regtest";
-       // assert(hashGenesisBlock == uint256("0x3d2160a3b5dc4a9d62e7e66a295f70313ac808440ef7400d6c0772171ce973a5"));
+       // assert(hashGenesisBlock == uint256("0x3d2160a3b5dc4a9d62e7e66a295f70313ac808440ef7400d6c0772171ce973a5")); NOT USING 
 
         vSeeds.clear();  // Regtest mode doesn't have any DNS seeds.
     }
