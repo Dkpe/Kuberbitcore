@@ -33,7 +33,7 @@ Specifications
 
 - Halving Constant :After 250000 Blocks (1250000 Minutes / 2.37 Years )
 
-- Transaction Confirmations: 85
+- Transaction Confirmations: 30
 
 - Relay Fee 7 KBI
 
