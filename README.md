@@ -54,7 +54,7 @@ Specifications
 
 #
 ## Security
-- Mined blocks mature after 85 confirms
+- Mined blocks mature after 30 confirms
 - Kuberbitcoin is a fast currency but it does not compromise the safety of the blockchain in the process.
 
 ## Ports
