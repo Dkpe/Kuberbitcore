@@ -1,4 +1,4 @@
-![alt text](https://i.imgur.com/foSTgt2.png)
+![alt text](https://i.imgur.com/oOC9ui3.png)
 
 Specifications
 
